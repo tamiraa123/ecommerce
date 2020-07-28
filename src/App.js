@@ -12,9 +12,6 @@ import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import Login from "./layouts/LoginForm";
-
-import EmployeeList from "./views/EmployeeList";
-import Employee from "./views/Employee";
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks";
 import AdminNavbar from "components/Navbars/AdminNavbar"
 
@@ -42,10 +39,15 @@ export default class App extends Component {
         return(
         <Router ref={(router) => (this.router = router)}>
             <Switch>
-                <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
-                <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
+            
+            <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
+            
+            <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
+
+            {/* <Route path = "/admin" component={AdminLayout}/> */}
+            {/* <Redirect from  ="/" to="/admin/dashboard" /> */}
             </Switch>
         </Router>
         );
     }
-  }
+}

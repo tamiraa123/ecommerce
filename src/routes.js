@@ -29,6 +29,7 @@ import EmployeeList from "views/EmployeeList.jsx";
 
 const dashboardRoutes = [
   {
+    type: "admin",
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
@@ -36,6 +37,15 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
+    path: "/myProducts",
+    name: "My Products",
+    icon: "pe-7s-keypad",
+    component: Dashboard,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
@@ -43,6 +53,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
     path: "/table",
     name: "Table List",
     icon: "pe-7s-note2",
@@ -50,6 +61,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
     path: "/typography",
     name: "Typography",
     icon: "pe-7s-news-paper",
@@ -57,6 +69,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
     path: "/icons",
     name: "Icons",
     icon: "pe-7s-science",
@@ -64,6 +77,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
     path: "/maps",
     name: "Maps",
     icon: "pe-7s-map-marker",
@@ -71,24 +85,19 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    type: "vendor",
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications,
     layout: "/admin"
   },
+
   {
-    upgrade: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "pe-7s-rocket",
-    component: Upgrade,
-    layout: "/admin"
-  },
-  {
+    type: "vendor",
     path: "/employeeList",
     name: "Employee List",
-    icon: "pe-7s-server",
+    icon: "pe-7s-users",
     component: EmployeeList,
     layout: "/admin"
   }
