@@ -23,6 +23,9 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
+import Employee from "views/Employee.jsx";
+
+import EmployeeList from "views/EmployeeList.jsx";
 
 const dashboardRoutes = [
   {
@@ -80,6 +83,13 @@ const dashboardRoutes = [
     name: "Upgrade to PRO",
     icon: "pe-7s-rocket",
     component: Upgrade,
+    layout: "/admin"
+  },
+  {
+    path: "/employeeList",
+    name: "Employee List",
+    icon: "pe-7s-server",
+    component: EmployeeList,
     layout: "/admin"
   }
 ];

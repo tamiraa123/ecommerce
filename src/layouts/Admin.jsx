@@ -30,6 +30,7 @@ import routes from "routes.js";
 import image from "assets/img/sidebar-3.jpg";
 import UserStore from "../UserStore.js";
 import LoginForm from "./LoginForm";
+import Employee from "../views/Employee";
 
 class Admin extends Component {
   constructor(props) {
@@ -96,8 +97,7 @@ class Admin extends Component {
   };
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
-      if (
-        this.props.location.pathname.indexOf(
+      if ( this.props.location.pathname.indexOf(
           routes[i].layout + routes[i].path
         ) !== -1
       ) {
@@ -223,7 +223,11 @@ class Admin extends Component {
                   {...this.props} 
                   brandText={this.getBrandText(this.props.location.pathname)}
                 />
-                <Switch>{this.getRoutes(routes)}</Switch>
+                <Switch>
+                  {this.getRoutes(routes)}
+                  <Route path="/admin/employees/:id" component={Employee}></Route>
+                </Switch>
+                
                 <Footer />
           </div>
         </div>

@@ -5,7 +5,9 @@ import {
     Col,
     FormGroup,
     ControlLabel,
-    FormControl
+    FormControl,
+    DropdownButton,
+    MenuItem
   } from "react-bootstrap";
   import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -19,6 +21,7 @@ class LoginForm extends React.Component{
   state = {
     username:null,
     password:null,
+    role:'admin'
   }
 
     doLogIn(){
@@ -59,7 +62,10 @@ class LoginForm extends React.Component{
                             }       
                           ]}
                         />
-    
+                        <select value={this.state.role} onChange={this.handleChange}>
+                          <option selected value="admin">Admin</option>
+                          <option value="vendor">Vendor</option>
+                        </select>
                         <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn()}>
                           Login
                         </Button>
