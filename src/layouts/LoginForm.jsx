@@ -2,13 +2,8 @@ import React, { Component } from "react";
 import {
     Grid,
     Row,
-    Col,
-    FormGroup,
-    ControlLabel,
-    FormControl,
-    DropdownButton,
-    MenuItem
-  } from "react-bootstrap";
+    Col,Container,
+    Form,Dropdown,DropdownButton,MenuItem} from "react-bootstrap";
   import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
@@ -16,12 +11,17 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import UserStore from "../UserStore";
 import {observer} from "mobx-react";
 import avatar from "assets/img/faces/face-3.jpg";
+import "./LoginForm.css";
 
 class LoginForm extends React.Component{
-  state = {
-    username:null,
-    password:null,
-    role:'admin'
+  constructor(props){
+    super(props);
+    this.state = {
+      username:null,
+      password:null,
+      role:'Employee'
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
     doLogIn(){
@@ -31,14 +31,22 @@ class LoginForm extends React.Component{
       console.log("LoginForm -> isLoggedIn: clicked");
     }
 
+    handleChange(event) {
+      this.setState({role: event});
+      console.log(event);
+    }
+
     render(){
         return(
-            <div className="content">
-            <Grid fluid>
-              <Row className="justify-content-md-center">
-                <Col md={5}>
+        <Grid>
+         
+              <Row className="show-grid">
+              <Col xs={8} md={4}>
+              
+              </Col>
+                <Col xs={4} md={4}>
                   <Card
-                    title="E-Commerce Admin Panel"
+                    title="E-Commerce Employee"
                     content={
                       <form>
                         <FormInputs
@@ -62,10 +70,19 @@ class LoginForm extends React.Component{
                             }       
                           ]}
                         />
-                        <select value={this.state.role} onChange={this.handleChange}>
+                        
+                        
+                        {/* <select className="dropdown" value={this.state.role} onChange={this.handleChange}>
                           <option selected value="admin">Admin</option>
                           <option value="vendor">Vendor</option>
-                        </select>
+                        </select> */}
+
+
+                    <DropdownButton  title={this.state.role} onSelect={this.handleChange} >
+                      <MenuItem  eventKey="Employee">Employee</MenuItem>
+                      <MenuItem eventKey="Vendor">Vendor</MenuItem>
+                    </DropdownButton>
+
                         <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn()}>
                           Login
                         </Button>
@@ -74,10 +91,12 @@ class LoginForm extends React.Component{
                     }
                   />
                 </Col>
-                
+                <Col xs={8} md={4}>
+                  
+                </Col>
               </Row>
-            </Grid>
-          </div>
+        
+              </Grid>
         );
     }
 }
