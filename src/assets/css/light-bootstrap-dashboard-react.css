@@ -219,7 +219,7 @@ input:focus {
     background-size: cover;
     background-position: center center; }
   .sidebar .logo {
-    padding: 10px 30px;
+    padding: 1px 3px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 4; }
