@@ -57,7 +57,6 @@ componentDidMount = () =>{
                     <tbody>
                       {this.state.products.map((prop, key) => {
                         return (
-                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
