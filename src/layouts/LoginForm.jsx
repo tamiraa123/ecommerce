@@ -2,15 +2,11 @@ import React, { Component } from "react";
 import {
     Grid,
     Row,
-    Col,Container,
-    Form,Dropdown,DropdownButton,MenuItem} from "react-bootstrap";
+    Col,DropdownButton,MenuItem} from "react-bootstrap";
   import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import UserStore from "../UserStore";
 import {observer} from "mobx-react";
-import avatar from "assets/img/faces/face-3.jpg";
 import "./LoginForm.css";
 
 class LoginForm extends React.Component{
