@@ -33,6 +33,28 @@ import {observer} from "mobx-react";
 import avatar from "assets/img/faces/face-3.jpg";
 
 class UserProfile extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state={
+      vendor : {
+      companyName:"",
+      status:"",
+      email:"",
+      custServContactNo : "",
+      vendorContactNo : "",
+      street:"",
+      city:"",
+      state:"",
+      zip:"",
+      description : ""
+      }
+    }
+  }
+  handleChange(event) {
+    const { target: { name, value } } = event
+    this.setState({ [name]: value, event: event })
+  }
   render() {
     return (
       <div className="cont">
@@ -40,33 +62,39 @@ class UserProfile extends Component {
           <Row>
             <Col>
               <Card
-                title="Edit Vendor Profile"
+                title="Vendor Profile"
                 content={
                   <form>
                     <FormInputs
                       ncols={["col-md-5", "col-md-3", "col-md-4"]}
                       properties={[
                         {
+                          name: "companyName",
                           label: "Company Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Company Name"
+                          placeholder: "Company Name",
+                          defaultValue: "Rolex",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
+                          name: "status",
                           label: "Status",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Status",
-                          defaultValue: "Active",
+                          defaultValue: "New",
                           disabled: true
                         },
                         {
-                          label: "Email address/username",
+                          name: "email",
+                          label: "Email address",
                           type: "email",
                           bsClass: "form-control",
-                          placeholder: "Email",
+                          placeholder: "Email address",
                           defaultValue: "rolexToEShop@rolex.com",
-                          disabled: true
+                          onChange:this.handleChange.bind(this) 
+                          // disabled: true
                         }
                       ]}
                     />
@@ -74,18 +102,22 @@ class UserProfile extends Component {
                       ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
+                          name: "custServContactNo",
                           label: "Customer service phone number",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Customer service phone number",
-                          defaultValue: "(319) 338-4212"
+                          defaultValue: "(319) 338-4212",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
-                          label: "Vendor contact phone number",
+                          name: "vendorContactNo",
+                          label: "Vendor phone number",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Vendor contact phone number",
-                          defaultValue: "(312) 951-1041"
+                          placeholder: "Vendor phone number",
+                          defaultValue: "(312) 951-1041",
+                          onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
@@ -93,12 +125,14 @@ class UserProfile extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          name: "street",
+                          label: "Address",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Home Adress",
+                          placeholder: "Address",
                           defaultValue:
-                            "Rolex Boutique Tourneau Michigan Ave"
+                            "Rolex Boutique Tourneau Michigan Ave",
+                            onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
@@ -106,25 +140,31 @@ class UserProfile extends Component {
                       ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
                         {
+                          name: "city",
                           label: "City",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: "Chicago"
+                          defaultValue: "Chicago",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
+                          name: "state",
                           label: "State",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "State",
-                          defaultValue: "Illinois"
+                          defaultValue: "Illinois",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
+                          name: "zip",
                           label: "Postal Code",
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
-                          defaultValue: 60611
+                          defaultValue: 60611,
+                          onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
@@ -134,17 +174,19 @@ class UserProfile extends Component {
                         <FormGroup controlId="formControlsTextarea">
                           <ControlLabel>Company Description</ControlLabel>
                           <FormControl
+                            name = {"description"}
                             rows="5"
                             componentClass="textarea"
                             bsClass="form-control"
                             placeholder="Here can be your companny description"
                             defaultValue="Crafted from the finest raw materials and assembled with scrupulous attention to detail. Explore the Rolex® collection and find the watch that was made for you. Worldwide Servicing. Wide Range. Timeless style. Made in Switzerland. Unparalleled prestige."
+                            onChange = {this.handleChange.bind(this)} 
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Update Profile
+                      Done
                     </Button>
                     <div className="clearfix" />
                   </form>
