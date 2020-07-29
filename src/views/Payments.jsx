@@ -10,15 +10,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product ID", "Product Name", "Price", "Brand", "Quantity","Is Active"];
+const thArray = ["Bank ID", "Bank Name", "Description", "URL", "RangeFrom","RangeTo"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "American Express", "Founded in 1850", "https://americanexpress.com", "1001","2000"],
+  ["2", "Visa", "Founded in 1958", "https://visa.com", "2001","3000"],  
 ];
 
 
-class Products extends Component {
+class Payments extends Component {
 
 state={
   products:[],
@@ -42,7 +41,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Payment Method"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -60,7 +59,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/products/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/payments/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -80,8 +79,8 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/products/0`}>
-            Add Product 
+          <Link to={`/admin/payments/0`}>
+            Add Bank 
           </Link>
         </Button>
 
@@ -90,4 +89,4 @@ componentDidMount = () =>{
   }
 }
 
-export default Products;
+export default Payments;

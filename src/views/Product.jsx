@@ -21,6 +21,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 import Switch from "react-switch";
+import { DiagnosticCategory } from "typescript";
 
 
 const specifications = [
@@ -41,13 +42,14 @@ class Product extends Component {
     this.state={
       id:0,
       name:"",
+      description:"",
       price:"",
       brand:"",
       quantity:"",
       images:[],
       isActive:false,
-      productDetails:[]
-
+      productDetails:[],
+      category:""
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -60,6 +62,8 @@ class Product extends Component {
     this.state.price = "1000$";
     this.state.quantity = "10";
     this.state.isActive = true;
+    this.state.description = "This laptop is best selling laptop"
+    this.state.category = "Electronic"
   }
 
   handleChange(event) {
@@ -79,32 +83,41 @@ class Product extends Component {
                    <Carousel>
                    {this.state.images.map((url) => {
                         return (
-                              <Carousel.Item>
-                                <img width={600} height={300} src={url.url} />
-                              </Carousel.Item>
+                            <Carousel.Item>
+                              <img width={500} height={400} src={url.url} />
+                            </Carousel.Item>
                         );
                       })}
                         </Carousel>
-
-                        {this.state.name}
+                        
+                        <h2>{this.state.name}</h2>
                         <p>
                           <Row className="show-grid">
                             <Col xs={4} md={6}>
                               <Label>Price: </Label> &nbsp; {this.state.price}
                             </Col>
                             <Col xs={4} md={6}>
-                              <Label>Brand: </Label>&nbsp; {this.state.brand}
+                              <Label>Category: </Label>&nbsp; {this.state.category}
                             </Col>
                           </Row>
                           <Row className="show-grid">
+                          <Col xs={4} md={6}>
+                              <Label>Brand: </Label>&nbsp; {this.state.brand}
+                            </Col>
                             <Col xs={4} md={6}>
                               <Label>Quantity: </Label>&nbsp; {this.state.quantity}
                             </Col>
                             
                           </Row>
+                          <Row className="show-grid">
+                            <FormGroup controlId="formControlsTextarea">
+                              <ControlLabel>Description</ControlLabel>
+                              <FormControl componentClass="textarea" value={this.state.description} disabled={true}/>
+                            </FormGroup>
+                          </Row>
                         </p>
 
-                    <br/>
+                    
                     <label>
                       <span>Product is Active </span>
                       <Switch onChange={this.handleChange} checked={this.state.isActive} className="react-switch"/>

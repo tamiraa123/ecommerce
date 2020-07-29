@@ -8,7 +8,7 @@ import {
   FormControl,
   DropdownButton,
   MenuItem,
-  
+  Image
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -28,6 +28,7 @@ class Employee extends Component {
     
     this.state={
       id:0,
+      image:"https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
       email:"",
       status:statusD[0], //active fired drop
       firstname:"",
@@ -67,7 +68,22 @@ class Employee extends Component {
                 title="Employee Profile"
                 content={
                   <form>
-                  {/* <Image src="/thumbnail.png" rounded /> */}
+                  <Image width={250} height={200} src={this.state.image} rounded />
+                  <FormInputs
+                      ncols={["col-md-5"]}
+                      onChange={this.handleChange}
+                      properties={[
+                        {
+                          label: "Image URL",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Image URL",
+                          defaultValue: this.state.image,
+                          name:"image",
+                          onChange:this.handleChange.bind(this) 
+                        }
+                      ]}
+                    />
                     <FormInputs
                       ncols={["col-md-3", "col-md-3", "col-md-6"]} 
                       properties={[
