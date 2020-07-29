@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import ProductList from "views/Vendor/ProductList";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import TableList from "views/TableList.jsx";
@@ -41,7 +42,7 @@ const dashboardRoutes = [
     path: "/myProducts",
     name: "My Products",
     icon: "pe-7s-keypad",
-    component: Dashboard,
+    component: ProductList,
     layout: "/admin"
   },
   {
