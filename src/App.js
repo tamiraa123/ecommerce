@@ -11,6 +11,7 @@ import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
+import SignUp from "./layouts/SignUp.jsx"
 import Login from "./layouts/LoginForm";
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks";
 import AdminNavbar from "components/Navbars/AdminNavbar"
@@ -41,9 +42,10 @@ export default class App extends Component {
             <Switch>
             
             <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
-            
-            <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
+            <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
 
+            <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
+            
             {/* <Route path = "/admin" component={AdminLayout}/> */}
             {/* <Redirect from  ="/" to="/admin/dashboard" /> */}
             </Switch>
