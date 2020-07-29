@@ -67,7 +67,7 @@ class Employee extends Component {
                 title="Employee Profile"
                 content={
                   <form>
-                  
+                  {/* <Image src="/thumbnail.png" rounded /> */}
                     <FormInputs
                       ncols={["col-md-3", "col-md-3", "col-md-6"]} 
                       properties={[

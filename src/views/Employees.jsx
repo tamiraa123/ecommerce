@@ -21,7 +21,7 @@ const tdArray = [
 ];
 
 
-class EmployeeList extends Component {
+class Employees extends Component {
 
 state={
   employees:[],
@@ -94,4 +94,4 @@ componentDidMount = () =>{
   }
 }
 
-export default EmployeeList;
+export default Employees;
