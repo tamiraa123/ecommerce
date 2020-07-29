@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
 import {
   Grid,
@@ -22,7 +5,10 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
+  DropdownButton,
+  MenuItem,
+  
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -32,7 +18,45 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 
+
+const rolesD = ["ADMIN", "ENGINEER", "TICKET MANAGER"];
+const statusD = ["ACTIVE", "FIRED", "BREAK"];
+
 class Employee extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state={
+      id:0,
+      email:"",
+      status:statusD[0], //active fired drop
+      firstname:"",
+      lastname:"",
+      phone:"",
+      street:"",
+      city:"",
+      state:"",
+      zip:"",
+      role:rolesD[0]//admin, engineer  drop
+    }
+
+    this.handleChangeRole = this.handleChangeRole.bind(this);
+    this.handleChangeStatus = this.handleChangeStatus.bind(this);
+   // this.handleChange = this.handleChange(this);
+  }
+
+  handleChangeRole(event) {
+    this.setState({role: rolesD[event]});
+  }
+
+  handleChangeStatus(event) {
+    this.setState({status: statusD[event]});
+  }
+  handleChange(event) {
+    const { target: { name, value } } = event
+    this.setState({ [name]: value, event: event })
+  }
+
   render() {
     return (
       <div className="content">
@@ -40,51 +64,54 @@ class Employee extends Component {
           <Row>
             <Col md={8}>
               <Card
-                title="Edit User"
+                title="Employee Profile"
                 content={
                   <form>
+                  
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-4"]}
+                      ncols={["col-md-3", "col-md-3", "col-md-6"]} 
                       properties={[
                         {
-                          label: "Company (disabled)",
+                          label: "First Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Company",
-                          defaultValue: "Creative Code Inc.",
-                          disabled: true
+                          placeholder: "First Name",
+                          name:"firstname",
+                          onChange:this.handleChange.bind(this)   
                         },
                         {
-                          label: "Username",
+                          label: "Last Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Username",
-                          defaultValue: "michael23"
+                          placeholder: "Last Name",
+                          defaultValue: this.state.lastname,
+                          name:"lastname",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
-                          label: "Email address",
-                          type: "email",
+                          label: "E-mail",
+                          type: "text",
                           bsClass: "form-control",
-                          placeholder: "Email"
-                        }
-                      ]}
+                          placeholder: "Email",
+                          defaultValue: this.state.email,
+                          name:"email",
+                          onChange:this.handleChange.bind(this) 
+                        },
+                      ]
+                    }
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-5"]}
+                      onChange={this.handleChange}
                       properties={[
                         {
-                          label: "First name",
+                          label: "Phone Number",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "First name",
-                          defaultValue: "Mike"
-                        },
-                        {
-                          label: "Last name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Last name",
-                          defaultValue: "Andrew"
+                          placeholder: "Phone Number",
+                          defaultValue: this.state.phone,
+                          name:"phone",
+                          onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
@@ -92,12 +119,13 @@ class Employee extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          label: "Street",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Home Adress",
-                          defaultValue:
-                            "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                          placeholder: "Street",
+                          defaultValue: this.state.street,
+                          name:"street",
+                          onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
@@ -109,40 +137,62 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: "Mike"
+                          defaultValue: this.state.city,
+                          name:"city",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
-                          label: "Country",
+                          label: "State",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: "Andrew"
+                          defaultValue: this.state.state,
+                          name:"state",
+                          onChange:this.handleChange.bind(this) 
                         },
                         {
                           label: "Postal Code",
                           type: "number",
                           bsClass: "form-control",
-                          placeholder: "ZIP Code"
+                          placeholder: "ZIP Code",
+                          defaultValue: this.state.zip,
+                          name:"zip",
+                          onChange:this.handleChange.bind(this) 
                         }
                       ]}
                     />
-
-                    <Row>
-                      <Col md={12}>
-                        <FormGroup controlId="formControlsTextarea">
-                          <ControlLabel>About Me</ControlLabel>
-                          <FormControl
-                            rows="5"
-                            componentClass="textarea"
-                            bsClass="form-control"
-                            placeholder="Here can be your description"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
+                      <Row className="show-grid">
+                        <Col xs={6} md={3}>
+                        <ControlLabel>ROLE</ControlLabel><br/>
+                              <DropdownButton
+                                      title={this.state.role}
+                                      id="document-type"
+                                      onSelect={this.handleChangeRole}
+                                    >
+                                      {rolesD.map((opt, i) => (
+                                        <MenuItem key={i} eventKey={i}>
+                                          {opt}
+                                        </MenuItem>
+                                      ))}
+                              </DropdownButton>
+                        </Col>
+                        <Col xs={6} md={3}>
+                        <ControlLabel>STATUS</ControlLabel><br/>
+                            <DropdownButton
+                                    title={this.state.status}
+                                    id="document-type"
+                                    onSelect={this.handleChangeStatus}
+                                  >
+                                    {statusD.map((opt, i) => (
+                                      <MenuItem key={i} eventKey={i}>
+                                        {opt}
+                                      </MenuItem>
+                                    ))}
+                            </DropdownButton>
+                        </Col>
+                      </Row>
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Update Profile
+                      Update
                     </Button>
                     <div className="clearfix" />
                   </form>

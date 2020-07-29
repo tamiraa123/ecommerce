@@ -27,6 +27,7 @@ class LoginForm extends React.Component{
     doLogIn(){
       this.username = "asdfasd";
       this.password = "sadfasdf";
+      
       this.props.onLogin("jsahdgfaksdgfa");
       console.log("LoginForm -> isLoggedIn: clicked");
     }
@@ -83,9 +84,10 @@ class LoginForm extends React.Component{
                       <MenuItem eventKey="Vendor">Vendor</MenuItem>
                     </DropdownButton>
 
-                        <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn()}>
-                          Login
-                        </Button>
+
+                      <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn()}>
+                        Login
+                      </Button>
                         <div className="clearfix" />
                       </form>
                     }

@@ -1,29 +1,16 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
-import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Grid, 
+  Row, 
+  Col, 
+  Table, 
+  Button } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["ID", "Name", "Salary", "Country", "City","Position"];
+const thArray = ["ID", "Email", "First Name", "LastName", "Role","Status"];
 const tdArray = [
   ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout","Head Manager"],
   ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas","Software Developer"],
@@ -96,6 +83,12 @@ componentDidMount = () =>{
 
           </Row>
         </Grid>
+        <Button>
+          <Link to={`/admin/employees/0`}>
+            Add Employee 
+          </Link>
+        </Button>
+
       </div>
     );
   }

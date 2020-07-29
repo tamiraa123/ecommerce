@@ -29,7 +29,7 @@ import EmployeeList from "views/EmployeeList.jsx";
 
 const dashboardRoutes = [
   {
-    type: "admin",
+    type: "vendor",
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
