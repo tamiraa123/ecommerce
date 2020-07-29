@@ -32,6 +32,7 @@ import UserStore from "../UserStore.js";
 import LoginForm from "./LoginForm";
 import Employee from "../views/Employee";
 import Product from "../views/Product";
+import Payment from "../views/Payment";
 
 class Admin extends Component {
   constructor(props) {
@@ -217,7 +218,6 @@ class Admin extends Component {
   render() {
         return (
           <div className="wrapper">
-       
               {/* <NotificationSystem ref="notificationSystem" style={style} /> */}
               <Sidebar {...this.props} routes={routes} image={this.state.image}
               color={this.state.color}
@@ -230,6 +230,7 @@ class Admin extends Component {
                 <Switch>
                   <Route path="/admin/employees/:id" component={Employee}></Route>
                   <Route path="/admin/products/:id" component={Product}></Route>
+                  <Route path="/admin/payments/:id" component={Payment}></Route>
                   {this.getRoutes(routes)}
                   
                 </Switch>
