@@ -26,7 +26,8 @@ import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
 import Employee from "views/Employee.jsx";
 
-import EmployeeList from "views/EmployeeList.jsx";
+import Employees from "views/Employees.jsx";
+import Products from "views/Products.jsx";
 
 const dashboardRoutes = [
   {
@@ -96,12 +97,21 @@ const dashboardRoutes = [
 
   {
     type: "vendor",
-    path: "/employeeList",
-    name: "Employee List",
+    path: "/employees",
+    name: "Employees",
     icon: "pe-7s-users",
-    component: EmployeeList,
+    component: Employees,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/products",
+    name: "Products",
+    icon: "pe-7s-users",
+    component: Products,
     layout: "/admin"
   }
+
 ];
 
 export default dashboardRoutes;

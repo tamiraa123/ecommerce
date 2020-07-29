@@ -36,12 +36,10 @@ class LoginForm extends React.Component{
     render(){
         return(
         <Grid>
-         
-              <Row className="show-grid">
+              <Row >
               <Col xs={8} md={4}>
-              
               </Col>
-                <Col xs={4} md={4}>
+                <Col xs={8} md={4}>
                   <Card
                     title="E-Commerce Employee"
                     content={
@@ -90,7 +88,6 @@ class LoginForm extends React.Component{
                   />
                 </Col>
                 <Col xs={8} md={4}>
-                  
                 </Col>
               </Row>
         
