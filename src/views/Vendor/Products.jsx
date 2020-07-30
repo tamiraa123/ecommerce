@@ -10,21 +10,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["ID", "Email", "First Name", "LastName", "Role","Status"];
+const thArray = ["Product ID", "Product Name", "Price", "Brand", "Quantity","Is Active"];
 const tdArray = [
-  ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout","Head Manager"],
-  ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas","Software Developer"],
-  ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux","Delivery man"],
-  ["4", "Philip Chaney", "$38,735", "Korea, South", "Overland Park","Driver"],
-  ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten","Driver"],
-  ["6", "Mason Porter", "$78,615", "Chile", "Gloucester","Director"]
+  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
+  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
+  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
 ];
 
 
-class EmployeeList extends Component {
+class Products extends Component {
 
 state={
-  employees:[],
+  products:[],
 }
 
 componentDidMount = () =>{
@@ -32,7 +29,7 @@ componentDidMount = () =>{
   // axios
   //   .get("")
   //   .then((result) => 
-    this.setState({employees:tdArray});
+    this.setState({products:tdArray});
   //)
   //   .catch((err) => console.log(err.response));
 
@@ -45,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Employee List"
+                title="Product List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -58,13 +55,13 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.employees.map((prop, key) => {
+                      {this.state.products.map((prop, key) => {
                         return (
                          
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/employees/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/products/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -84,8 +81,8 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/employees/0`}>
-            Add Employee 
+          <Link to={`/admin/products/0`}>
+            Add Product 
           </Link>
         </Button>
 
@@ -94,4 +91,4 @@ componentDidMount = () =>{
   }
 }
 
-export default EmployeeList;
+export default Products;
