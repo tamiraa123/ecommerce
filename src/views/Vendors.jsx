@@ -10,17 +10,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Bank ID", "Bank Name", "Description", "URL", "RangeFrom","RangeTo"];
+const thArray = ["ID", "Email" ,"Vendor Name", "Status"];
 const tdArray = [
-  ["1", "American Express", "Founded in 1850", "https://americanexpress.com", "1001","2000"],
-  ["2", "Visa", "Founded in 1958", "https://visa.com", "2001","3000"],  
+  ["1", "abc@gmail.com",  "Niger", "New"],
+  ["2", "def@gmail.com", "Curaçao", "Active"],
+  ["3", "ghl@gmail.com", "Netherlands", "Blocked"],
+  ["4", "klm@gmail.com",  "Korea, South", "Active"],
 ];
 
 
-class Payments extends Component {
+class Vendors extends Component {
 
 state={
-  payments:[],
+  verndors:[],
 }
 
 componentDidMount = () =>{
@@ -28,7 +30,7 @@ componentDidMount = () =>{
   // axios
   //   .get("")
   //   .then((result) => 
-    this.setState({payments:tdArray});
+    this.setState({verndors:tdArray});
   //)
   //   .catch((err) => console.log(err.response));
 
@@ -41,7 +43,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Payment Method"
+                title="Customers List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -54,18 +56,20 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.payments.map((prop, key) => {
+                      {this.state.verndors.map((prop, key) => {
                         return (
+                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/payments/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/vendors/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
                                   </td>;
                               })}
                             </tr>
+                         
                         );
                       })}
                     </tbody>
@@ -78,8 +82,8 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/payments/0`}>
-            Add Bank 
+          <Link to={`/admin/vendors/0`}>
+            Add Vendor 
           </Link>
         </Button>
 
@@ -88,4 +92,4 @@ componentDidMount = () =>{
   }
 }
 
-export default Payments;
+export default Vendors;

@@ -10,17 +10,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Bank ID", "Bank Name", "Description", "URL", "RangeFrom","RangeTo"];
+const thArray = ["ID", "Email", "First Name", "LastName","isActive"];
 const tdArray = [
-  ["1", "American Express", "Founded in 1850", "https://americanexpress.com", "1001","2000"],
-  ["2", "Visa", "Founded in 1958", "https://visa.com", "2001","3000"],  
+  ["1", "Dakota Rice", "$36,738", "Niger", "Active"],
+  ["2", "Minerva Hooper", "$23,789", "Curaçao", "Not Active"],
+  ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Active"],
+  ["4", "Philip Chaney", "$38,735", "Korea, South", "Active"],
+  ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten"],
+  ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
 ];
 
 
-class Payments extends Component {
+class Customers extends Component {
 
 state={
-  payments:[],
+  customers:[],
 }
 
 componentDidMount = () =>{
@@ -28,7 +32,7 @@ componentDidMount = () =>{
   // axios
   //   .get("")
   //   .then((result) => 
-    this.setState({payments:tdArray});
+    this.setState({customers:tdArray});
   //)
   //   .catch((err) => console.log(err.response));
 
@@ -41,7 +45,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Payment Method"
+                title="Customers List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -54,18 +58,20 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.payments.map((prop, key) => {
+                      {this.state.customers.map((prop, key) => {
                         return (
+                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/payments/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/customers/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
                                   </td>;
                               })}
                             </tr>
+                         
                         );
                       })}
                     </tbody>
@@ -78,8 +84,8 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/payments/0`}>
-            Add Bank 
+          <Link to={`/admin/customers/0`}>
+            Add Customer 
           </Link>
         </Button>
 
@@ -88,4 +94,4 @@ componentDidMount = () =>{
   }
 }
 
-export default Payments;
+export default Customers;

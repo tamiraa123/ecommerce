@@ -25,9 +25,17 @@ import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
 
+<<<<<<< HEAD
 import Employees from "views/Admin/Employees.jsx";
 import Products from "views/Admin/Products.jsx";
 import Payments from "views/Admin/Payments.jsx";
+=======
+import Employees from "views/Employees.jsx";
+import Products from "views/Products.jsx";
+import Payments from "views/Payments.jsx";
+import Customers from "views/Customers.jsx";
+import Vendors from "views/Vendors.jsx";
+>>>>>>> a48d90380ec4b5b1ef2ad6a853e9b3b44fd838ae
 
 const dashboardRoutes = [
   {
@@ -117,6 +125,23 @@ const dashboardRoutes = [
     name: "Payments",
     icon: "pe-7s-cash",
     component: Payments,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/customers",
+    name: "Customers",
+    icon: "pe-7s-user-female",
+    component: Customers,
+    layout: "/admin"
+  }
+  ,
+  {
+    type: "vendor",
+    path: "/vendors",
+    name: "Vendors",
+    icon: "pe-7s-network",
+    component: Vendors,
     layout: "/admin"
   }
 
