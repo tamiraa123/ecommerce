@@ -29,7 +29,7 @@ class CustomButton extends Component {
       "btn-simple": simple,
       "pull-right": pullRight,
       "btn-block": block,
-      "btn-round": round
+      "btn-round": round,
     });
 
     return <Button className={btnClasses} {...rest} />;

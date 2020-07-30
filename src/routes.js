@@ -1,27 +1,10 @@
-/*!
 
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import vProducts from "views/Vendor/Vproducts.jsx";
+import vProducts from "views/Vendor/Products.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import TableList from "views/TableList.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
-import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 
 import Employees from "views/Admin/Employees.jsx";
@@ -29,6 +12,7 @@ import Products from "views/Admin/Products.jsx";
 import Payments from "views/Admin/Payments.jsx";
 import Customers from "views/Admin/Customers.jsx";
 import Vendors from "views/Admin/Vendors.jsx";
+import Category from "views/Admin/Category.jsx";
 
 const dashboardRoutes = [
   {
@@ -81,14 +65,6 @@ const dashboardRoutes = [
   },
   {
     type: "vendor",
-    path: "/maps",
-    name: "Maps",
-    icon: "pe-7s-map-marker",
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    type: "vendor",
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
@@ -127,14 +103,22 @@ const dashboardRoutes = [
     icon: "pe-7s-user-female",
     component: Customers,
     layout: "/admin"
-  }
-  ,
+  },
   {
     type: "vendor",
     path: "/vendors",
     name: "Vendors",
-    icon: "pe-7s-network",
+    icon: "pe-7s-share",
     component: Vendors,
+    layout: "/admin"
+  }
+  ,
+  {
+    type: "vendor",
+    path: "/category",
+    name: "Category",
+    icon: "pe-7s-network",
+    component: Category,
     layout: "/admin"
   }
 

@@ -1,38 +1,39 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl
+  Col, 
+  Image
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
-import avatar from "assets/img/faces/face-3.jpg";
-
 class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      id: 0,
+      image: "https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
+      email: "",
+      status: "", //active fired drop
+      firstname: "",
+      lastname: "",
+      phone: "",
+      street: "",
+      city: "",
+      state: "",
+      zip: "",
+      role: ""//admin, engineer  drop
+    }
+  }
+
+  handleChange(event) {
+    const { target: { name, value } } = event
+    this.setState({ [name]: value, event: event })
+  }
+
   render() {
     return (
       <div className="content">
@@ -43,48 +44,63 @@ class UserProfile extends Component {
                 title="Edit Profile"
                 content={
                   <form>
+                    <Image width={250} height={200} src={this.state.image} rounded />
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-4"]}
+                      ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Company (disabled)",
+                          label: "Image URL",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Company",
-                          defaultValue: "Creative Code Inc.",
-                          disabled: true
+                          placeholder: "City",
+                          defaultValue: this.state.image,
+                          name: "image",
+                          onChange: this.handleChange.bind(this)
+                        },
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
+                      properties={[
+                        {
+                          label: "First Name",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "First Name",
+                          defaultValue: this.state.firstname,
+                          name: "firstname",
+                          onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Username",
+                          label: "Last Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Username",
-                          defaultValue: "michael23"
+                          placeholder: "Last Name",
+                          defaultValue: this.state.lastname,
+                          name: "lastname",
+                          onChange: this.handleChange.bind(this)
                         },
                         {
                           label: "Email address",
                           type: "email",
                           bsClass: "form-control",
-                          placeholder: "Email"
+                          placeholder: "Email",
+                          name: "image",
+                          onChange: this.handleChange.bind(this)
                         }
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
-                          label: "First name",
+                          label: "Phone number",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "First name",
-                          defaultValue: "Mike"
-                        },
-                        {
-                          label: "Last name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Last name",
-                          defaultValue: "Andrew"
+                          placeholder: "Phone Number",
+                          defaultValue: this.state.phone,
+                          name: "phone",
+                          onChange: this.handleChange.bind(this)
                         }
                       ]}
                     />
@@ -92,12 +108,13 @@ class UserProfile extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          label: "Street",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Home Adress",
-                          defaultValue:
-                            "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                          placeholder: "Street",
+                          defaultValue: this.state.street,
+                          name: "street",
+                          onChange: this.handleChange.bind(this)
                         }
                       ]}
                     />
@@ -109,73 +126,34 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: "Mike"
+                          defaultValue: this.state.city,
+                          name: "city",
+                          onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Country",
+                          label: "State",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: "Andrew"
+                          defaultValue: this.state.state,
+                          name: "state",
+                          onChange: this.handleChange.bind(this)
                         },
                         {
                           label: "Postal Code",
                           type: "number",
                           bsClass: "form-control",
-                          placeholder: "ZIP Code"
+                          defaultValue: this.state.zip,
+                          name: "zip",
+                          onChange: this.handleChange.bind(this)
                         }
                       ]}
                     />
-
-                    <Row>
-                      <Col md={12}>
-                        <FormGroup controlId="formControlsTextarea">
-                          <ControlLabel>About Me</ControlLabel>
-                          <FormControl
-                            rows="5"
-                            componentClass="textarea"
-                            bsClass="form-control"
-                            placeholder="Here can be your description"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
                     <Button bsStyle="info" pullRight fill type="submit">
                       Update Profile
                     </Button>
                     <div className="clearfix" />
                   </form>
-                }
-              />
-            </Col>
-            <Col md={4}>
-              <UserCard
-                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                avatar={avatar}
-                name="Mike Andrew"
-                userName="michael24"
-                description={
-                  <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
-                  </span>
-                }
-                socials={
-                  <div>
-                    <Button simple>
-                      <i className="fa fa-facebook-square" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-google-plus-square" />
-                    </Button>
-                  </div>
                 }
               />
             </Col>
