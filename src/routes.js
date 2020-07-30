@@ -23,19 +23,12 @@ import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
-import Upgrade from "views/Upgrade.jsx";
 
-<<<<<<< HEAD
 import Employees from "views/Admin/Employees.jsx";
 import Products from "views/Admin/Products.jsx";
 import Payments from "views/Admin/Payments.jsx";
-=======
-import Employees from "views/Employees.jsx";
-import Products from "views/Products.jsx";
-import Payments from "views/Payments.jsx";
-import Customers from "views/Customers.jsx";
-import Vendors from "views/Vendors.jsx";
->>>>>>> a48d90380ec4b5b1ef2ad6a853e9b3b44fd838ae
+import Customers from "views/Admin/Customers.jsx";
+import Vendors from "views/Admin/Vendors.jsx";
 
 const dashboardRoutes = [
   {

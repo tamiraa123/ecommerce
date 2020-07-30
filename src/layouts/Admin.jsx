@@ -32,8 +32,8 @@ import Product from "../views/Admin/Product";
 import vProduct from "../views/Vendor/Product";
 import Payment from "../views/Admin/Payment";
 
-import Customer from "../views/Customer";
-import Vendor from "../views/Vendor";
+import Customer from "../views/Admin/Customer";
+import Vendor from "../views/Admin/Vendor";
 
 class Admin extends Component {
   constructor(props) {
