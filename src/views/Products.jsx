@@ -79,12 +79,6 @@ componentDidMount = () =>{
 
           </Row>
         </Grid>
-        <Button>
-          <Link to={`/admin/products/0`}>
-            Add Product 
-          </Link>
-        </Button>
-
       </div>
     );
   }

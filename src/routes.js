@@ -12,6 +12,8 @@ import Employee from "views/Employee.jsx";
 import Employees from "views/Employees.jsx";
 import Products from "views/Products.jsx";
 import Payments from "views/Payments.jsx";
+import Customers from "views/Customers.jsx";
+import Vendors from "views/Vendors.jsx";
 
 const dashboardRoutes = [
   {
@@ -101,6 +103,23 @@ const dashboardRoutes = [
     name: "Payments",
     icon: "pe-7s-cash",
     component: Payments,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/customers",
+    name: "Customers",
+    icon: "pe-7s-user-female",
+    component: Customers,
+    layout: "/admin"
+  }
+  ,
+  {
+    type: "vendor",
+    path: "/vendors",
+    name: "Vendors",
+    icon: "pe-7s-network",
+    component: Vendors,
     layout: "/admin"
   }
 

@@ -33,6 +33,8 @@ import LoginForm from "./LoginForm";
 import Employee from "../views/Employee";
 import Product from "../views/Product";
 import Payment from "../views/Payment";
+import Customer from "../views/Customer";
+import Vendor from "../views/Vendor";
 
 class Admin extends Component {
   constructor(props) {
@@ -231,6 +233,8 @@ class Admin extends Component {
                   <Route path="/admin/employees/:id" component={Employee}></Route>
                   <Route path="/admin/products/:id" component={Product}></Route>
                   <Route path="/admin/payments/:id" component={Payment}></Route>
+                  <Route path="/admin/customers/:id" component={Customer}></Route>
+                  <Route path="/admin/vendors/:id" component={Vendor}></Route>
                   {this.getRoutes(routes)}
                   
                 </Switch>
