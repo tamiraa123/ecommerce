@@ -24,11 +24,10 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
-import Employee from "views/Employee.jsx";
 
-import Employees from "views/Employees.jsx";
-import Products from "views/Products.jsx";
-import Payments from "views/Payments.jsx";
+import Employees from "views/Admin/Employees.jsx";
+import Products from "views/Admin/Products.jsx";
+import Payments from "views/Admin/Payments.jsx";
 
 const dashboardRoutes = [
   {

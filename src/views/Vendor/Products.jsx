@@ -42,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Product List2"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/products/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/myproducts/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -81,7 +81,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/products/0`}>
+          <Link to={`/admin/myproducts/0`}>
             Add Product 
           </Link>
         </Button>

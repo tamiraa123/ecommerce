@@ -23,16 +23,14 @@ import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 
-import { style } from "variables/Variables.jsx";
-
 import routes from "routes.js";
 
 import image from "assets/img/sidebar-3.jpg";
-import UserStore from "../UserStore.js";
-import LoginForm from "./LoginForm";
-import Employee from "../views/Employee";
-import Product from "../views/Product";
-import Payment from "../views/Payment";
+
+import Employee from "../views/Admin/Employee";
+import Product from "../views/Admin/Product";
+import vProduct from "../views/Vendor/Product";
+import Payment from "../views/Admin/Payment";
 
 class Admin extends Component {
   constructor(props) {
@@ -230,6 +228,7 @@ class Admin extends Component {
                 <Switch>
                   <Route path="/admin/employees/:id" component={Employee}></Route>
                   <Route path="/admin/products/:id" component={Product}></Route>
+                  <Route path="/admin/myproducts/:id" component={vProduct}></Route>
                   <Route path="/admin/payments/:id" component={Payment}></Route>
                   {this.getRoutes(routes)}
                   
