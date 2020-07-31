@@ -12,6 +12,7 @@ import Payments from "views/Admin/Payments.jsx";
 import Customers from "views/Admin/Customers.jsx";
 import Vendors from "views/Admin/Vendors.jsx";
 import Category from "views/Admin/Category.jsx";
+import Requirement from "views/Admin/Requirements.jsx";
 
 const dashboardRoutes = [
   {
@@ -110,14 +111,21 @@ const dashboardRoutes = [
     icon: "pe-7s-share",
     component: Vendors,
     layout: "/admin"
-  }
-  ,
+  },
   {
     type: "vendor",
     path: "/category",
     name: "Category",
     icon: "pe-7s-network",
     component: Category,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/requirements",
+    name: "Requirements",
+    icon: "pe-7s-note2",
+    component: Requirement,
     layout: "/admin"
   }
 
