@@ -7,17 +7,17 @@ import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
+import routesAdmin from "routesAdmin.js";
 
 import image from "assets/img/sidebar-3.jpg";
 
-import Employee from "../views/Admin/Employee";
-import Product from "../views/Admin/Product";
-import vProduct from "../views/Vendor/Vproduct";
-import Payment from "../views/Admin/Payment";
-
-import Customer from "../views/Admin/Customer";
-import Vendor from "../views/Admin/Vendor";
-import Requirement from "../views/Admin/Requirement";
+// import Employee from "../views/Admin/Employee";
+// import Product from "../views/Admin/Product";
+// import vProduct from "../views/Vendor/Vproduct";
+// import Payment from "../views/Admin/Payment";
+// import Customer from "../views/Admin/Customer";
+// import Vendor from "../views/Admin/Vendor";
+// import Requirement from "../views/Admin/Requirement";
 
 class Admin extends Component {
   constructor(props) {
@@ -75,6 +75,20 @@ class Admin extends Component {
               />
             )}
             key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+  getRoutesAdmin = routes => {
+    return routes.map((prop, key) => {
+      if (prop.layout === "/admin") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
           />
         );
       } else {
@@ -213,13 +227,14 @@ class Admin extends Component {
                   brandText={this.getBrandText(this.props.location.pathname)}
                 />
                 <Switch>
-                  <Route path="/admin/employees/:id" component={Employee}></Route>
+                  {/* <Route path="/admin/employees/:id" component={Employee}></Route>
                   <Route path="/admin/products/:id" component={Product}></Route>
                   <Route path="/admin/vproducts/:id" component={vProduct}></Route>
                   <Route path="/admin/payments/:id" component={Payment}></Route>
                   <Route path="/admin/customers/:id" component={Customer}></Route>
                   <Route path="/admin/vendors/:id" component={Vendor}></Route>
-                  <Route path="/admin/requirements/:id" component={Requirement}></Route>
+                  <Route path="/admin/requirements/:id" component={Requirement}></Route> */}
+                  {this.getRoutesAdmin(routesAdmin)}
                   {this.getRoutes(routes)}
                   
                 </Switch>

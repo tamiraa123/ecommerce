@@ -34,20 +34,13 @@ export default class App extends Component {
         //this.router.history.push("/");
         this.props.history.push("/");
     };
-    
-
     render(){
         return(
         <Router ref={(router) => (this.router = router)}>
             <Switch>
-            
-            <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
-            <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
-
-            <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
-            
-            {/* <Route path = "/admin" component={AdminLayout}/> */}
-            {/* <Redirect from  ="/" to="/admin/dashboard" /> */}
+                <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
+                <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
+                <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
             </Switch>
         </Router>
         );
