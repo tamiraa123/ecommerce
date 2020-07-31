@@ -18,7 +18,7 @@ const tdArray = [
 ];
 
 
-class Products extends Component {
+class Vproducts extends Component {
 
 state={
   products:[],
@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/myproducts/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/myProducts/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -91,4 +91,4 @@ componentDidMount = () =>{
   }
 }
 
-export default Products;
+export default Vproducts;

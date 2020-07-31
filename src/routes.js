@@ -6,7 +6,6 @@ import vPromos from "views/Vendor/Vpromotions.jsx";
 import vOrders from "views/Vendor/Vorders.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
-import TableList from "views/TableList.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
@@ -46,12 +45,13 @@ const dashboardRoutes = [
   },
   {
     type: "vendor",
-    path: "/myRequirements",
-    name: "My Requirements",
-    icon: "pe-7s-pen",
-    component: vRequirements,
+    path: "/myPromotions",
+    name: "Promotions",
+    icon: "pe-7s-gift",
+    component: vPromos,
     layout: "/admin"
   },
+  
   {
     type: "vendor",
     path: "/myCards",
@@ -60,14 +60,7 @@ const dashboardRoutes = [
     component: vCards,
     layout: "/admin"
   },
-  {
-    type: "vendor",
-    path: "/myPromos",
-    name: "Promotions",
-    icon: "pe-7s-gift",
-    component: vPromos,
-    layout: "/admin"
-  },
+
   {
     type: "vendor",
     path: "/myOrders",
@@ -76,13 +69,12 @@ const dashboardRoutes = [
     component: vOrders,
     layout: "/admin"
   },
-
   {
     type: "vendor",
-    path: "/table",
-    name: "Table List",
-    icon: "pe-7s-note2",
-    component: TableList,
+    path: "/myRequirements",
+    name: "My Requirements",
+    icon: "pe-7s-pen",
+    component: vRequirements,
     layout: "/admin"
   },
   {

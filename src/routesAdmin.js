@@ -66,7 +66,7 @@ const routesAdmin = [
     layout: "/admin"
   },
   {
-    path: "/myPromos/:id",
+    path: "/myPromotions/:id",
     name: "myPromo",
     component: myPromo,
     layout: "/admin"

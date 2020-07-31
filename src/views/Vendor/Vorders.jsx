@@ -10,15 +10,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
+const thArray = ["#", "Product", "Price(was)", "Quantity", "Promotion", "Ordered By", "Total"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "Laptop1", "$1000", 1, "PROMO1","Munkhzorig", "$1000"],
+  ["2", "Laptop2", "$200", 1, "No", "192.168.72.23", "$200"],
+  ["3", "Laptop3", "$300", 1, "PROMO2", "Munkhzorig", "$300"],
 ];
 
 
-class Products extends Component {
+class Vorders extends Component {
 
 state={
   products:[],
@@ -42,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Order List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -57,14 +57,19 @@ componentDidMount = () =>{
                     <tbody>
                       {this.state.products.map((prop, key) => {
                         return (
-                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
                                       {(key == 0) && <Link to={`/admin/myOrders/${prop}`}>
                                           {prop}
                                       </Link>}
-                                      {(key != 0) && <p>{prop}</p>}
+                                      {(key == 1) && <Link to={`/admin/myProducts/${prop}`}>
+                                          {prop}
+                                      </Link>}
+                                      {(key == 4) && <Link to={`/admin/myPromotions/${prop}`}>
+                                          {prop}
+                                      </Link>}
+                                      {(key != 0 && key != 1 && key != 4) && <p>{prop}</p>}
                                   </td>;
                               })}
                             </tr>
@@ -80,15 +85,9 @@ componentDidMount = () =>{
 
           </Row>
         </Grid>
-        <Button>
-          <Link to={`/admin/myOrders/0`}>
-            Add Product 
-          </Link>
-        </Button>
-
       </div>
     );
   }
 }
 
-export default Products;
+export default Vorders;
