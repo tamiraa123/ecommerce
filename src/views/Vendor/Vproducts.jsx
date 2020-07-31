@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/vproducts/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/myproducts/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -81,7 +81,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/vproducts/0`}>
+          <Link to={`/admin/myproducts/0`}>
             Add Product 
           </Link>
         </Button>

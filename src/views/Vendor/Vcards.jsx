@@ -10,11 +10,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
+const thArray = ["#", "Card Number", "Card Holder", "Expiration Date", "Service Provider"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "1234567890", "Rolex-sales", "2025-01-01", "Amex"],
+  ["2", "1234567891", "Rolex-admin", "2025-01-01", "Visa"],
+  ["3", "1234567892", "Rolex-refund", "2025-01-01", "Master"]
 ];
 
 
@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/vproducts/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/myCards/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -81,7 +81,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/vproducts/0`}>
+          <Link to={`/admin/myCards/0`}>
             Add Product 
           </Link>
         </Button>

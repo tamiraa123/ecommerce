@@ -10,11 +10,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
+const thArray = ["Requirement Number", "Requirement", "Assigned to", "Status"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "Display size option", "Munkhzorig", "New"],
+  ["2", "color option", "Munkhzorig", "In progress"],
+  ["3", "weight option", "Munkhzorig", "Done"]
 ];
 
 
@@ -42,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Requirement List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/vproducts/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/myRequirements/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -81,7 +81,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/vproducts/0`}>
+          <Link to={`/admin/myRequirements/0`}>
             Add Product 
           </Link>
         </Button>

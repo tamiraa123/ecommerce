@@ -1,10 +1,14 @@
 import Employee from "./views/Admin/Employee";
 import Product from "./views/Admin/Product";
-import vProduct from "./views/Vendor/Vproduct";
 import Payment from "./views/Admin/Payment";
 import Customer from "./views/Admin/Customer";
 import Vendor from "./views/Admin/Vendor";
 import Requirement from "./views/Admin/Requirement";
+import myProduct from "./views/Vendor/Vproduct";
+import myRequirement from "./views/Vendor/Vrequirement";
+import myCard from "./views/Vendor/Vcard";
+import myPromo from "./views/Vendor/Vpromotion";
+import myOrder from "./views/Vendor/Vorder";
 
 const routesAdmin = [
   {
@@ -17,12 +21,6 @@ const routesAdmin = [
     path: "/products/:id",
     name: "Product",
     component: Product,
-    layout: "/admin"
-  },
-  {
-    path: "/vproducts/:id",
-    name: "Vendor Product",
-    component: vProduct,
     layout: "/admin"
   },
   {
@@ -47,6 +45,36 @@ const routesAdmin = [
     path: "/requirements/:id",
     name: "Requirement",
     component: Requirement,
+    layout: "/admin"
+  },
+  {
+    path: "/myProducts/:id",
+    name: "My Product",
+    component: myProduct,
+    layout: "/admin"
+  },
+  {
+    path: "/myRequirements/:id",
+    name: "Vendor Requirement",
+    component: myRequirement,
+    layout: "/admin"
+  },
+  {
+    path: "/myCards/:id",
+    name: "myCard",
+    component: myCard,
+    layout: "/admin"
+  },
+  {
+    path: "/myPromos/:id",
+    name: "myPromo",
+    component: myPromo,
+    layout: "/admin"
+  },
+  {
+    path: "/myOrders/:id",
+    name: "myOrder",
+    component: myOrder,
     layout: "/admin"
   }
 ];
