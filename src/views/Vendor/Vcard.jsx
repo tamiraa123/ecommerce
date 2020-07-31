@@ -81,154 +81,58 @@ class Vcard extends Component {
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-2", "col-md-2", "col-md-2", "col-md-2"]}
+                      ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
                         {
-                          label: "CNumber",
+                          label: "Financial Service Provider",
                           type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Financial Service Provider",
+                          defaultValue: this.state.provider,
+                          name: "provider",
+                          disabled: true,
+                          onChange: this.handleChange.bind(this)
+                        },
+
+                        {
+                          label: "CNumber",
+                          type: "number",
                           bsClass: "form-control",
                           placeholder: "CNumber",
                           defaultValue: this.state.cnum,
-                          name: "CNumber",
+                          name: "cnum",
                           onChange: this.handleChange.bind(this)
                         },
 
                         {
-                          label: "Manufacturer",
+                          label: "Card Holder's Full Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Brand",
-                          defaultValue: this.state.brand,
-                          name: "brand",
+                          placeholder: "Card Holder's Full Name",
+                          defaultValue: this.state.fullname,
+                          name: "fullname",
                           onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Price",
-                          type: "text",
+                          label: "Expiration date",
+                          type: "date",
                           bsClass: "form-control",
-                          placeholder: "price",
-                          defaultValue: this.state.price,
-
-                          name: "price",
-                          onChange: this.handleChange.bind(this)
-                        },
-                        {
-                          label: "Quantity",
-                          type: "number",
-                          bsClass: "form-control",
-                          placeholder: "Quantity",
-                          defaultValue: this.state.quantity,
-                          name: "quantity",
+                          placeholder: "Expiration date",
+                          defaultValue: this.state.expDate,
+                          name: "expDate",
                           onChange: this.handleChange.bind(this)
                         },
                       ]
                       }
                     />
-                    <FormInputs
-                      ncols={["col-md-12"]}
-                      properties={[
-                        {
-                          label: "Product Name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Name",
-                          defaultValue: this.state.name,
-                          name: "productname",
-                          onChange: this.handleChange.bind(this)
-                        }
-
-                      ]
-                      }
-                    />
-                    <FormGroup controlId="formControlsTextarea">
-                      <ControlLabel>Product Description</ControlLabel>
-                      <FormControl componentClass="textarea" />
-                    </FormGroup>
-
-                    <Table striped hover>
-                      <thead>
-                        <tr>
-                          <th>Product Specification</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-
-                          {this.state.productDetails.map((prop, key) => {
-                            return (
-
-                              <td>
-                                <FormInputs
-                                  ncols={["col-md-12"]}
-                                  properties={[
-                                    {
-                                      label: prop.specName,
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      placeholder: "Name",
-                                      defaultValue: prop.specValue,
-                                      name: "name",
-                                      onChange: this.handleChange.bind(this)
-                                    }
-                                  ]
-                                  }
-                                />
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      </tbody>
-                    </Table>
-
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
-                    <ImageUploader
-                      withIcon={true}
-                      withPreview ={true}
-                      buttonText='Choose images'
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                    />
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Update
+                      Done
                     </Button>
                     <div className="clearfix" />
                   </form>
                 }
               />
             </Col>
-
           </Row>
         </Grid>
       </div>

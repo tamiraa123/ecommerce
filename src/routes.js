@@ -22,6 +22,14 @@ import Requirement from "views/Admin/Requirements.jsx";
 const dashboardRoutes = [
   {
     type: "vendor",
+    path: "/user",
+    name: "User Profile",
+    icon: "pe-7s-user",
+    component: UserProfile,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
@@ -68,14 +76,7 @@ const dashboardRoutes = [
     component: vOrders,
     layout: "/admin"
   },
-  {
-    type: "vendor",
-    path: "/user",
-    name: "User Profile",
-    icon: "pe-7s-user",
-    component: UserProfile,
-    layout: "/admin"
-  },
+
   {
     type: "vendor",
     path: "/table",
