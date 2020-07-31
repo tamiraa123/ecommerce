@@ -11,7 +11,7 @@ import {
   Table,
   Media,
   Label,
-  Carousel,Image
+  Carousel, Image
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -25,40 +25,40 @@ import { DiagnosticCategory } from "typescript";
 
 
 const specifications = [
-  {specName:"CPU",specValue: "1,5 Ghz"},
-  {specName:"RAM",specValue: "16 GB"},
-  {specName:"Hard SSD", specValue: "500GB"},
+  { specName: "CPU", specValue: "1,5 Ghz" },
+  { specName: "RAM", specValue: "16 GB" },
+  { specName: "Hard SSD", specValue: "500GB" },
 ];
 const imgURLs = [
-  {url:"https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"},
-  {url:"https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"},
-  {url:"https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"},
+  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
+  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
+  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
 ];
 
 class Product extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    
-    this.state={
-      id:0,
-      name:"",
-      description:"",
-      price:"",
-      brand:"",
-      quantity:"",
-      images:[],
-      isActive:false,
-      productDetails:[],
-      category:""
+
+    this.state = {
+      id: 0,
+      name: "",
+      description: "",
+      price: "",
+      brand: "",
+      quantity: "",
+      images: [],
+      isActive: false,
+      productDetails: [],
+      category: ""
     }
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.state.productDetails = specifications;
-    this.state.images = imgURLs; 
+    this.state.images = imgURLs;
     this.state.name = "Laptop 1";
-    this.state.brand ="Apple";
+    this.state.brand = "Apple";
     this.state.price = "1000$";
     this.state.quantity = "10";
     this.state.isActive = true;
@@ -67,7 +67,7 @@ class Product extends Component {
   }
 
   handleChange(event) {
-     this.setState({isActive:event });
+    this.setState({ isActive: event });
   }
 
   render() {
@@ -80,67 +80,67 @@ class Product extends Component {
                 title="Product"
                 content={
                   <form>
-                   <Carousel>
-                   {this.state.images.map((url) => {
+                    <Carousel>
+                      {this.state.images.map((url) => {
                         return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
+                          <Carousel.Item>
+                            <img width={500} height={400} src={url.url} />
+                          </Carousel.Item>
                         );
                       })}
-                        </Carousel>
-                        
-                        <h2>{this.state.name}</h2>
-                        <p>
-                          <Row className="show-grid">
-                            <Col xs={4} md={6}>
-                              <Label>Price: </Label> &nbsp; {this.state.price}
-                            </Col>
-                            <Col xs={4} md={6}>
-                              <Label>Category: </Label>&nbsp; {this.state.category}
-                            </Col>
-                          </Row>
-                          <Row className="show-grid">
-                          <Col xs={4} md={6}>
-                              <Label>Brand: </Label>&nbsp; {this.state.brand}
-                            </Col>
-                            <Col xs={4} md={6}>
-                              <Label>Quantity: </Label>&nbsp; {this.state.quantity}
-                            </Col>
-                            
-                          </Row>
-                          <Row className="show-grid">
-                            <FormGroup controlId="formControlsTextarea">
-                              <ControlLabel>Description</ControlLabel>
-                              <FormControl componentClass="textarea" value={this.state.description} disabled={true}/>
-                            </FormGroup>
-                          </Row>
-                        </p>
+                    </Carousel>
 
-                    
+                    <h2>{this.state.name}</h2>
+                    <p>
+                      <Row className="show-grid">
+                        <Col xs={4} md={6}>
+                          <Label>Price: </Label> &nbsp; {this.state.price}
+                        </Col>
+                        <Col xs={4} md={6}>
+                          <Label>Category: </Label>&nbsp; {this.state.category}
+                        </Col>
+                      </Row>
+                      <Row className="show-grid">
+                        <Col xs={4} md={6}>
+                          <Label>Brand: </Label>&nbsp; {this.state.brand}
+                        </Col>
+                        <Col xs={4} md={6}>
+                          <Label>Quantity: </Label>&nbsp; {this.state.quantity}
+                        </Col>
+
+                      </Row>
+                      <Row className="show-grid">
+                        <FormGroup controlId="formControlsTextarea">
+                          <ControlLabel>Description</ControlLabel>
+                          <FormControl componentClass="textarea" value={this.state.description} disabled={true} />
+                        </FormGroup>
+                      </Row>
+                    </p>
+
+
                     <label>
                       <span>Product is Active </span>
-                      <Switch onChange={this.handleChange} checked={this.state.isActive} className="react-switch"/>
+                      <Switch onChange={this.handleChange} checked={this.state.isActive} className="react-switch" />
                     </label>
-                    
+
                     <Table striped hover>
-                    <thead>
-                      <tr>
-                        <th>Specification</th>
-                        <th>Specification Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.productDetails.map((prop, key) => {
-                        return (
+                      <thead>
+                        <tr>
+                          <th>Specification</th>
+                          <th>Specification Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.productDetails.map((prop, key) => {
+                          return (
                             <tr key={key}>
                               <td> {prop.specName} </td>
                               <td> {prop.specValue} </td>
                             </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
 
                     <Button bsStyle="info" pullRight fill type="submit">
                       Update
@@ -150,7 +150,7 @@ class Product extends Component {
                 }
               />
             </Col>
-  
+
           </Row>
         </Grid>
       </div>

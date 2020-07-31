@@ -12,7 +12,7 @@ import image from "assets/img/sidebar-3.jpg";
 
 import Employee from "../views/Admin/Employee";
 import Product from "../views/Admin/Product";
-import vProduct from "../views/Vendor/Product";
+import vProduct from "../views/Vendor/Vproduct";
 import Payment from "../views/Admin/Payment";
 
 import Customer from "../views/Admin/Customer";
@@ -215,7 +215,7 @@ class Admin extends Component {
                 <Switch>
                   <Route path="/admin/employees/:id" component={Employee}></Route>
                   <Route path="/admin/products/:id" component={Product}></Route>
-                  <Route path="/admin/myproducts/:id" component={vProduct}></Route>
+                  <Route path="/admin/vproducts/:id" component={vProduct}></Route>
                   <Route path="/admin/payments/:id" component={Payment}></Route>
                   <Route path="/admin/customers/:id" component={Customer}></Route>
                   <Route path="/admin/vendors/:id" component={Vendor}></Route>

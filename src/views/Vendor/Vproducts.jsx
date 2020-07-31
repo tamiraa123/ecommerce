@@ -10,7 +10,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product ID", "Product Name", "Price", "Brand", "Quantity","Is Active"];
+const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
 const tdArray = [
   ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
   ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
@@ -42,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List2"
+                title="Product List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -61,7 +61,7 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/myproducts/${prop}`}>
+                                      {(key == 0) && <Link to={`/admin/vproducts/${prop}`}>
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -81,7 +81,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/myproducts/0`}>
+          <Link to={`/admin/vproducts/0`}>
             Add Product 
           </Link>
         </Button>
