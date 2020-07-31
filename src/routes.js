@@ -1,5 +1,9 @@
 
 import vProducts from "views/Vendor/Vproducts.jsx";
+import vRequirements from "views/Vendor/Vrequirements.jsx";
+import vCards from "views/Vendor/Vcards.jsx";
+import vPromos from "views/Vendor/Vpromotions.jsx";
+import vOrders from "views/Vendor/Vorders.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import TableList from "views/TableList.jsx";
@@ -30,6 +34,38 @@ const dashboardRoutes = [
     name: "My Products",
     icon: "pe-7s-keypad",
     component: vProducts,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/myRequirements",
+    name: "My Requirements",
+    icon: "pe-7s-pen",
+    component: vRequirements,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/myCards",
+    name: "My cards",
+    icon: "pe-7s-cash",
+    component: vCards,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/myPromos",
+    name: "Promotions",
+    icon: "pe-7s-gift",
+    component: vPromos,
+    layout: "/admin"
+  },
+  {
+    type: "vendor",
+    path: "/myOrders",
+    name: "Orders",
+    icon: "pe-7s-cart",
+    component: vOrders,
     layout: "/admin"
   },
   {

@@ -38,16 +38,17 @@ class Product extends Component {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
     this.state = {
-      id: 0,
-      name: "",
-      description: "",
-      price: "",
-      brand: "",
-      quantity: "",
-      images: [],
-      isActive: false,
-      productDetails: [],
-      category: ""
+      reqNo: 0,
+      reqStatus: "In Progress",
+      reqDesc: "test desc",
+      assignedTo: "Munkhzorig",
+      createdDate: "2020-07-30",
+      startDate: "2020-07-31",
+      finishDate: "2020-07-31",
+      finishDate: "2020-07-31",
+      closeDate: "2020-08-01",
+      reqName: "Add COLOR option",
+      reqDesc: "Test req"
     }
     this.onDrop = this.onDrop.bind(this);
   }
@@ -82,48 +83,87 @@ class Product extends Component {
           <Row>
             <Col>
               <Card
-                title="Product"
+                title="Requirement"
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-2", "col-md-2"]}
+                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
                         {
-                          label: "Product Category",
+                          label: "Requirement Number",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "category",
-                          defaultValue: this.state.category,
-                          name: "category",
-                          onChange: this.handleChange.bind(this)
+                          placeholder: "Requirement Number",
+                          defaultValue: this.state.reqNo,
+                          name: "reqNo",
+                          onChange: this.handleChange.bind(this),
+                          disabled : true
                         },
 
                         {
-                          label: "Manufacturer",
+                          label: "Requirement Status",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Brand",
-                          defaultValue: this.state.brand,
-                          name: "brand",
+                          placeholder: "Requirement Status",
+                          defaultValue: this.state.reqStatus,
+                          name: "reqStatus",
+                          onChange: this.handleChange.bind(this)
+                        },
+                        
+                        {
+                          label: "Assigned To",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Assigned To",
+                          defaultValue: this.state.assignedTo,
+                          name: "assignedTo",
+                          disabled: true,
+                          onChange: this.handleChange.bind(this)
+                        },
+                      ]
+                      }
+                    />
+                    <FormInputs
+                      ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3 "]}
+                      properties={[
+                        {
+                          label: "Created Date",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Creation Date",
+                          defaultValue: this.state.createdDate,
+                          disabled: true,
+                          name: "createdDate",
                           onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Price",
+                          label: "Work Start Date",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "price",
-                          defaultValue: this.state.price,
-
-                          name: "price",
+                          placeholder: "Work Start Date",
+                          defaultValue: this.state.startDate,
+                          disabled: true,
+                          name: "startDate",
                           onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Quantity",
-                          type: "number",
+                          label: "Work Finish Date",
+                          type: "text",
                           bsClass: "form-control",
-                          placeholder: "Quantity",
-                          defaultValue: this.state.quantity,
-                          name: "quantity",
+                          placeholder: "Work Finish Date",
+                          defaultValue: this.state.finishDate,
+                          disabled: true,
+                          name: "finishDate",
+                          onChange: this.handleChange.bind(this)
+                        },
+                        {
+                          label: "Closed Date",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Closed Date",
+                          defaultValue: this.state.closeDate,
+                          disabled: true,
+                          name: "closeDate",
                           onChange: this.handleChange.bind(this)
                         },
                       ]
@@ -133,100 +173,25 @@ class Product extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Product Name",
+                          label: "Requirement Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Name",
-                          defaultValue: this.state.name,
-                          name: "productname",
+                          placeholder: "Requirement Name",
+                          defaultValue: this.state.reqName,
+                          name: "reqName",
                           onChange: this.handleChange.bind(this)
-                        }
+                        },
 
                       ]
                       }
                     />
                     <FormGroup controlId="formControlsTextarea">
-                      <ControlLabel>Product Description</ControlLabel>
-                      <FormControl componentClass="textarea" />
+                      <ControlLabel>Requirement description</ControlLabel>
+                      <FormControl componentClass="textarea" defaultValue = {this.state.reqDesc}/>
                     </FormGroup>
 
-                    <Table striped hover>
-                      <thead>
-                        <tr>
-                          <th>Product Specification</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-
-                          {this.state.productDetails.map((prop, key) => {
-                            return (
-
-                              <td>
-                                <FormInputs
-                                  ncols={["col-md-12"]}
-                                  properties={[
-                                    {
-                                      label: prop.specName,
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      placeholder: "Name",
-                                      defaultValue: prop.specValue,
-                                      name: "name",
-                                      onChange: this.handleChange.bind(this)
-                                    }
-                                  ]
-                                  }
-                                />
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      </tbody>
-                    </Table>
-
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
-                    <ImageUploader
-                      withIcon={true}
-                      withPreview ={true}
-                      buttonText='Choose images'
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                    />
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Update
+                      Done
                     </Button>
                     <div className="clearfix" />
                   </form>

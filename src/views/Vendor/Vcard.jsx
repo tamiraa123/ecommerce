@@ -27,13 +27,8 @@ const specifications = [
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-];
 
-class Product extends Component {
+class Vcard extends Component {
   constructor(props) {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
@@ -65,7 +60,7 @@ class Product extends Component {
 
   componentDidMount() {
     this.state.productDetails = specifications;
-    this.state.images = imgURLs;
+  
     this.state.name = "Laptop 1";
     this.state.brand = "Apple";
     this.state.price = "1000$";
@@ -82,19 +77,19 @@ class Product extends Component {
           <Row>
             <Col>
               <Card
-                title="Product"
+                title="Card"
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-2", "col-md-2"]}
+                      ncols={["col-md-2", "col-md-2", "col-md-2", "col-md-2"]}
                       properties={[
                         {
-                          label: "Product Category",
+                          label: "CNumber",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "category",
-                          defaultValue: this.state.category,
-                          name: "category",
+                          placeholder: "CNumber",
+                          defaultValue: this.state.cnum,
+                          name: "CNumber",
                           onChange: this.handleChange.bind(this)
                         },
 
@@ -241,4 +236,4 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export default Vcard;
