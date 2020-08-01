@@ -15,6 +15,7 @@ import SignUp from "./layouts/SignUp.jsx"
 import Login from "./layouts/LoginForm";
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks";
 import AdminNavbar from "components/Navbars/AdminNavbar"
+import history from './history';
 
 export default class App extends Component {
 
@@ -23,24 +24,25 @@ export default class App extends Component {
     };
 
     handleLogin = (token) => {
+        console.log("handleLogin("+token+")");
         this.setState({token});
         localStorage.setItem("token", token);
-        // this.router.history.push("/admin");
+        this.router.history.push("/admin/user");
     };
 
     handleLogout = () =>{
         localStorage.removeItem("token");
-        this.state.token = null;
-        //this.router.history.push("/");
-        this.props.history.push("/");
+        this.setState({ token: null });
+        this.router.history.push("/");
     };
     render(){
         return(
-        <Router ref={(router) => (this.router = router)}>
+        <Router ref={(router) => (this.router = router)} >
             <Switch>
-                <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
-                <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
-                <Route path = "/" render={()=><Login onLogin = {this.handleLogin} />}/>
+            <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
+            <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
+            <Route path = "/" 
+                        render={()=><Login onLogin = {this.handleLogin} />}/>
             </Switch>
         </Router>
         );

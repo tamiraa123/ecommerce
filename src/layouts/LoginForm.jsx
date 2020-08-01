@@ -1,98 +1,118 @@
 import React, { Component } from "react";
 import {
-    Grid,
-    Row,
-    Col,DropdownButton,MenuItem} from "react-bootstrap";
-  import { Card } from "components/Card/Card.jsx";
+  Grid,
+  Row,
+  Col, DropdownButton, MenuItem
+} from "react-bootstrap";
+import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import {observer} from "mobx-react";
 import "./LoginForm.css";
+import axios from "axios";
 
-class LoginForm extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      username:null,
-      password:null,
-      role:'Employee'
+
+const rolesD = ["Admin", "Vendor", "Employee"];
+export default class  LoginForm extends Component {
+  
+    state = {
+      username: null,
+      password: null,
+      role: rolesD[0],
+      error: null,
+      loading: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+   // this.handleChangeRole = this.handleChangeRole.bind(this);
+  
+
+  doLogIn = () => {
+    console.log("doLogIn()");
+    axios
+    .post("http://localhost:4000/user/login", {
+      email: this.state.username,
+      password: this.state.password,
+    })
+    .then((result) => {
+      this.props.onLogin(result.data[0].token);
+    })
+    .catch((err) =>
+       this.setState({error: "Error" })//err.response.data.error.message
+    );
+};
+
+  handleChangeRole(event) {
+    this.setState({ role: rolesD[event] });
   }
 
-    doLogIn(){
-      this.username = "asdfasd";
-      this.password = "sadfasdf";
-      
-      this.props.onLogin("jsahdgfaksdgfa");
-      console.log("LoginForm -> isLoggedIn: clicked");
-    }
+  handleChange(event) {
+    const { target: { name, value } } = event
+    this.setState({ [name]: value, event: null })
+  }
 
-    handleChange(event) {
-      this.setState({role: event});
-      console.log(event);
-    }
-
-    render(){
-        return(
-        <Grid>
-              <Row >
-              <Col xs={8} md={4}>
-              </Col>
-                <Col xs={8} md={4}>
-                  <Card
-                    title="E-Commerce Employee"
-                    content={
-                      <form>
-                        <FormInputs
-                          ncols={["col-md-6", "col-md-6"]}
-                          properties={[
-                            {
-                              name:"username",
-                              label: "User Name",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "User Name",
-                              defaultValue: "Mike"
-                            },
-                            {
-                              name:"password",
-                              label: "User Password",
-                              type: "password",
-                              bsClass: "form-control",
-                              placeholder: "User Password",
-                              defaultValue: "Andrew",
-                            }       
-                          ]}
-                        />
-                        
-                        
-                        {/* <select className="dropdown" value={this.state.role} onChange={this.handleChange}>
-                          <option selected value="admin">Admin</option>
-                          <option value="vendor">Vendor</option>
-                        </select> */}
-
-
-                    <DropdownButton  title={this.state.role} onSelect={this.handleChange} >
-                      <MenuItem  eventKey="Employee">Employee</MenuItem>
-                      <MenuItem eventKey="Vendor">Vendor</MenuItem>
-                    </DropdownButton>
-
-
-                      <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn()}>
-                        Login
-                      </Button>
-                        <div className="clearfix" />
-                      </form>
-                    }
+  render() {
+    return (
+      <Grid>
+        <Row >
+          <Col xs={8} md={4}>
+          </Col>
+          <Col xs={8} md={4}>
+            <Card
+              title="E-Commerce Employee"
+              content={
+                <div>
+                  {this.state.error && (
+                      <div className="notification is-warning">{this.state.error}</div>
+                    )}
+                  <FormInputs
+                    ncols={["col-md-6", "col-md-6"]}
+                    properties={[
+                      {
+                        name: "username",
+                        label: "User Name",
+                        type: "text",
+                        bsClass: "form-control",
+                        placeholder: "User Name",
+                        defaultValue: this.state.username,
+                        name: "username",
+                        onChange: this.handleChange.bind(this)
+                      },
+                      {
+                        name: "password",
+                        label: "User Password",
+                        type: "password",
+                        bsClass: "form-control",
+                        placeholder: "Password",
+                        defaultValue: this.state.password,
+                        onChange: this.handleChange.bind(this)
+                      }
+                    ]}
                   />
-                </Col>
-                <Col xs={8} md={4}>
-                </Col>
-              </Row>
-        
-              </Grid>
-        );
-    }
+
+                  <DropdownButton
+                    title={this.state.role}
+                    id="document-type"
+                    onSelect={this.handleChangeRole}
+                  >
+                    {rolesD.map((opt, i) => (
+                      <MenuItem key={i} eventKey={i}>
+                        {opt}
+                      </MenuItem>
+                    ))}
+                  </DropdownButton>
+                  
+                  <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn}>
+                    Login
+                  </Button>
+                  <div className="clearfix" />
+                </div>
+              }
+            />
+          </Col>
+          <Col xs={8} md={4}>
+          </Col>
+        </Row>
+
+      </Grid>
+    );
+  }
 }
-export default observer(LoginForm);
+//export default LoginForm;

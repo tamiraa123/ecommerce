@@ -9,6 +9,7 @@
     "chartist": "0.10.1",
     "filepond": "^4.19.2",
     "filepond-plugin-image-preview": "^4.6.4",
+    "history": "^5.0.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.3",
     "node-sass": "4.12.0",
