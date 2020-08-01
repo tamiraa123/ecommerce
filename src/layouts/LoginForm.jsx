@@ -13,16 +13,17 @@ import axios from "axios";
 
 const rolesD = ["Admin", "Vendor", "Employee"];
 export default class  LoginForm extends Component {
-  
-    state = {
+  constructor(props){
+    super(props);
+    this.state = {
       username: null,
       password: null,
       role: rolesD[0],
       error: null,
       loading: false,
     };
-   // this.handleChangeRole = this.handleChangeRole.bind(this);
-  
+    this.handleChangeRole = this.handleChangeRole.bind(this);
+  }
 
   doLogIn = () => {
     console.log("doLogIn()");
@@ -32,7 +33,7 @@ export default class  LoginForm extends Component {
       password: this.state.password,
     })
     .then((result) => {
-      this.props.onLogin(result.data[0].token);
+      this.props.onLogin(result.data[0].token,this.state.role);
     })
     .catch((err) =>
        this.setState({error: "Error" })//err.response.data.error.message

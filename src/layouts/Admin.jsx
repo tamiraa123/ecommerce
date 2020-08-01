@@ -20,9 +20,25 @@ class Admin extends Component {
       image: image,
       color: "black",
       hasImage: true,
-      fixedClasses: "dropdown show-dropdown open"
+      fixedClasses: "dropdown show-dropdown open",
+      role:"user"
     };
+
+    // if(this.props.role)  ali ni ch songogdoogui bol aldaa
+   
+   
   }
+
+  fillRole(role){
+    console.log("Admin");
+    
+    if(role === null){}
+    else{
+      this.setState({role: role});
+    }
+    console.log(this.state.role);
+  }
+
   handleNotificationClick = position => {
     var color = Math.floor(Math.random() * 4 + 1);
     var level;
@@ -57,7 +73,7 @@ class Admin extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin" && prop.type ==="vendor") {
+      if (prop.layout === "/admin" && prop.type.includes(this.state.role) ) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -122,36 +138,8 @@ class Admin extends Component {
 
 
    componentDidMount() {
-    //signin
-  //   try{
-  //     // let res = await fetch('/isLoggedIn',{
-  //     //   method: 'post',
-  //     //   headers: {
-  //     //     'Accept' : 'application/json',
-  //     //     'Content-Type' : 'application/json'
-  //     //   }
-  //     // });
-  //     // let result = await res.json();
-  //     // if(result && result.success){
-  //     //   UserStore.loading = false;
-  //     //   UserStore.isLoggedIn = true;
-  //     //   UserStore.username = result.username;
-  //     // }
-  //     // else{
-  //     //   UserStore.loading = false;
-  //     //   UserStore.isLoggedIn = false;
-  //     // }
-  // //tur nemev ustgah  sign in endee duudna
-  //     UserStore.loading = false;
-  //     UserStore.isLoggedIn = true;
-  //     console.log("Admin->isLoggedIn:" + UserStore.isLoggedIn);
-  // }
-  // catch(e){
-  //   UserStore.loading = false;
-  //   UserStore.isLoggedIn = false;
-  // }
-  //signin
-
+    
+    this.fillRole(this.props.role);
     this.setState({ _notificationSystem: this.refs.notificationSystem });
     var _notificationSystem = this.refs.notificationSystem;
     var color = Math.floor(Math.random() * 4 + 1);

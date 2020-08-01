@@ -9,8 +9,20 @@ class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: window.innerWidth
+      width: window.innerWidth,
+      role: "user"
     };
+    
+  }
+  
+  fillRole(role){
+    console.log("Admin");
+    
+    if(role === null){}
+    else{
+      this.setState({role: role});
+    }
+    console.log(this.state.role);
   }
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -19,6 +31,7 @@ class Sidebar extends Component {
     this.setState({ width: window.innerWidth });
   }
   componentDidMount() {
+    this.fillRole(this.props.role);
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
@@ -58,7 +71,7 @@ class Sidebar extends Component {
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
             {this.props.routes.map((prop, key) => {
-              if (!prop.redirect && prop.type === "vendor")
+              if (!prop.redirect && prop.type.includes(this.state.role))
                 return (
                   <li
                     className={

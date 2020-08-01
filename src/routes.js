@@ -20,7 +20,7 @@ import Requirement from "views/Admin/Requirements.jsx";
 
 const dashboardRoutes = [
   {
-    type: "vendor",
+    type: ["Admin","Vendor","Employee","user"],
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
@@ -28,7 +28,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["user"],
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
@@ -36,7 +36,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Vendor"],
     path: "/myProducts",
     name: "My Products",
     icon: "pe-7s-keypad",
@@ -44,7 +44,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Vendor"],
     path: "/myPromotions",
     name: "Promotions",
     icon: "pe-7s-gift",
@@ -53,7 +53,7 @@ const dashboardRoutes = [
   },
   
   {
-    type: "vendor",
+    type: ["Vendor"],
     path: "/myCards",
     name: "My cards",
     icon: "pe-7s-cash",
@@ -62,7 +62,7 @@ const dashboardRoutes = [
   },
 
   {
-    type: "vendor",
+    type: ["Vendor"],
     path: "/myOrders",
     name: "Orders",
     icon: "pe-7s-cart",
@@ -70,7 +70,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Vendor"],
     path: "/myRequirements",
     name: "My Requirements",
     icon: "pe-7s-pen",
@@ -78,7 +78,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["user"],
     path: "/typography",
     name: "Typography",
     icon: "pe-7s-news-paper",
@@ -86,7 +86,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["user"],
     path: "/icons",
     name: "Icons",
     icon: "pe-7s-science",
@@ -94,7 +94,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["user"],
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
@@ -103,7 +103,7 @@ const dashboardRoutes = [
   },
 
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/employees",
     name: "Employees",
     icon: "pe-7s-users",
@@ -111,7 +111,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/products",
     name: "Products",
     icon: "pe-7s-shopbag",
@@ -119,7 +119,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/payments",
     name: "Payments",
     icon: "pe-7s-cash",
@@ -127,7 +127,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/customers",
     name: "Customers",
     icon: "pe-7s-user-female",
@@ -135,7 +135,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/vendors",
     name: "Vendors",
     icon: "pe-7s-share",
@@ -143,7 +143,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/category",
     name: "Category",
     icon: "pe-7s-network",
@@ -151,7 +151,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: "vendor",
+    type: ["Admin"],
     path: "/requirements",
     name: "Requirements",
     icon: "pe-7s-note2",

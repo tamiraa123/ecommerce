@@ -21,11 +21,13 @@ export default class App extends Component {
 
     state = {
         token : null,
+        role: null,
     };
 
-    handleLogin = (token) => {
+    handleLogin = (token,role) => {
         console.log("handleLogin("+token+")");
         this.setState({token});
+        this.setState({role});
         localStorage.setItem("token", token);
         this.router.history.push("/admin/user");
     };
@@ -39,7 +41,7 @@ export default class App extends Component {
         return(
         <Router ref={(router) => (this.router = router)} >
             <Switch>
-            <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout}/>} />
+            <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout} role={this.state.role}/>} />
             <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
             <Route path = "/" 
                         render={()=><Login onLogin = {this.handleLogin} />}/>
