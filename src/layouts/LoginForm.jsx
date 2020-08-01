@@ -12,8 +12,8 @@ import axios from "axios";
 
 
 const rolesD = ["Admin", "Vendor", "Employee"];
-export default class  LoginForm extends Component {
-  constructor(props){
+export default class LoginForm extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       username: null,
@@ -26,19 +26,19 @@ export default class  LoginForm extends Component {
   }
 
   doLogIn = () => {
-    console.log("doLogIn()");
-    axios
-    .post("http://localhost:4000/user/login", {
-      email: this.state.username,
-      password: this.state.password,
-    })
-    .then((result) => {
-      this.props.onLogin(result.data[0].token,this.state.role);
-    })
-    .catch((err) =>
-       this.setState({error: "Error" })//err.response.data.error.message
-    );
-};
+    // console.log("doLogIn()");
+    // axios
+    // .post("http://localhost:4000/user/login", {
+    //   email: this.state.username,
+    //   password: this.state.password,
+    // })
+    // .then((result) => {
+    this.props.onLogin(this.state.role); //result.data[0].token,
+    // })
+    // .catch((err) =>
+    //    this.setState({error: "Error" })//err.response.data.error.message
+    // );
+  };
 
   handleChangeRole(event) {
     this.setState({ role: rolesD[event] });
@@ -61,8 +61,8 @@ export default class  LoginForm extends Component {
               content={
                 <div>
                   {this.state.error && (
-                      <div className="notification is-warning">{this.state.error}</div>
-                    )}
+                    <div className="notification is-warning">{this.state.error}</div>
+                  )}
                   <FormInputs
                     ncols={["col-md-6", "col-md-6"]}
                     properties={[
@@ -74,7 +74,8 @@ export default class  LoginForm extends Component {
                         placeholder: "User Name",
                         defaultValue: this.state.username,
                         name: "username",
-                        onChange: this.handleChange.bind(this)
+                        onChange: this.handleChange.bind(this),
+                        
                       },
                       {
                         name: "password",
@@ -99,7 +100,7 @@ export default class  LoginForm extends Component {
                       </MenuItem>
                     ))}
                   </DropdownButton>
-                  
+
                   <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn}>
                     Login
                   </Button>

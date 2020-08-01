@@ -16,12 +16,8 @@ import {
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
-import avatar from "assets/img/faces/face-3.jpg";
-import Switch from "react-switch";
-import { DiagnosticCategory } from "typescript";
 
 
 const specifications = [
@@ -63,17 +59,30 @@ class Product extends Component {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
   }
+  handleSavebtn= () => {
+    //save action
+   this.props.history.goBack();
+  }
 
+  goBack = () => {
+    this.props.history.goBack();
+  };
   render() {
     return (
       <div className="content">
+
         <Grid fluid>
+      
+        <Button  bsStyle="link" onClick={this.goBack}>
+                Back
+        </Button>
           <Row>
             <Col md={8}>
               <Card
                 title="Payment method"
                 content={
                   <form>
+                      
                    <FormInputs
                       ncols={["col-md-4", "col-md-6"]} 
                       properties={[
@@ -127,7 +136,7 @@ class Product extends Component {
                     }
                     />
 
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
                       Update
                     </Button>
                     <div className="clearfix" />

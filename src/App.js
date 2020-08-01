@@ -20,21 +20,21 @@ import history from './history';
 export default class App extends Component {
 
     state = {
-        token : null,
+        // token : null,
         role: null,
     };
 
-    handleLogin = (token,role) => {
-        console.log("handleLogin("+token+")");
-        this.setState({token});
+    handleLogin = (role) => {
+        // console.log("handleLogin("+token+")");
+        // this.setState({token});
         this.setState({role});
-        localStorage.setItem("token", token);
+        // localStorage.setItem("token", token);
         this.router.history.push("/admin/user");
     };
 
     handleLogout = () =>{
-        localStorage.removeItem("token");
-        this.setState({ token: null });
+        // localStorage.removeItem("token");
+        // this.setState({ token: null });
         this.router.history.push("/");
     };
     render(){
