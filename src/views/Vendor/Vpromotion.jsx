@@ -1,60 +1,39 @@
 import React, { Component } from "react";
-
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-// import 'filepond/dist/filepond.min.css';
-import {
-  Grid,
-  Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  Table,
-  Label,
-  Carousel, Image
-} from "react-bootstrap";
-
+import { Grid, Row, Col, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import ImageUploader from 'react-images-upload';
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
+import Switch from "react-switch";
 
+const products = ["Laptop 1", "Laptop 2", "Laptop 3"];
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-];
 
 class Product extends Component {
   constructor(props) {
     super(props);
-    // this.onDrop = this.onDrop.bind(this);
     this.state = {
-      id: 0,
-      name: "",
-      description: "",
-      price: "",
-      brand: "",
-      quantity: "",
-      images: [],
-      isActive: false,
-      productDetails: [],
-      category: ""
+      promoNo: 0,
+      promoName: "",
+      from: "",
+      to: "",
+      product: "",
+      discount: "",
+      isActive: ""
     }
-    this.onDrop = this.onDrop.bind(this);
+    this.handleChangeRole = this.handleChangeRole.bind(this);
+    this.handleChangeStatus = this.handleChangeStatus.bind(this);
   }
-  onDrop(picture) {
-    this.setState({
-      images: this.state.images.concat(picture),
-    });
+
+  handleChangeRole(event) {
+    // this.setState({role: rolesD[event]});
+  }
+
+  handleChangeStatus(event) {
+    // this.setState({status: statusD[event]});
   }
   handleChange(event) {
     const { target: { name, value } } = event
@@ -65,7 +44,6 @@ class Product extends Component {
 
   componentDidMount() {
     this.state.productDetails = specifications;
-    this.state.images = imgURLs;
     this.state.name = "Laptop 1";
     this.state.brand = "Apple";
     this.state.price = "1000$";
@@ -82,50 +60,49 @@ class Product extends Component {
           <Row>
             <Col>
               <Card
-                title="Product"
+                title="Promotion"
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-2", "col-md-2"]}
+                      ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
                         {
-                          label: "Product Category",
+                          label: "Promotion Code",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "category",
-                          defaultValue: this.state.category,
-                          name: "category",
+                          placeholder: "Promotion Code",
+                          defaultValue: this.state.promoNo,
+                          name: "promoNo",
                           onChange: this.handleChange.bind(this)
                         },
 
                         {
-                          label: "Manufacturer",
-                          type: "text",
+                          label: "Promo Valid From",
+                          type: "date",
                           bsClass: "form-control",
-                          placeholder: "Brand",
-                          defaultValue: this.state.brand,
-                          name: "brand",
+                          placeholder: "Promo Valid From",
+                          defaultValue: this.state.from,
+                          name: "from",
                           onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Price",
-                          type: "text",
+                          label: "Promo Valid To",
+                          type: "date",
                           bsClass: "form-control",
-                          placeholder: "price",
-                          defaultValue: this.state.price,
-
-                          name: "price",
+                          placeholder: "Promo Valid To",
+                          defaultValue: this.state.to,
+                          name: "to",
                           onChange: this.handleChange.bind(this)
                         },
                         {
-                          label: "Quantity",
+                          label: "Discount(%)",
                           type: "number",
                           bsClass: "form-control",
-                          placeholder: "Quantity",
-                          defaultValue: this.state.quantity,
-                          name: "quantity",
+                          placeholder: "Discount(%)",
+                          defaultValue: this.state.discount,
+                          name: "discount",
                           onChange: this.handleChange.bind(this)
-                        },
+                        }
                       ]
                       }
                     />
@@ -133,100 +110,49 @@ class Product extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Product Name",
+                          label: "Promotion name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Name",
-                          defaultValue: this.state.name,
-                          name: "productname",
+                          placeholder: "Promotion name",
+                          defaultValue: this.state.promoName,
+                          name: "promoName",
                           onChange: this.handleChange.bind(this)
                         }
 
                       ]
                       }
                     />
-                    <FormGroup controlId="formControlsTextarea">
-                      <ControlLabel>Product Description</ControlLabel>
-                      <FormControl componentClass="textarea" />
-                    </FormGroup>
+                   
 
-                    <Table striped hover>
-                      <thead>
-                        <tr>
-                          <th>Product Specification</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
 
-                          {this.state.productDetails.map((prop, key) => {
-                            return (
+                    <Row className="show-grid">
+                      <Col xs={6} md={3}>
+                        <ControlLabel>PRODUCT</ControlLabel><br />
+                        <DropdownButton
+                          title={this.state.role}
+                          id="document-type"
+                          onSelect={this.handleChangeRole}
+                        >
+                          {products.map((opt, i) => (
+                            <MenuItem key={i} eventKey={i}>
+                              {opt}
+                            </MenuItem>
+                          ))}
+                        </DropdownButton>
+                      </Col>
+                      <Col xs={6} md={3}>
+                        <ControlLabel>ACTIVE</ControlLabel><br />
+                        <Switch
+                          onChange={this.handleChange}
+                          checked={this.state.isActive}
+                          className="react-switch"
+                        />
+                      </Col>
+                    </Row>
 
-                              <td>
-                                <FormInputs
-                                  ncols={["col-md-12"]}
-                                  properties={[
-                                    {
-                                      label: prop.specName,
-                                      type: "text",
-                                      bsClass: "form-control",
-                                      placeholder: "Name",
-                                      defaultValue: prop.specValue,
-                                      name: "name",
-                                      onChange: this.handleChange.bind(this)
-                                    }
-                                  ]
-                                  }
-                                />
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      </tbody>
-                    </Table>
 
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
-                    <ImageUploader
-                      withIcon={true}
-                      withPreview ={true}
-                      buttonText='Choose images'
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                    />
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Update
+                      Done
                     </Button>
                     <div className="clearfix" />
                   </form>

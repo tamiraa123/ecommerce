@@ -172,28 +172,6 @@ class Vorder extends Component {
                       </tbody>
                     </Table>
 
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
-                   
-                    {/* <FilePond allowMultiple={true} /> */}
                     <Button bsStyle="info" pullRight fill type="submit">
                       Update
                     </Button>

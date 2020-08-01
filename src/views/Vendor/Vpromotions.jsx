@@ -10,11 +10,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
+const thArray = ["Promotion Number", "Promotion Name", "Discount", "Product", "From", "To","Is Active"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "Thanks Giving week", "20%", "1","2020-11-12","2020-11-19","No"],
+  ["2", "Black Friday", , "50%", "1","2020-12-05","2020-12-05","Yes"],
+  ["3", "Independent day", , "10%", "1","2020-07-08","2020-07-19","Yes"],
 ];
 
 
@@ -42,7 +42,7 @@ componentDidMount = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Promotion List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -61,7 +61,8 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/myPromotions/${prop}`}>
+                                      {/* {(key == 0) && <Link to={`/admin/myPromotions/${prop}`}>  */}
+                                      {(key == 0) && <Link to={`/admin/myPromotions/1`}> 
                                           {prop}
                                       </Link>}
                                       {(key != 0) && <p>{prop}</p>}
@@ -82,7 +83,7 @@ componentDidMount = () =>{
         </Grid>
         <Button>
           <Link to={`/admin/myPromotions/0`}>
-            Add Product 
+            Add Promotion 
           </Link>
         </Button>
 
