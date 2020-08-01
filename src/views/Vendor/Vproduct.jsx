@@ -71,8 +71,9 @@ class Product extends Component {
     this.state.price = "1000$";
     this.state.quantity = "10";
     this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop"
-    this.state.category = "Electronic"
+    this.state.description = "This laptop is best selling laptop";
+    this.state.category = "Electronic";
+    console.log(this.state.description);
   }
 
   render() {
@@ -147,7 +148,16 @@ class Product extends Component {
                     />
                     <FormGroup controlId="formControlsTextarea">
                       <ControlLabel>Product Description</ControlLabel>
-                      <FormControl componentClass="textarea" />
+                      <FormControl
+                        name="description"
+                        rows="5"
+                        componentClass="textarea"
+                        bsClass="form-control"
+                        placeholder="Product description"
+                        value={this.state.description}
+                        onChange={this.handleChange.bind(this)}
+                      />
+
                     </FormGroup>
 
                     <Table striped hover>
@@ -207,7 +217,7 @@ class Product extends Component {
                     </Row> */}
                     <ImageUploader
                       withIcon={true}
-                      withPreview ={true}
+                      withPreview={true}
                       buttonText='Choose images'
                       onChange={this.onDrop}
                       imgExtension={['.jpg', '.gif', '.png', '.gif']}

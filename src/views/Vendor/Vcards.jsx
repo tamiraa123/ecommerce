@@ -18,7 +18,7 @@ const tdArray = [
 ];
 
 
-class Products extends Component {
+class Vcards extends Component {
 
 state={
   products:[],
@@ -57,7 +57,6 @@ componentDidMount = () =>{
                     <tbody>
                       {this.state.products.map((prop, key) => {
                         return (
-                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
@@ -68,7 +67,6 @@ componentDidMount = () =>{
                                   </td>;
                               })}
                             </tr>
-                         
                         );
                       })}
                     </tbody>
@@ -82,7 +80,7 @@ componentDidMount = () =>{
         </Grid>
         <Button>
           <Link to={`/admin/myCards/0`}>
-            Add Product 
+            Add a Card 
           </Link>
         </Button>
 
@@ -91,4 +89,4 @@ componentDidMount = () =>{
   }
 }
 
-export default Products;
+export default Vcards;

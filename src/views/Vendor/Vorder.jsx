@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-// import 'filepond/dist/filepond.min.css';
 import {
   Grid,
   Row,
@@ -18,22 +15,13 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
-
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-];
 
-class Product extends Component {
+class Vorder extends Component {
   constructor(props) {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
@@ -65,7 +53,6 @@ class Product extends Component {
 
   componentDidMount() {
     this.state.productDetails = specifications;
-    this.state.images = imgURLs;
     this.state.name = "Laptop 1";
     this.state.brand = "Apple";
     this.state.price = "1000$";
@@ -185,46 +172,6 @@ class Product extends Component {
                       </tbody>
                     </Table>
 
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
-                    <ImageUploader
-                      withIcon={true}
-                      withPreview ={true}
-                      buttonText='Choose images'
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                    />
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
                     <Button bsStyle="info" pullRight fill type="submit">
                       Update
                     </Button>
@@ -241,4 +188,4 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export default Vorder;

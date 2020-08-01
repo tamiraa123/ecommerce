@@ -57,7 +57,6 @@ componentDidMount = () =>{
                     <tbody>
                       {this.state.products.map((prop, key) => {
                         return (
-                         
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
@@ -67,8 +66,7 @@ componentDidMount = () =>{
                                       {(key != 0) && <p>{prop}</p>}
                                   </td>;
                               })}
-                            </tr>
-                         
+                            </tr>                         
                         );
                       })}
                     </tbody>
@@ -82,7 +80,7 @@ componentDidMount = () =>{
         </Grid>
         <Button>
           <Link to={`/admin/myRequirements/0`}>
-            Add Product 
+            Claim a Requirement 
           </Link>
         </Button>
 
