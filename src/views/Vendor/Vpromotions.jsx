@@ -10,7 +10,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Promotion Number", "Promotion Name", "Discount", "Product", "From", "To","Is Active"];
+const thArray = ["#", "Promotion Name", "Discount", "Product", "From", "To","Is Active"];
 const tdArray = [
   ["1", "Thanks Giving week", "20%", "1","2020-11-12","2020-11-19","No"],
   ["2", "Black Friday", , "50%", "1","2020-12-05","2020-12-05","Yes"],
