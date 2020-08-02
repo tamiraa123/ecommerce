@@ -10,7 +10,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Requirement Number", "Requirement", "Assigned to", "Status"];
+const thArray = ["#", "Requirement", "Assigned to", "Status"];
 const tdArray = [
   ["1", "Display size option", "Munkhzorig", "New"],
   ["2", "color option", "Munkhzorig", "In progress"],
