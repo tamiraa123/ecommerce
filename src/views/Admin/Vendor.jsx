@@ -83,29 +83,17 @@ class Vendor extends Component {
                         }
                       ]}
                     />
-                    <FormGroup controlId="formControlsTextarea">
-                      <ControlLabel>Description</ControlLabel>
-                      <FormControl name="description" onChange={this.handleChange.bind(this)} componentClass="textarea" value={this.state.description} />
-                    </FormGroup>
-
+                    
                     <FormInputs
-                      ncols={["col-md-3", "col-md-3", "col-md-6"]}
+                      ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
-                          label: "First Name",
+                          label: "Vendor Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "First Name",
-                          name: "firstname",
-                          onChange: this.handleChange.bind(this)
-                        },
-                        {
-                          label: "Last Name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Last Name",
-                          defaultValue: this.state.lastname,
-                          name: "lastname",
+                          placeholder: "Vendor Name",
+                          name: "vendorName",
+                          defaultValue: this.state.vendorName,
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -115,11 +103,17 @@ class Vendor extends Component {
                           placeholder: "Email",
                           defaultValue: this.state.email,
                           name: "email",
-                          onChange: this.handleChange.bind(this)
+                          onChange: this.handleChange.bind(this),
+                          disabled: true
                         },
                       ]
                       }
                     />
+                    <FormGroup controlId="formControlsTextarea">
+                      <ControlLabel>Description</ControlLabel>
+                      <FormControl name="description" onChange={this.handleChange.bind(this)} componentClass="textarea" value={this.state.description} />
+                    </FormGroup>
+
                     <FormInputs
                       ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       onChange={this.handleChange}
