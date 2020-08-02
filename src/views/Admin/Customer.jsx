@@ -16,8 +16,8 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
-import avatar from "assets/img/faces/face-3.jpg";
+import axios from "axios";
+import Spinner from "../../Spinner";
 
 
 const statusD = ["ACTIVE", "DEACTIVE"];
@@ -28,11 +28,11 @@ class Employee extends Component {
     
     this.state={
       id:0,
-      image:"https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
+      image:"",
       email:"",
       status:statusD[0], //active fired drop
-      firstname:"",
-      lastname:"",
+      firstName:"",
+      lastName:"",
       phone:"",
       address:{
         street:"",
@@ -40,7 +40,9 @@ class Employee extends Component {
         state:"",
         zip:""
       },
-      totalScore:"100000"
+      totalScore:"",
+      error: null,
+      loading: false,
     }
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -56,9 +58,48 @@ class Employee extends Component {
     this.setState({ [name]: value, event: event })
   }
 
+  componentDidMount() {
+    //  this.setState({ loading: true });
+    // axios
+    //   .get("http://localhost:4000/employees")
+    //   .then((result) =>{
+    //         console.log(result.data[0])  
+    //         this.setState({ loading: false, 
+    //                       id: result.data[0].id, 
+    //                       image : result.data[0].image,
+    //                       email : result.data[0].email,
+    //                       status : result.data[0].status,
+    //                       firtName : result.data[0].firtName,
+    //                       lastName : result.data[0].lastName,
+    //                       phone : result.data[0].phone,
+    //                       address : result.data[0].address,
+    //                       totalScore : result.data[0].totalScore,
+    //                     })
+    //               }
+    //   )
+    //   .catch((err) => 
+    //       this.setState({ loading: false, error: err.response }));
+    
+    this.setState({ loading: false, 
+     id: 1, 
+      image : "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
+      email : "tamir.baldandorj@gmail.com",
+      status : "Active",
+      firtName : "Tamir",
+      lastName :"Baldandorj",
+      phone : "6419181115",
+      address : "",
+      totalScore : 123230,           
+    })
+
+  }
+
   render() {
     return (
       <div className="content">
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={8}>
@@ -69,7 +110,6 @@ class Employee extends Component {
                   <Row className="show-grid">
                     <Col xs={12} md={5}>
                     <Image width={250} height={200} src={this.state.image} rounded />
-                        
                     </Col>
                     <Col xs={6} md={4}>
                     <h4><Label bsStyle="success">Total Score:</Label> {this.state.totalScore}</h4>
@@ -100,7 +140,7 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "First Name",
-                          name:"firstname",
+                          name:"firstName",
                           onChange:this.handleChange.bind(this)   
                         },
                         {
@@ -108,8 +148,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Last Name",
-                          defaultValue: this.state.lastname,
-                          name:"lastname",
+                          defaultValue: this.state.lastName,
+                          name:"lastName",
                           onChange:this.handleChange.bind(this) 
                         },
                         {
@@ -147,7 +187,7 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Street",
-                          defaultValue: this.state.street,
+                          defaultValue: this.state.address.street,
                           name:"street",
                           onChange:this.handleChange.bind(this) 
                         }
@@ -161,7 +201,7 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: this.state.city,
+                          defaultValue: this.state.address.city,
                           name:"city",
                           onChange:this.handleChange.bind(this) 
                         },
@@ -170,7 +210,7 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: this.state.state,
+                          defaultValue: this.state.address.state,
                           name:"state",
                           onChange:this.handleChange.bind(this) 
                         },
@@ -179,7 +219,7 @@ class Employee extends Component {
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
-                          defaultValue: this.state.zip,
+                          defaultValue: this.state.address.zip,
                           name:"zip",
                           onChange:this.handleChange.bind(this) 
                         }
@@ -213,6 +253,7 @@ class Employee extends Component {
   
           </Row>
         </Grid>
+        )}
       </div>
     );
   }

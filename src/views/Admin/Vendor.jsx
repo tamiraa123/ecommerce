@@ -16,7 +16,8 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
-import avatar from "assets/img/faces/face-3.jpg";
+import axios from "axios";
+import Spinner from "../../Spinner";
 
 
 const statusD = ["NEW", "ACTIVE", "BLOCKED"];
@@ -39,14 +40,14 @@ class Vendor extends Component {
         city: "",
         state: "",
         zip: ""
-      }
+      },
+      error: null,
+      loading: false
     }
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     // this.handleChange = this.handleChange(this);
   }
-
-
 
   handleChangeStatus(event) {
     this.setState({ status: statusD[event] });
@@ -56,9 +57,47 @@ class Vendor extends Component {
     this.setState({ [name]: value, event: event })
   }
 
+  componentDidMount() {
+    // this.setState({ loading: true });
+    // axios
+    //   .get("http://localhost:4000/employees")
+    //   .then((result) =>{
+    //         console.log(result.data[0])  
+    //         this.setState({ loading: false, 
+    //                       id: result.data[0].id, 
+    //                       image : result.data[0].image,
+    //                       email : result.data[0].email,
+    //                       status : result.data[0].status,
+    //                       vendorName : result.data[0].vendorName,
+    //                       phone : result.data[0].phone,
+    //                       custServContactNo : result.data[0].custServContactNo,
+    //                       description : result.data[0].description,
+    //                       address : result.data[0].address,              
+    //                     })
+    //               }
+    //   )
+    //   .catch((err) => 
+    //       this.setState({ loading: false, error: err.response }));
+    
+          this.setState({ loading: false, 
+            id: 1, 
+            image : "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
+            email : "tamir@rolex.com",
+            status : "Active",
+            vendorName : "Rolex",
+            phone : "77777777777",
+            custServContactNo : "888888888",
+            description : "sdasdasdas",
+            address : "",               
+          })
+  }
+
   render() {
     return (
       <div className="content">
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={8}>
@@ -145,8 +184,8 @@ class Vendor extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Street",
-                          defaultValue: this.state.street,
-                          name: "street",
+                          defaultValue: this.state.address.street,
+                          name: "address.street",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}
@@ -159,8 +198,8 @@ class Vendor extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: this.state.city,
-                          name: "city",
+                          defaultValue: this.state.address.city,
+                          name: "address.city",
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -168,8 +207,8 @@ class Vendor extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: this.state.state,
-                          name: "state",
+                          defaultValue: this.state.address.state,
+                          name: "address.state",
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -177,8 +216,8 @@ class Vendor extends Component {
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
-                          defaultValue: this.state.zip,
-                          name: "zip",
+                          defaultValue: this.state.address.zip,
+                          name: "address.zip",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}
@@ -211,6 +250,7 @@ class Vendor extends Component {
 
           </Row>
         </Grid>
+        )}
       </div>
     );
   }

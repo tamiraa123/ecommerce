@@ -18,9 +18,9 @@ const tdArray = [
   {
     "id": 1,
     "subject": "Add Product",
-    "startDate": "08/08/2020",
-    "dueDate": "18/08/2020",
-    "endDate": "18/08/2020",
+    "startDate": "2020-08-08",
+      "dueDate": "2020-08-18",
+      "endDate": "2020-08-18",
     "status": "New",
     "description": "",
     "assignTo": 1
@@ -28,9 +28,9 @@ const tdArray = [
 {
     "id": 2,
     "subject": "Add Product",
-    "startDate": "04/08/2020",
-    "dueDate": "18/08/2020",
-    "endDate": "18/08/2020",
+    "startDate": "2020-08-08",
+      "dueDate": "2020-08-18",
+      "endDate": "2020-08-18",
     "status": "Active",
     "description": "",
     "assignTo": 2

@@ -6,12 +6,9 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  DropdownButton,
-  MenuItem,
   Table,
-  Media,
   Label,
-  Carousel, Image
+  Carousel
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -50,7 +47,9 @@ class Product extends Component {
       images: [],
       isActive: false,
       productDetails: [],
-      category: ""
+      category: "",
+      error: null,
+      loading: false
     }
     this.handleChange = this.handleChange.bind(this);
   }
