@@ -33,7 +33,6 @@ class Vendor extends Component {
       vendorName: "",
       phone: "",
       custServContactNo: "",
-      vendorContactNo: "",
       description: "",
       address: {
         street: "",
@@ -115,14 +114,14 @@ class Vendor extends Component {
                     </FormGroup>
 
                     <FormInputs
-                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
+                      ncols={["col-md-6", "col-md-6"]}
                       onChange={this.handleChange}
                       properties={[
                         {
-                          label: "Phone Number",
+                          label: "Vendor Phone Number",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Phone Number",
+                          placeholder: "Vendor Phone Number",
                           defaultValue: this.state.phone,
                           name: "phone",
                           onChange: this.handleChange.bind(this)
@@ -134,15 +133,6 @@ class Vendor extends Component {
                           placeholder: "Customer Service Contact Number",
                           defaultValue: this.state.custServContactNo,
                           name: "custServContactNo",
-                          onChange: this.handleChange.bind(this)
-                        },
-                        {
-                          label: "Vendor Contact Number",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Vendor Contact Number",
-                          defaultValue: this.state.vendorContactNo,
-                          name: "vendorContactNo",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}

@@ -50,7 +50,8 @@ const treeData = [
     label: 'Watch',
   },
 ];
-//add hiihdee parentid, value   edit = id, value,   delete = id yavuulnaa
+
+//Send ->  add id = parentid, value  &   edit = id, value,  &  delete = id 
 
 class Product extends Component {
   constructor(props){
@@ -71,8 +72,6 @@ class Product extends Component {
   componentDidMount(){
     this.setState({category: treeData}); 
     this.setState({selected: this.state.category[0].key});
-    //this.state.setState({value : ""});
-   // console.log(this.state.category[0].key);
   }
 
 
@@ -98,12 +97,9 @@ class Product extends Component {
                 title="Category"
                 content={
                   <form>
-
-
                   <TreeMenu onClickItem={this.handleChangeTree}
                       data={this.state.category}>
                   </TreeMenu>
-                  
                       <FormInputs
                         ncols={["col-md-4"]} 
                         properties={[
