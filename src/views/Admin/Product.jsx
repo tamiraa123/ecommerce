@@ -21,7 +21,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 import Switch from "react-switch";
-import { DiagnosticCategory } from "typescript";
+import axios from "axios";
 
 
 const specifications = [
@@ -53,39 +53,46 @@ class Product extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
   }
+  //save Profile
+  saveBtn = () => {
+      
+  }
 
   componentDidMount() {
     //  this.setState({ loading: true });
     // axios
-    //   .get("http://localhost:4000/products")
-    //   .then((result) =>
-    //     //console.log(result.data[0].id)  
-    //     this.setState({ loading: false, 
-    //                   id: result.data[0].id, 
-    //                   productDetails = result.data[0].productDetails,
-    //                   images = result.data[0].images,
-    //                   name = result.data[0].name,
-    //                   brand = result.data[0].brand,
-    //                   price = result.data[0].price,
-    //                   quantity = "10",
-    //                   isActive = true,
-    //                   description = "This laptop is best selling laptop",
-    //                   category = "Electronic"                 
-    //                 })
+    //   .get("http://localhost:4000/products/1")
+    //   .then((result) =>{
+    //         console.log(result.data[0])  
+    //         this.setState({ loading: false, 
+    //                       id: result.data[0].id, 
+    //                       productDetails : result.data[0].productDetails,
+    //                       images : result.data[0].images,
+    //                       name : result.data[0].name,
+    //                       brand : result.data[0].brand,
+    //                       price : result.data[0].price,
+    //                       quantity : result.data[0].quantity,
+    //                       isActive : result.data[0].isActive,
+    //                       description : result.data[0].description,
+    //                       category : result.data[0].category,              
+    //                     })
+    //               }
     //   )
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
-
-
-    // this.state.productDetails = specifications;
-    // this.state.images = imgURLs;
-    // this.state.name = "Laptop 1";
-    // this.state.brand = "Apple";
-    // this.state.price = "1000$";
-    // this.state.quantity = "10";
-    // this.state.isActive = true;
-    // this.state.description = "This laptop is best selling laptop"
-    // this.state.category = "Electronic"
+    
+          this.setState({ loading: false, 
+            id: 1, 
+            productDetails : specifications,
+            images : imgURLs,
+            name : "Laptop1",
+            brand : "Apple",
+            price : 1000,
+            quantity : 3,
+            isActive : true,
+            description : "asldkflaksdj",
+            category : "Electronic",              
+          })
   }
 
   handleChange(event) {
@@ -164,7 +171,7 @@ class Product extends Component {
                       </tbody>
                     </Table>
 
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill type="submit"  onClick={ this.saveBtn }>
                       Update
                     </Button>
                     <div className="clearfix" />

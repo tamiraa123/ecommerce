@@ -10,41 +10,131 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["#", "Product Name"];
-//const thArray = ["#", "Product Name", "Price", "Brand", "Quantity","Is Active"];
+const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Is Active"];
+
+
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  {
+    "id": 12,
+    "name": "Apple 1",
+    "description": "this is apple",
+    "price": 1000,
+    "brand": "Apple",
+    "quantity": "3",
+    "images": [
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      }
+    ],
+    "isActive": false,
+    "productDetails": [
+      {
+        "specName": "CPU",
+        "specValue": "1.5Ghz"
+      },
+      {
+        "specName": "Hard",
+        "specValue": "SSD 500GB"
+      }
+    ],
+    "category": "Electronic"
+  },
+  {
+    "id": 13,
+    "name": "Apple 1",
+    "description": "this is apple",
+    "price": 1000,
+    "brand": "Apple",
+    "quantity": "3",
+    "images": [
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      }
+    ],
+    "isActive": false,
+    "productDetails": [
+      {
+        "specName": "CPU",
+        "specValue": "1.5Ghz"
+      },
+      {
+        "specName": "Hard",
+        "specValue": "SSD 500GB"
+      }
+    ],
+    "category": "Electronic"
+  },
+  {
+    "id": 15,
+    "name": "Apple 1",
+    "description": "this is apple",
+    "price": 1000,
+    "brand": "Apple",
+    "quantity": "3",
+    "images": [
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      },
+      {
+        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
+      }
+    ],
+    "isActive": false,
+    "productDetails": [
+      {
+        "specName": "CPU",
+        "specValue": "1.5Ghz"
+      },
+      {
+        "specName": "Hard",
+        "specValue": "SSD 500GB"
+      }
+    ],
+    "category": "Electronic"
+  }
 ];
 
 
 class Products extends Component {
 
 state={
-  products:[{
-    id:null,
-    name:""
-  }],
+  products:[]
 }
 
 componentDidMount = () =>{
 
-  this.setState({ loading: true });
-    axios
-      .get("http://localhost:4000/products")
-      .then((result) =>
-        //console.log(result.data[0].id)  
-        this.setState({ loading: false, 
-                    //products.id = result.data[0].id,
-
-                    })
-      )
-      .catch((err) => 
-          this.setState({ loading: false, error: err.response }));
-
-    // this.setState({products:tdArray});
-
+  // this.setState({ loading: true });
+  //   axios
+  //     .get("http://localhost:4000/products")
+  //     .then((result) =>{
+       
+  //       console.log("hello") 
+  //       this.setState({ products : result.data })
+  //       this.setState({ loading: false})
+        
+  //     }
+  //     )
+  //     .catch((err) => this.setState({ loading: false, error: err.response }));
+          
+     
+     
+      this.setState({products:tdArray});
+     
 
 }
 
@@ -59,32 +149,32 @@ componentDidMount = () =>{
                 ctTableFullWidth
                 ctTableResponsive
                 content={
-                  <Table striped hover>
-                    <thead>
-                      <tr>
-                        {thArray.map((prop, key) => {
+                  <div>
+                   <Table striped hover>
+                     <thead>
+                       <tr>
+                         {thArray.map((prop, key) => {
                           return <th key={key}>{prop}</th>;
                         })}
                       </tr>
                     </thead>
-                    <tbody>
-                      {this.state.products.map((prop, key) => {
+                     <tbody>
+                       {this.state.products.map(product => {
                         return (
-                            <tr key={key}>
-                              {prop.map((prop, key) => {
-                                return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/products/${prop}`}>
-                                          {prop}
-                                      </Link>}
-                                      {(key != 0) && <p>{prop}</p>}
-                                  </td>;
-                              })}
+                            <tr>
+                              <td><Link to={`/admin/products/${product.id}`}>{product.id}</Link></td>
+                              <td>{ product.category }</td>
+                              <td>{ product.name }</td>
+                              <td>{ product.price }</td>
+                              <td>{ product.brand }</td>
+                              <td>{ product.quantity }</td>
+                              <td>{ product.isActive ? "true" : "false" }</td>
                             </tr>
-                         
                         );
                       })}
                     </tbody>
                   </Table>
+                  </div>
                 }
               />
             </Col>
