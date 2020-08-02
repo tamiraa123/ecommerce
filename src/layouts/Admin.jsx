@@ -30,13 +30,19 @@ class Admin extends Component {
   }
 
   fillRole(role){
-    console.log("Admin");
+      role = localStorage.getItem('role');
+
+    //console.log("sadasd"+localStorage.getItem('role'));
     
-    if(role === null){}
+
+    if(role === null){
+
+    }
     else{
       this.setState({role: role});
+      this.state.role = role;
+      
     }
-    console.log(this.state.role);
   }
 
   handleNotificationClick = position => {
@@ -107,7 +113,7 @@ class Admin extends Component {
   };
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
-      console.log(routes.length)
+     // console.log(routes.length)
       
       if (this.props.location.pathname.indexOf(
           routes[i].layout + routes[i].path
@@ -138,8 +144,9 @@ class Admin extends Component {
 
 
    componentDidMount() {
+    this.fillRole(localStorage.getItem('role'));
+   // this.fillRole(this.props.role);
     
-    this.fillRole(this.props.role);
     this.setState({ _notificationSystem: this.refs.notificationSystem });
     var _notificationSystem = this.refs.notificationSystem;
     var color = Math.floor(Math.random() * 4 + 1);

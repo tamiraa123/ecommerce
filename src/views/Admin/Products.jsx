@@ -10,7 +10,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["#", "Product Name", "Price", "Brand", "Quantity","Is Active"];
+const thArray = ["#", "Product Name"];
+//const thArray = ["#", "Product Name", "Price", "Brand", "Quantity","Is Active"];
 const tdArray = [
   ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
   ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
@@ -21,17 +22,29 @@ const tdArray = [
 class Products extends Component {
 
 state={
-  products:[],
+  products:[{
+    id:null,
+    name:""
+  }],
 }
 
 componentDidMount = () =>{
 
-  // axios
-  //   .get("")
-  //   .then((result) => 
-    this.setState({products:tdArray});
-  //)
-  //   .catch((err) => console.log(err.response));
+  this.setState({ loading: true });
+    axios
+      .get("http://localhost:4000/products")
+      .then((result) =>
+        //console.log(result.data[0].id)  
+        this.setState({ loading: false, 
+                    //products.id = result.data[0].id,
+
+                    })
+      )
+      .catch((err) => 
+          this.setState({ loading: false, error: err.response }));
+
+    // this.setState({products:tdArray});
+
 
 }
 

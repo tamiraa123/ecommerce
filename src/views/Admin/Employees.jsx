@@ -12,12 +12,11 @@ import { Link } from "react-router-dom";
 
 const thArray = ["ID", "Email", "First Name", "LastName", "Role","Status"];
 const tdArray = [
-  ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout","Head Manager"],
-  ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas","Software Developer"],
-  ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux","Delivery man"],
-  ["4", "Philip Chaney", "$38,735", "Korea, South", "Overland Park","Driver"],
-  ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten","Driver"],
-  ["6", "Mason Porter", "$78,615", "Chile", "Gloucester","Director"]
+  ["1", "andy@gmail.com", "Andy", "Bold","Admin","Active"],
+  ["2", "voly@rolex.com", "Voly", "Bold","Ticket Manager","Active"],
+  ["3", "edy@apple.com", "Edy", "Bold", "Engineer","Active"],
+  ["4", "john@amazon.com", "John", "Bold", "Engineer","Active"],
+  
 ];
 
 

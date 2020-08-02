@@ -9,13 +9,15 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import axios from "axios";
+import Spinner from "../Spinner";
 class UserProfile extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       id: 0,
-      image: "https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
+      image: "",
       email: "",
       status: "", //active fired drop
       firstname: "",
@@ -25,18 +27,54 @@ class UserProfile extends Component {
       city: "",
       state: "",
       zip: "",
-      role: ""//admin, engineer  drop
+      role: "",//admin, engineer  drop
+      error: null,
+      loading: false,
     }
   }
-
+  //input text change
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
+  }
+  //save Profile
+  saveBtn = () => {
+      
+  }
+  //load
+  componentDidMount = () => {
+    console.log("UserProfile->componentDidMount")
+    // this.setState({ loading: true });
+    // axios
+    //   .get("http://localhost:4000/profile")
+    //   .then((result) =>
+    //     //console.log(result.data[0].id)  
+    //     this.setState({ loading: false, 
+    //                   id: result.data[0].id, 
+    //                   firstname:result.data[0].firstname,
+    //                   lastname:result.data[0].lastname,
+    //                   email:result.data[0].email,
+    //                   status:result.data[0].status,
+    //                   phone:result.data[0].phone,
+    //                   city:result.data[0].city,
+    //                   street:result.data[0].street,
+    //                   state:result.data[0].state,
+    //                   zip:result.data[0].zip,
+    //                   role:result.data[0].role,
+    //                   image:result.data[0].image,
+    //                 })
+    //   )
+    //   .catch((err) => 
+    //       this.setState({ loading: false, error: err.response }));
+
   }
 
   render() {
     return (
       <div className="content">
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={8}>
@@ -149,7 +187,7 @@ class UserProfile extends Component {
                         }
                       ]}
                     />
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill type="submit"  onClick={ this.saveBtn }>
                       Update Profile
                     </Button>
                     <div className="clearfix" />
@@ -159,6 +197,7 @@ class UserProfile extends Component {
             </Col>
           </Row>
         </Grid>
+        )}
       </div>
     );
   }

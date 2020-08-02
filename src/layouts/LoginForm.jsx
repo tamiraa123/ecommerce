@@ -16,7 +16,7 @@ export default class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
+      email: null,
       password: null,
       role: rolesD[0],
       error: null,
@@ -29,11 +29,12 @@ export default class LoginForm extends Component {
     // console.log("doLogIn()");
     // axios
     // .post("http://localhost:4000/user/login", {
-    //   email: this.state.username,
+    //   email: this.state.email,
     //   password: this.state.password,
     // })
     // .then((result) => {
-    this.props.onLogin(this.state.role); //result.data[0].token,
+      this.props.onLogin(this.state.role); //result.data[0].token,
+      localStorage.setItem("role", this.state.role);
     // })
     // .catch((err) =>
     //    this.setState({error: "Error" })//err.response.data.error.message
@@ -67,13 +68,13 @@ export default class LoginForm extends Component {
                     ncols={["col-md-6", "col-md-6"]}
                     properties={[
                       {
-                        name: "username",
+                        name: "email",
                         label: "User Name",
                         type: "text",
                         bsClass: "form-control",
                         placeholder: "User Name",
-                        defaultValue: this.state.username,
-                        name: "username",
+                        defaultValue: this.state.email,
+                        name: "email",
                         onChange: this.handleChange.bind(this),
                         
                       },

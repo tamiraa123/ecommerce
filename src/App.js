@@ -27,8 +27,9 @@ export default class App extends Component {
     handleLogin = (role) => {
         // console.log("handleLogin("+token+")");
         // this.setState({token});
+        
         this.setState({role});
-        // localStorage.setItem("token", token);
+        
         this.router.history.push("/admin/user");
     };
 

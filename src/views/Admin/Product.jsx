@@ -55,15 +55,37 @@ class Product extends Component {
   }
 
   componentDidMount() {
-    this.state.productDetails = specifications;
-    this.state.images = imgURLs;
-    this.state.name = "Laptop 1";
-    this.state.brand = "Apple";
-    this.state.price = "1000$";
-    this.state.quantity = "10";
-    this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop"
-    this.state.category = "Electronic"
+    //  this.setState({ loading: true });
+    // axios
+    //   .get("http://localhost:4000/products")
+    //   .then((result) =>
+    //     //console.log(result.data[0].id)  
+    //     this.setState({ loading: false, 
+    //                   id: result.data[0].id, 
+    //                   productDetails = result.data[0].productDetails,
+    //                   images = result.data[0].images,
+    //                   name = result.data[0].name,
+    //                   brand = result.data[0].brand,
+    //                   price = result.data[0].price,
+    //                   quantity = "10",
+    //                   isActive = true,
+    //                   description = "This laptop is best selling laptop",
+    //                   category = "Electronic"                 
+    //                 })
+    //   )
+    //   .catch((err) => 
+    //       this.setState({ loading: false, error: err.response }));
+
+
+    // this.state.productDetails = specifications;
+    // this.state.images = imgURLs;
+    // this.state.name = "Laptop 1";
+    // this.state.brand = "Apple";
+    // this.state.price = "1000$";
+    // this.state.quantity = "10";
+    // this.state.isActive = true;
+    // this.state.description = "This laptop is best selling laptop"
+    // this.state.category = "Electronic"
   }
 
   handleChange(event) {

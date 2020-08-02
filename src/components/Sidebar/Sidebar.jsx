@@ -16,7 +16,7 @@ class Sidebar extends Component {
   }
   
   fillRole(role){
-    console.log("Admin");
+    role = localStorage.getItem('role');
     
     if(role === null){}
     else{
