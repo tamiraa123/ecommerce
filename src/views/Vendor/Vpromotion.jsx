@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+
 import { Grid, Row, Col, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import Switch from "react-switch";
+import axios from "axios";
 
 const products = ["Laptop 1", "Laptop 2", "Laptop 3"];
 const specifications = [
@@ -22,7 +23,8 @@ class Product extends Component {
       to: "",
       product: "",
       discount: "",
-      isActive: ""
+      isActive: "",
+      ip: ""
     }
     this.handleChangeRole = this.handleChangeRole.bind(this);
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -33,7 +35,12 @@ class Product extends Component {
   }
 
   handleChangeStatus(event) {
-    // this.setState({status: statusD[event]});
+    console.log(event);
+    // this.setState({ isActive: event }); 
+
+    // this.setState({ isActive: !this.state.isActive });
+    // this.state.isActive = !this.state.isActive;
+    console.log(this.state.isActive);
   }
   handleChange(event) {
     const { target: { name, value } } = event
@@ -42,13 +49,14 @@ class Product extends Component {
     console.log(this.state.images)
   }
 
+
   componentDidMount() {
     this.state.productDetails = specifications;
     this.state.name = "Laptop 1";
     this.state.brand = "Apple";
     this.state.price = "1000$";
     this.state.quantity = "10";
-    this.state.isActive = true;
+    this.state.isActive = false;
     this.state.description = "This laptop is best selling laptop"
     this.state.category = "Electronic"
   }
@@ -122,35 +130,19 @@ class Product extends Component {
                       ]
                       }
                     />
-                   
-
-
-                    <Row className="show-grid">
-                      <Col xs={6} md={3}>
-                        <ControlLabel>PRODUCT</ControlLabel><br />
-                        <DropdownButton
-                          title={this.state.role}
-                          id="document-type"
-                          onSelect={this.handleChangeRole}
-                        >
-                          {products.map((opt, i) => (
-                            <MenuItem key={i} eventKey={i}>
-                              {opt}
-                            </MenuItem>
-                          ))}
-                        </DropdownButton>
-                      </Col>
-                      <Col xs={6} md={3}>
-                        <ControlLabel>ACTIVE</ControlLabel><br />
-                        <Switch
-                          onChange={this.handleChange}
-                          checked={this.state.isActive}
-                          className="react-switch"
-                        />
-                      </Col>
-                    </Row>
-
-
+                    <DropdownButton
+                      // bsStyle={title.toLowerCase()}
+                      title="Products"
+                    // key={i}
+                    // id={`dropdown-basic-${i}`}
+                    >
+                      <MenuItem eventKey="1">Action</MenuItem>
+                      <MenuItem eventKey="2">Another action</MenuItem>
+                      <MenuItem eventKey="3" active>Active Item</MenuItem>
+                      <MenuItem divider />
+                      <MenuItem eventKey="4">Separated link</MenuItem>
+                    </DropdownButton>
+                    
                     <Button bsStyle="info" pullRight fill type="submit">
                       Done
                     </Button>

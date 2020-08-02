@@ -28,7 +28,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["user"],
+    type: ["user", "Vendor"],
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
