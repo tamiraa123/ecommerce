@@ -15,8 +15,8 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
-import avatar from "assets/img/faces/face-3.jpg";
+import axios from "axios";
+import Spinner from "../../Spinner";
 
 
 const rolesD = ["ADMIN", "ENGINEER", "TICKET MANAGER"];
@@ -28,16 +28,18 @@ class Employee extends Component {
     
     this.state={
       id:0,
-      image:"https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
+      image:"",
       email:"",
       status:statusD[0], //active fired drop
-      firstname:"",
-      lastname:"",
+      firstName:"",
+      lastName:"",
       phone:"",
-      street:"",
-      city:"",
-      state:"",
-      zip:"",
+      address:{
+        street:"",
+        city:"",
+        state:"",
+        zip:""
+      },
       role:rolesD[0]//admin, engineer  drop
     }
 
@@ -58,9 +60,48 @@ class Employee extends Component {
     this.setState({ [name]: value, event: event })
   }
 
+  componentDidMount(){
+    //  this.setState({ loading: true });
+    // axios
+    //   .get("http://localhost:4000/employees")
+    //   .then((result) =>{
+    //         console.log(result.data[0])  
+    //         this.setState({ loading: false, 
+    //                       id: result.data[0].id, 
+    //                       image : result.data[0].image,
+    //                       email : result.data[0].email,
+    //                       status : result.data[0].status,
+    //                       firstName : result.data[0].firstName,
+    //                       lastName : result.data[0].lastName,
+    //                       phone : result.data[0].phone,
+    //                       address : result.data[0].address,
+    //                       role : result.data[0].role,              
+    //                     })
+    //               }
+    //   )
+    //   .catch((err) => 
+    //       this.setState({ loading: false, error: err.response }));
+
+          this.setState({ loading: false, 
+            id: 1, 
+              image : "https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
+              email : "tamir.baldandorj@gmail.com",
+              status : "Active",
+              firstName : "Tamir",
+              lastName : "Baldandorj",
+              phone : "6418191115",
+              address : "",
+              role : "Admin",                 
+          })
+      
+  }
+
   render() {
     return (
       <div className="content">
+         {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={8}>
@@ -92,7 +133,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "First Name",
-                          name:"firstname",
+                          name:"firstName",
+                          defaultValue: this.state.firstName,
                           onChange:this.handleChange.bind(this)   
                         },
                         {
@@ -100,8 +142,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Last Name",
-                          defaultValue: this.state.lastname,
-                          name:"lastname",
+                          defaultValue: this.state.lastName,
+                          name:"lastName",
                           onChange:this.handleChange.bind(this) 
                         },
                         {
@@ -139,8 +181,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Street",
-                          defaultValue: this.state.street,
-                          name:"street",
+                          defaultValue: this.state.address.street,
+                          name:"address.street",
                           onChange:this.handleChange.bind(this) 
                         }
                       ]}
@@ -153,8 +195,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: this.state.city,
-                          name:"city",
+                          defaultValue: this.state.address.city,
+                          name:"address.city",
                           onChange:this.handleChange.bind(this) 
                         },
                         {
@@ -162,8 +204,8 @@ class Employee extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: this.state.state,
-                          name:"state",
+                          defaultValue: this.state.address.state,
+                          name:"address.state",
                           onChange:this.handleChange.bind(this) 
                         },
                         {
@@ -171,8 +213,8 @@ class Employee extends Component {
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
-                          defaultValue: this.state.zip,
-                          name:"zip",
+                          defaultValue: this.state.address.zip,
+                          name:"address.zip",
                           onChange:this.handleChange.bind(this) 
                         }
                       ]}
@@ -218,6 +260,7 @@ class Employee extends Component {
   
           </Row>
         </Grid>
+        )}
       </div>
     );
   }

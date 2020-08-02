@@ -42,7 +42,7 @@ class Product extends Component {
       dueDate: "",
       endDate: "",
       status: statusD[0],
-      description: [],
+      description: "",
       assignTo: engineers[0].id,
     }
     this.handleChange = this.handleChange.bind(this);

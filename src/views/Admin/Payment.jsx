@@ -6,7 +6,7 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  DropdownButton,
+  DropdownButton,ButtonToolbar, 
   MenuItem,
   Table,
   Media,
@@ -72,10 +72,11 @@ class Product extends Component {
       <div className="content">
 
         <Grid fluid>
-      
-        <Button  bsStyle="link" onClick={this.goBack}>
+        <ButtonToolbar>
+        <Button onClick={this.goBack}>
                 Back
         </Button>
+        </ButtonToolbar>
           <Row>
             <Col md={8}>
               <Card

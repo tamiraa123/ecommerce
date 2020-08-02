@@ -57,11 +57,11 @@ class Product extends Component {
     super(props);
     
     this.state={
-        category:{
+        category:[{
           key: '',
           label: '',
           nodes:[]
-        },
+        }],
         selected:''
     }
     // this.handleChange = this.handleChange.bind(this);
@@ -69,9 +69,9 @@ class Product extends Component {
   }
 
   componentDidMount(){
-    this.state.category = treeData;
-    this.state.selected = this.state.category[0].key; //set First Element 
-    this.state.value = "";
+    this.setState({category: treeData}); 
+    this.setState({selected: this.state.category[0].key});
+    //this.state.setState({value : ""});
    // console.log(this.state.category[0].key);
   }
 

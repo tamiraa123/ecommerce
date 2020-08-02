@@ -34,10 +34,12 @@ class Employee extends Component {
       firstname:"",
       lastname:"",
       phone:"",
-      street:"",
-      city:"",
-      state:"",
-      zip:"",
+      address:{
+        street:"",
+        city:"",
+        state:"",
+        zip:""
+      },
       totalScore:"100000"
     }
 

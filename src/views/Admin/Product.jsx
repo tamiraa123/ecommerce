@@ -22,6 +22,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import avatar from "assets/img/faces/face-3.jpg";
 import Switch from "react-switch";
 import axios from "axios";
+import Spinner from "../../Spinner";
 
 
 const specifications = [
@@ -102,6 +103,9 @@ class Product extends Component {
   render() {
     return (
       <div className="content">
+         {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={8}>
@@ -182,6 +186,7 @@ class Product extends Component {
 
           </Row>
         </Grid>
+        )}
       </div>
     );
   }

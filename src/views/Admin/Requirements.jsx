@@ -1,87 +1,118 @@
 import React, { Component } from "react";
-import { Grid, 
-  Row, 
-  Col, 
-  Table, 
-  Button } from "react-bootstrap";
+import {
+  Grid,
+  Row,
+  Col,
+  Table,
+  Button
+} from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Spinner from "../../Spinner";
 
 
-const thArray = ["ID", "subject", "Start Date", "Due Date", "End Date","Status"];
+const thArray = ["#", "Subject", "Start Date", "Due Date", "End Date", "Status"];
 const tdArray = [
-  ["1", "Add Specification", "Aug-10, 2020", "Aug-15, 2020", "Aug-15, 2020", "New"],
-  ["2", "Delete Specification", "Aug-10, 2020", "Aug-15, 2020", "Aug-15, 2020", "Done"],  
+  {
+    "id": 1,
+    "subject": "Add Product",
+    "startDate": "08/08/2020",
+    "dueDate": "18/08/2020",
+    "endDate": "18/08/2020",
+    "status": "New",
+    "description": "",
+    "assignTo": 1
+},
+{
+    "id": 2,
+    "subject": "Add Product",
+    "startDate": "04/08/2020",
+    "dueDate": "18/08/2020",
+    "endDate": "18/08/2020",
+    "status": "Active",
+    "description": "",
+    "assignTo": 2
+}
 ];
 
 
 class Requirements extends Component {
 
-state={
-  requirements:[],
-}
+  state = {
+    requirements: [],
+    error: null,
+    loading: false,
+  }
 
-componentDidMount = () =>{
+  componentDidMount = () => {
 
-  // axios
-  //   .get("")
-  //   .then((result) => 
-    this.setState({requirements:tdArray});
-  //)
-  //   .catch((err) => console.log(err.response));
+    // this.setState({ loading: true });
+    //   axios
+    //     .get("http://localhost:4000/employees")
+    //     .then((result) =>{
+    //       console.log(result.data) 
+    //       this.setState({ requirements : result.data })
+    //       this.setState({ loading: false})
+    //     }
+    //     )
+    //     .catch((err) => this.setState({ loading: false, error: err.response }));
 
-}
+    this.setState({ requirements: tdArray });
+
+  }
 
   render() {
     return (
       <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <Card
-                title="Requirement"
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Table striped hover>
-                    <thead>
-                      <tr>
-                        {thArray.map((prop, key) => {
-                          return <th key={key}>{prop}</th>;
-                        })}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.requirements.map((prop, key) => {
-                        return (
-                            <tr key={key}>
-                              {prop.map((prop, key) => {
-                                return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/requirements/${prop}`}>
-                                          {prop}
-                                      </Link>}
-                                      {(key != 0) && <p>{prop}</p>}
-                                  </td>;
-                              })}
-                            </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                }
-              />
-            </Col>
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
+            <Grid fluid>
+              <Row>
+                <Col md={12}>
+                  <Card
+                    title="Requirement"
+                    ctTableFullWidth
+                    ctTableResponsive
+                    content={
+                      <Table striped hover>
+                        <thead>
+                          <tr>
+                            {thArray.map((prop, key) => {
+                              return <th key={key}>{prop}</th>;
+                            })}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.requirements.map(props => {
+                            return (
+                              <tr>
+                                <td><Link to={`/admin/requirements/${props.id}`}>{props.id}</Link></td>
+                                <td>{props.subject}</td>
+                                <td>{props.startDate}</td>
+                                <td>{props.dueDate}</td>
+                                <td>{props.endDate}</td>
+                                <td>{props.status}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    }
+                  />
+                </Col>
 
 
-          </Row>
-        </Grid>
-        <Button>
-          <Link to={`/admin/requirements/0`}>
-            Add Bank 
-          </Link>
-        </Button>
+              </Row>
+              {/* <Button>
+                <Link to={`/admin/requirements/0`}>
+                  Add
+                </Link>
+              </Button> */}
+            </Grid>
+          )}
 
       </div>
     );

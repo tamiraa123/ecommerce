@@ -23,10 +23,12 @@ class UserProfile extends Component {
       firstname: "",
       lastname: "",
       phone: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
+      address:{
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+      },
       role: "",//admin, engineer  drop
       error: null,
       loading: false,
@@ -56,16 +58,33 @@ class UserProfile extends Component {
     //                   email:result.data[0].email,
     //                   status:result.data[0].status,
     //                   phone:result.data[0].phone,
-    //                   city:result.data[0].city,
-    //                   street:result.data[0].street,
-    //                   state:result.data[0].state,
-    //                   zip:result.data[0].zip,
+    //                   address.city:result.data[0].city,
+    //                   address.street:result.data[0].street,
+    //                   address.state:result.data[0].state,
+    //                   address.zip:result.data[0].zip,
     //                   role:result.data[0].role,
     //                   image:result.data[0].image,
     //                 })
     //   )
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
+
+    this.setState({ loading: false, 
+      id: 1, 
+      firstname:"Tamir",
+      lastname:"Baldandorj",
+      email:"tamir.baldandorj@gmail.com",
+      status:"Active",
+      phone:"6418191115",
+      address:{
+        city:"Fairfield",
+        street:"asdasd",
+        state:"Iowa",
+        zip:"52556",
+      },
+      role:"Admin",
+      image:"https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",            
+    })
 
   }
 
@@ -150,8 +169,8 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Street",
-                          defaultValue: this.state.street,
-                          name: "street",
+                          defaultValue: this.state.address.street,
+                          name: "address.street",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}
@@ -164,8 +183,8 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: this.state.city,
-                          name: "city",
+                          defaultValue: this.state.address.city,
+                          name: "address.city",
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -173,16 +192,16 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: this.state.state,
-                          name: "state",
+                          defaultValue: this.state.address.state,
+                          name: "address.state",
                           onChange: this.handleChange.bind(this)
                         },
                         {
                           label: "Postal Code",
                           type: "number",
                           bsClass: "form-control",
-                          defaultValue: this.state.zip,
-                          name: "zip",
+                          defaultValue: this.state.address.zip,
+                          name: "address.zip",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}

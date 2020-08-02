@@ -4,10 +4,10 @@ import { Grid,
   Col, 
   Table, 
   Button } from "react-bootstrap";
-
 import Card from "components/Card/Card.jsx";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Spinner from "../../Spinner";
 
 
 const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Is Active"];
@@ -113,7 +113,9 @@ const tdArray = [
 class Products extends Component {
 
 state={
-  products:[]
+  products:[],
+  error: null,
+  loading: false,
 }
 
 componentDidMount = () =>{
@@ -141,6 +143,9 @@ componentDidMount = () =>{
   render() {
     return (
       <div className="content">
+         {this.state.loading ? (
+          <Spinner />
+        ) : (
         <Grid fluid>
           <Row>
             <Col md={12}>
@@ -178,10 +183,8 @@ componentDidMount = () =>{
                 }
               />
             </Col>
-
-
           </Row>
-        </Grid>
+        </Grid>)}
       </div>
     );
   }
