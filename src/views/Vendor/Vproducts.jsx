@@ -10,7 +10,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 
-const thArray = ["Product Number", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
+const thArray = ["#", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
 const tdArray = [
   ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
   ["2", "Laptop2", "$3,789", "Samsung", "10","No"],

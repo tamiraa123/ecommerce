@@ -6,6 +6,7 @@ import vPromos from "views/Vendor/Vpromotions.jsx";
 import vOrders from "views/Vendor/Vorders.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
+import Profile from "views/Vendor/Profile.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
@@ -20,7 +21,15 @@ import Requirement from "views/Admin/Requirements.jsx";
 
 const dashboardRoutes = [
   {
-    type: ["Admin","Vendor","Employee","user"],
+    type: ["Vendor"],
+    path: "/profile",
+    name: "Profile",
+    icon: "pe-7s-user",
+    component: Profile,
+    layout: "/admin"
+  },
+  {
+    type: ["Admin","Employee","user"],
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
