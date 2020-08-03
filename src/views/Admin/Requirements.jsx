@@ -3,8 +3,7 @@ import {
   Grid,
   Row,
   Col,
-  Table,
-  Button
+  Table
 } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";

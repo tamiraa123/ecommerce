@@ -3,9 +3,7 @@ import {
   Grid,
   Row,
   Col,
-  FormGroup,
   ControlLabel,
-  FormControl,
   DropdownButton,
   MenuItem,
   Image,
@@ -14,7 +12,6 @@ import {
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
