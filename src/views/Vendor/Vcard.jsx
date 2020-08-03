@@ -5,69 +5,40 @@ import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  Table,
-  Label,
-  Carousel, Image
+  Col
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import ImageUploader from 'react-images-upload';
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
 
-const specifications = [
-  { specName: "CPU", specValue: "1,5 Ghz" },
-  { specName: "RAM", specValue: "16 GB" },
-  { specName: "Hard SSD", specValue: "500GB" },
-];
 
 class Vcard extends Component {
   constructor(props) {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
     this.state = {
-      id: 0,
-      name: "",
-      description: "",
-      price: "",
-      brand: "",
-      quantity: "",
-      images: [],
-      isActive: false,
-      productDetails: [],
-      category: ""
+      provider : "",
+      fullname : "",
+      expDate : "",
+      cnum : ""
     }
-    this.onDrop = this.onDrop.bind(this);
   }
-  onDrop(picture) {
-    this.setState({
-      images: this.state.images.concat(picture),
-    });
+  handleSavebtn= () => {
+    //save action
+   this.props.history.goBack();
   }
+
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
-
-    console.log(this.state.images)
   }
 
   componentDidMount() {
-    this.state.productDetails = specifications;
-  
-    this.state.name = "Laptop 1";
-    this.state.brand = "Apple";
-    this.state.price = "1000$";
-    this.state.quantity = "10";
-    this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop"
-    this.state.category = "Electronic"
+    this.setState({provider : "Amex"});
+    this.setState({fullname : "Munkhzorig"});
+    this.setState({expDate : "20200202"});
+    this.setState({cnum : "213123123"});
   }
 
   render() {
@@ -125,7 +96,7 @@ class Vcard extends Component {
                       ]
                       }
                     />
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
                       Done
                     </Button>
                     <div className="clearfix" />
