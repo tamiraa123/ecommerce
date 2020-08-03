@@ -8,10 +8,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Is Active"];
-
-
 const tdArray = [
   {
     "id": 12,
@@ -133,10 +131,8 @@ componentDidMount = () =>{
   //     .catch((err) => this.setState({ loading: false, error: err.response }));
           
      
-     
+     //Setting example data
       this.setState({products:tdArray});
-     
-
 }
 
   render() {

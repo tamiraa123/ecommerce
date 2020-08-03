@@ -78,7 +78,7 @@ class Employee extends Component {
     //   )
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
-
+    //Setting example data
           this.setState({ loading: false, 
             id: 1, 
               image : "https://specials-images.forbesimg.com/imageserve/5d3d7a55f1176b000897d627/960x0.jpg?fit=scale",
@@ -90,7 +90,6 @@ class Employee extends Component {
               address : "",
               role : "Admin",                 
           })
-      
   }
 
   render() {

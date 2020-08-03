@@ -13,11 +13,10 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
 import axios from "axios";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const engineers = [
   { id: 1, name: "Tamir" },
   { id: 2, name: "Munkhzorig" },
@@ -67,7 +66,7 @@ class Product extends Component {
     //   )
     //   .catch((err) =>
     //     this.setState({ loading: false, error: err.response }));
-
+    //Setting example data
     this.setState({ loading: false, 
       id: 1, 
       subject: "sldasd",
@@ -79,13 +78,16 @@ class Product extends Component {
       assignTo: 2,            
     })
   }
+  //Status event
   handleChangeStatus(event) {
     this.setState({ status: statusD[event] });
   }
+  //Assign to event
   handleChangeAssignTo(event) {
     console.log(engineers.filter(eng => eng.id == this.state.assignTo).map(person => person.name));
     this.setState({ assignTo: event });
   }
+  //Text input events
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })

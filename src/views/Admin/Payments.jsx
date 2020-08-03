@@ -14,6 +14,7 @@ import Spinner from "../../Spinner";
 
 
 const thArray = ["#", "Bank Name", "Description", "URL", "RangeFrom", "RangeTo"];
+//Example data
 const tdArray = [
   {
     "id": 1,
@@ -32,10 +33,7 @@ const tdArray = [
     "rangeTo": 3000
 }
 ];
-
-
 class Payments extends Component {
-
   state = {
     payments: [],
     error: null,
@@ -55,10 +53,9 @@ class Payments extends Component {
     //   }
     //   )
     //   .catch((err) => this.setState({ loading: false, error: err.response }));
+    //Setting example data
      this.setState({payments:tdArray});
-
   }
-
   render() {
     return (
       <div className="content">
@@ -99,8 +96,6 @@ class Payments extends Component {
                     }
                   />
                 </Col>
-
-
               </Row>
               <Button>
                 <Link to={`/admin/payments/0`}>

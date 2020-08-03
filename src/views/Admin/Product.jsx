@@ -17,12 +17,13 @@ import Switch from "react-switch";
 import axios from "axios";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
+//Example data
 const imgURLs = [
   { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
   { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
@@ -49,7 +50,7 @@ class Product extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
   }
-  //save Profile
+  //Save Profile
   saveBtn = () => {
       
   }
@@ -76,7 +77,7 @@ class Product extends Component {
     //   )
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
-    
+    //Setting example data
           this.setState({ loading: false, 
             id: 1, 
             productDetails : specifications,

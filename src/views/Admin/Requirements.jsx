@@ -11,7 +11,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const thArray = ["#", "Subject", "Start Date", "Due Date", "End Date", "Status"];
 const tdArray = [
   {
@@ -57,7 +57,7 @@ class Requirements extends Component {
     //     }
     //     )
     //     .catch((err) => this.setState({ loading: false, error: err.response }));
-
+    //Setting example data
     this.setState({ requirements: tdArray });
 
   }
