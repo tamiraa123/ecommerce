@@ -15,11 +15,12 @@ class UserProfile extends Component {
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value })
+    
     console.log(this.state);
   }
   handleRegisterBtn = () => {
     axios
-      .post('http://192.168.137.1:8080/addVendor',
+      .post('http://10.10.14.62:8080/addVendor',
         {
           vendorname: this.state.companyName,
           email: this.state.email,

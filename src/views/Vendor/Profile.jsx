@@ -13,10 +13,8 @@ import {
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
-import avatar from "assets/img/faces/face-3.jpg";
 
 
 const statusD = ["NEW", "ACTIVE", "BLOCKED"];
@@ -67,7 +65,6 @@ class Profile extends Component {
                 title="Vendor"
                 content={
                   <form>
-
                     <FormInputs
                       ncols={["col-md-5", "col-md-5", "col-md-2"]}
                       properties={[
@@ -183,7 +180,7 @@ class Profile extends Component {
                     />
                     <ImageUploader
                       withIcon={true}
-                      withPreview={false}
+                      withPreview={true}
                       buttonText='Choose images'
                       onChange={this.onDrop}
                       imgExtension={['.jpg', '.gif', '.png', '.gif']}
