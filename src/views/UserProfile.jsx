@@ -142,8 +142,10 @@ class UserProfile extends Component {
                           type: "email",
                           bsClass: "form-control",
                           placeholder: "Email",
-                          name: "image",
-                          onChange: this.handleChange.bind(this)
+                          defaultValue: this.state.email,
+                          name: "email",
+                          onChange: this.handleChange.bind(this),
+                          disabled: true
                         }
                       ]}
                     />
