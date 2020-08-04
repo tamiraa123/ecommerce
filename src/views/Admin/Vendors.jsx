@@ -12,7 +12,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const thArray = ["#","Vendor Name", "Email", "Phone", "Customer Service Contact No", "Status"];
 const tdArray = [
   {
@@ -61,7 +61,7 @@ class Vendors extends Component {
   }
 
   componentDidMount = () => {
-
+    //Reading list of vendors
     // this.setState({ loading: true });
     //   axios
     //     .get("http://localhost:4000/employees")
@@ -74,7 +74,7 @@ class Vendors extends Component {
     //     }
     //     )
     //     .catch((err) => this.setState({ loading: false, error: err.response }));
-
+    //Setting example data
     this.setState({ vendors: tdArray });
 
   }

@@ -14,6 +14,7 @@ import Spinner from "../../Spinner";
 
 
 const thArray = ["#", "Email", "First Name", "LastName", "Phone", "State", "City", "isActive"];
+//Example data
 const tdArray = [
   {
         "id": 1,
@@ -70,9 +71,8 @@ class Customers extends Component {
     //   }
     //   )
     //   .catch((err) => this.setState({ loading: false, error: err.response }));
-
+    //Setting example data
      this.setState({ customers: tdArray });
-
   }
 
   render() {

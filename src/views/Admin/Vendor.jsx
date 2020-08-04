@@ -10,22 +10,18 @@ import {
   MenuItem,
   Image
 } from "react-bootstrap";
-
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
 import axios from "axios";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const statusD = ["NEW", "ACTIVE", "BLOCKED"];
 
 class Vendor extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       id: 0,
       image: "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
@@ -48,10 +44,11 @@ class Vendor extends Component {
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     // this.handleChange = this.handleChange(this);
   }
-
+  //Status event
   handleChangeStatus(event) {
     this.setState({ status: statusD[event] });
   }
+  //Text input event
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
@@ -78,7 +75,7 @@ class Vendor extends Component {
     //   )
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
-    
+    //Setting example data
           this.setState({ loading: false, 
             id: 1, 
             image : "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",

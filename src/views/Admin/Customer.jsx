@@ -3,9 +3,7 @@ import {
   Grid,
   Row,
   Col,
-  FormGroup,
   ControlLabel,
-  FormControl,
   DropdownButton,
   MenuItem,
   Image,
@@ -14,18 +12,16 @@ import {
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
 
-
+//Example data
 const statusD = ["ACTIVE", "DEACTIVE"];
 
 class Employee extends Component {
   constructor(props){
     super(props);
-    
     this.state={
       id:0,
       image:"",
@@ -49,16 +45,18 @@ class Employee extends Component {
    // this.handleChange = this.handleChange(this);
   }
 
-  
+  //Status change event  
   handleChangeStatus(event) {
     this.setState({status: statusD[event]});
   }
+  //input text event 
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
   }
 
   componentDidMount() {
+    //Reading list of employees
     //  this.setState({ loading: true });
     // axios
     //   .get("http://localhost:4000/employees")
@@ -80,6 +78,7 @@ class Employee extends Component {
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
     
+    //Setting example data
     this.setState({ loading: false, 
      id: 1, 
       image : "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
@@ -130,8 +129,6 @@ class Employee extends Component {
                             ]}
                           />
                   </Row>
-                  
-                    
                     <FormInputs
                       ncols={["col-md-3", "col-md-3", "col-md-6"]} 
                       properties={[
@@ -226,7 +223,6 @@ class Employee extends Component {
                       ]}
                     />
                       <Row className="show-grid">
-            
                         <Col xs={6} md={3}>
                         <ControlLabel>STATUS</ControlLabel><br/>
                             <DropdownButton
@@ -250,7 +246,6 @@ class Employee extends Component {
                 }
               />
             </Col>
-  
           </Row>
         </Grid>
         )}

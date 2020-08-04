@@ -5,17 +5,13 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl,
-  ButtonToolbar,
-} from "react-bootstrap";
+  FormControl} from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
-
-
 
 class Product extends Component {
   constructor(props) {
@@ -53,7 +49,7 @@ class Product extends Component {
     //   )
     //   .catch((err) =>
     //     this.setState({ loading: false, error: err.response }));
-
+    //Setting example
     this.setState({
           id: 1,
           name: "Amex",
@@ -64,16 +60,16 @@ class Product extends Component {
     })
   }
 
-
+//Text Input event
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
   }
+//Save action
   handleSavebtn = () => {
-    //save action
     this.props.history.goBack();
   }
-
+//Back to history
   goBack = () => {
     this.props.history.goBack();
   };

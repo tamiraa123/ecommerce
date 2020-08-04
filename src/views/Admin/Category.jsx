@@ -2,16 +2,7 @@ import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  DropdownButton,
-  MenuItem,
-  Table,
-  Media,
-  Label,
-  Carousel, Image
+  Col
 } from "react-bootstrap";
 import TreeMenu from 'react-simple-tree-menu';
 import '../../../node_modules/react-simple-tree-menu/dist/main.css';
@@ -19,15 +10,13 @@ import '../../../node_modules/react-simple-tree-menu/dist/main.css';
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
-import avatar from "assets/img/faces/face-3.jpg";
-import Switch from "react-switch";
-import { DiagnosticCategory } from "typescript";
 import axios from "axios";
 import Spinner from "../../Spinner";
 
+
+//Example data
 const treeData = [
   {
     key: '1',
@@ -92,12 +81,13 @@ class Product extends Component {
     this.setState({ selected: this.state.category[0].key });
   }
 
-
+//Selected items
   handleChangeTree(event) {
     this.state.selected = event.key;
     this.setState({ value: event.label });
   }
 
+//Text input event
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
@@ -107,7 +97,6 @@ class Product extends Component {
 
   render() {
     return (
-
       <div className="content">
         {this.state.loading ? (
           <Spinner />
@@ -138,7 +127,6 @@ class Product extends Component {
                           ]
                           }
                         />
-
                         <br />
                         <div className="clearfix" />
                         <Button bsStyle="info" pullLeft fill type="submit">Add</Button>&nbsp;

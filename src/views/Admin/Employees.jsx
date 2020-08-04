@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
 
 const thArray = ["#", "Email", "First Name", "Last Name", "Role","Status"];
+//Example data
 const tdArray = [
   {
     "id": 1,
@@ -76,7 +77,7 @@ componentDidMount = () =>{
   //     }
   //     )
   //     .catch((err) => this.setState({ loading: false, error: err.response }));
-
+  //Setting example data
   this.setState({employees:tdArray});
 }
 
