@@ -7,6 +7,7 @@ import vOrders from "views/Vendor/Vorders.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import Profile from "views/Vendor/Profile.jsx";
+import Onetime from "views/Vendor/OneTime.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
@@ -21,6 +22,14 @@ import Requirement from "views/Admin/Requirements.jsx";
 import Report from "views/Admin/Report.jsx";
 
 const dashboardRoutes = [
+  {
+    type: ["Vendor"],
+    path: "/index",
+    name: "One-Time payment",
+    icon: "pe-7s-user",
+    component: Onetime,
+    layout: "/admin"
+  },
   {
     type: ["Vendor"],
     path: "/profile",
