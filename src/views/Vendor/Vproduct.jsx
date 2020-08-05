@@ -19,14 +19,7 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
-<<<<<<< HEAD
 
-=======
-import firebase from '../../firebase';
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
->>>>>>> 0341f2e4a8aba0bf0dbdeb38f808b1617f316f0d
 
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
@@ -103,7 +96,6 @@ class Product extends Component {
   async componentDidMount() {
     this.setState({
 
-<<<<<<< HEAD
       name: "Laptop 1",
       description: "This laptop is best selling laptop",
       price: "1000$",
@@ -125,33 +117,6 @@ class Product extends Component {
       //"https://firebasestorage.googleapis.com/v0/b/eshop-abfb2.appspot.com/o/images%2Fvendor%2F1%2Fproducts%2F2.jpg?alt=media&token=602fb3e1-ac23-4967-9634-b8030e6b5909"
       imageGlobalURLs: tempTable
     }, console.log(this.state.imageGlobalURLs));
-=======
- //Save Profile
-  saveBtn = () => {
-    // let bucketName = 'images/Vendor/'+vendorid
-    // let file = this.state.files[0]
-    // let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
-    // let uploadTask = storageRef.put(file)
-    // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    //   ()=>{
-    //       let downloadURL = uploadTask.snapshot.downloadURL
-    //   }
-    //   )
-  }
-
-
-  componentDidMount() {
-    this.state.productDetails = specifications;
-    this.state.images = imgURLs;
-    this.state.name = "Laptop 1";
-    this.state.brand = "Apple";
-    this.state.price = "1000$";
-    this.state.quantity = "10";
-    this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop";
-    this.state.category = "Electronic";
-    console.log(this.state.description);
->>>>>>> 0341f2e4a8aba0bf0dbdeb38f808b1617f316f0d
   }
 
   render() {
@@ -283,25 +248,8 @@ class Product extends Component {
                       maxFileSize={5242880}
                       defaultImages={this.state.imageGlobalURLs}
                     />
-<<<<<<< HEAD
                     <Button bsStyle="info" pullRight fill onClick={this.handleDoneBtn}>
                       Done
-=======
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
-                    <Button bsStyle="info" pullRight fill type="submit" onClick={ this.saveBtn }>
-                      Update
->>>>>>> 0341f2e4a8aba0bf0dbdeb38f808b1617f316f0d
                     </Button>
                     <div className="clearfix" />
                   </form>
