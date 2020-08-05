@@ -118,11 +118,6 @@ class Customers extends Component {
                   />
                 </Col>
               </Row>
-              <Button>
-                <Link to={`/admin/customers/0`}>
-                  Add Customer
-                </Link>
-              </Button>
             </Grid>
           )}
 

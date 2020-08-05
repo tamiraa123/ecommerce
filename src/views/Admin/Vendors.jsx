@@ -122,11 +122,6 @@ class Vendors extends Component {
 
 
               </Row>
-              <Button>
-                <Link to={`/admin/vendors/0`}>
-                  Add Vendor
-                </Link>
-              </Button>
 
             </Grid>
           )}

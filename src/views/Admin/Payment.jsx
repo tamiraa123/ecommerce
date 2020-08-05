@@ -13,6 +13,8 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
 
+
+
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,8 @@ class Product extends Component {
       rangeFrom: 0,
       rangeTo: 0,
       error: null,
-      loading: false
+      loading: false,
+
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -139,7 +142,6 @@ class Product extends Component {
                           ]
                           }
                         />
-
                         <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
                           Update
                     </Button>

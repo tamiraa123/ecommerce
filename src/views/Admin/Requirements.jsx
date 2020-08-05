@@ -102,14 +102,7 @@ class Requirements extends Component {
                     }
                   />
                 </Col>
-
-
               </Row>
-              {/* <Button>
-                <Link to={`/admin/requirements/0`}>
-                  Add
-                </Link>
-              </Button> */}
             </Grid>
           )}
 

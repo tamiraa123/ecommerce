@@ -21,6 +21,8 @@ import Category from "views/Admin/Category.jsx";
 import Requirement from "views/Admin/Requirements.jsx";
 import Report from "views/Admin/Report.jsx";
 
+import Test from "views/Admin/Test.jsx";
+
 const dashboardRoutes = [
   {
     type: ["Vendor"],
@@ -183,6 +185,14 @@ const dashboardRoutes = [
     name: "Report",
     icon: "pe-7s-graph",
     component: Report,
+    layout: "/admin"
+  },
+  {
+    type: ["Admin"],
+    path: "/test",
+    name: "Test",
+    icon: "pe-7s-graph",
+    component: Test,
     layout: "/admin"
   }
 
