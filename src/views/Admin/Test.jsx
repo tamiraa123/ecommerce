@@ -41,7 +41,6 @@ class Test extends Component {
         })    
   }
   handleSave = ()=>{
-
       let bucketName = 'images'
       let file = this.state.files[0]
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
