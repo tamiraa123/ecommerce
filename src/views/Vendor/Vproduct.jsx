@@ -18,6 +18,7 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
+import firebase from '../../firebase';
 // import { FilePond, registerPlugin } from 'react-filepond';
 // import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 // registerPlugin(FilePondPluginImagePreview);
@@ -62,6 +63,20 @@ class Product extends Component {
 
     console.log(this.state.images)
   }
+
+ //Save Profile
+  saveBtn = () => {
+    // let bucketName = 'images/Vendor/'+vendorid
+    // let file = this.state.files[0]
+    // let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
+    // let uploadTask = storageRef.put(file)
+    // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //   ()=>{
+    //       let downloadURL = uploadTask.snapshot.downloadURL
+    //   }
+    //   )
+  }
+
 
   componentDidMount() {
     this.state.productDetails = specifications;
@@ -235,7 +250,7 @@ class Product extends Component {
                       </Carousel>
                     </div>
                     {/* <FilePond allowMultiple={true} /> */}
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill type="submit" onClick={ this.saveBtn }>
                       Update
                     </Button>
                     <div className="clearfix" />
