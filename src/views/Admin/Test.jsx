@@ -41,7 +41,6 @@ class Test extends Component {
         })    
   }
   handleSave = ()=>{
-
       let bucketName = 'images'
       let file = this.state.files[0]
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
@@ -54,7 +53,7 @@ class Test extends Component {
   }
   showImage = ()=>{
       let storageRef = firebase.storage().ref()
-      let spaceRef = storageRef.child(`images/`+this.state.files[0].name)
+      //let spaceRef = storageRef.child(`images/`+this.state.files[0].name)
       storageRef.child(`images/`+this.state.files[0].name).getDownloadURL().then((url)=>{
           document.getElementById('new-img').src = url
       })

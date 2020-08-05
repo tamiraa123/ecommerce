@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col, DropdownButton, MenuItem,Alert
+  Col, DropdownButton, MenuItem, Alert
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -11,7 +11,7 @@ import "./LoginForm.css";
 import axios from "axios";
 
 
-const rolesD = ["Admin", "Vendor", "Engineer","Change Manager","user"];
+const rolesD = ["Vendor", "Employee"];
 export default class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -27,26 +27,29 @@ export default class LoginForm extends Component {
 
   doLogIn = () => {
     console.log("LoginForm-> doLogIn")
-    
-    if(this.state.email === "" || this.state.password === "")
-    {
-        this.setState({error: "Please fill all required fields!"});
-    }else
-    {
-            // console.log("doLogIn()");
-            // axios
-            // .post("http://localhost:4000/user/login", {
-            //   email: this.state.email,
-            //   password: this.state.password,
-            // })
-            // .then((result) => {
-              this.props.onLogin(this.state.role); //result.data[0].token,
-              localStorage.setItem("role", this.state.role);
-            // })
-            // .catch((err) =>
-            //    this.setState({error: "Error" })//err.response.data.error.message
-            // );
-     }
+
+    if (this.state.email === "" || this.state.password === "") {
+      this.setState({ error: "Please fill all required fields!" });
+    } else {
+      // console.log("doLogIn()");
+      // axios
+      // .post("http://localhost:4000/user/login", {
+      //   email: this.state.email,
+      //   password: this.state.password,
+      // })
+      // .then((result) => {
+      this.props.onLogin(this.state.role); //result.data[0].token,
+      if(this.state.role == "Employee") {
+        
+        localStorage.setItem("role", "Admin");//here need to set Role of Employee
+      } else {
+        localStorage.setItem("role", this.state.role);
+      }
+      // })
+      // .catch((err) =>
+      //    this.setState({error: "Error" })//err.response.data.error.message
+      // );
+    }
   };
 
   handleChangeRole(event) {
@@ -72,7 +75,7 @@ export default class LoginForm extends Component {
                   {this.state.error && (
                     <Alert bsStyle="danger">
                       {this.state.error}
-                  </Alert>
+                    </Alert>
                   )}
                   <FormInputs
                     ncols={["col-md-6", "col-md-6"]}

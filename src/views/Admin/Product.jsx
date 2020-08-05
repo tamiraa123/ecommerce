@@ -16,6 +16,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import Switch from "react-switch";
 import axios from "axios";
 import Spinner from "../../Spinner";
+import firebase from '../../firebase';
 
 //Example data
 const specifications = [
@@ -25,10 +26,15 @@ const specifications = [
 ];
 //Example data
 const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
+  { url: "images/employee/1.jpg" },
+  { url: "images/employee/1.jpg" },
+  { url: "images/employee/1.jpg" },
 ];
+const styleCarousel ={
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+};
 
 class Product extends Component {
   constructor(props) {
@@ -46,16 +52,17 @@ class Product extends Component {
       productDetails: [],
       category: "",
       error: null,
-      loading: false
+      loading: false,
+      imageGlobal: []
     }
     this.handleChange = this.handleChange.bind(this);
   }
   //Save Profile
   saveBtn = () => {
-      
+
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     //  this.setState({ loading: true });
     // axios
     //   .get("http://localhost:4000/products/1")
@@ -78,18 +85,45 @@ class Product extends Component {
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
     //Setting example data
-          this.setState({ loading: false, 
-            id: 1, 
-            productDetails : specifications,
-            images : imgURLs,
-            name : "Laptop1",
-            brand : "Apple",
-            price : 1000,
-            quantity : 3,
-            isActive : true,
-            description : "asldkflaksdj",
-            category : "Electronic",              
-          })
+    await this.setState({
+      loading: false,
+      id: 1,
+      productDetails: specifications,
+      images: imgURLs,
+      name: "Laptop1",
+      brand: "Apple",
+      price: 1000,
+      quantity: 3,
+      isActive: true,
+      description: "asldkflaksdj",
+      category: "Electronic",
+    })
+
+   
+
+    //show image
+    //  show picture
+    let storageRef1 = firebase.storage().ref()
+    let tempTable = [this.state.images.length];
+    for (let i = 0; i < this.state.images.length; i++) {
+      
+      tempTable[i] = (await storageRef1.child(this.state.images[i].url).getDownloadURL());
+      console.log(tempTable[i]);
+    }
+    this.setState({
+      imageGlobal: tempTable
+    },console.log(tempTable));
+
+
+    // for(let i = 0; i < imageGlobal.length; i++){
+    //     let storageRef1 = firebase.storage().ref()
+    //     storageRef1.child(this.state.images[i]).getDownloadURL().then((url) => {
+    //       //this.setState({ imageGlobal: url })
+    //       imageGlobal[i] = url;
+    //     })
+    // }
+    
+
   }
 
   handleChange(event) {
@@ -99,90 +133,90 @@ class Product extends Component {
   render() {
     return (
       <div className="content">
-         {this.state.loading ? (
+        {this.state.loading ? (
           <Spinner />
         ) : (
-        <Grid fluid>
-          <Row>
-            <Col md={9}>
-              <Card
-                title="Product"
-                content={
-                  <form>
-                    <Carousel>
-                      {this.state.images.map((url) => {
-                        return (
-                          <Carousel.Item>
-                            <img width={500} height={400} src={url.url} />
-                          </Carousel.Item>
-                        );
-                      })}
-                    </Carousel>
+            <Grid fluid>
+              <Row>
+                <Col md={9}>
+                  <Card
+                    title="Product"
+                    content={
+                      <form>
+                        <Carousel >
+                          {this.state.imageGlobal.map((url) => {
+                            return (
+                              <Carousel.Item >
+                                <img style={styleCarousel}  width={300} height={400} src={url} />
+                              </Carousel.Item>
+                            );
+                          })}
+                        </Carousel>
 
-                    <h2>{this.state.name}</h2>
-                    <p>
-                      <Row className="show-grid">
-                        <Col xs={4} md={6}>
-                          <Label>Price: </Label> &nbsp; {this.state.price}
-                        </Col>
-                        <Col xs={4} md={6}>
-                          <Label>Category: </Label>&nbsp; {this.state.category}
-                        </Col>
-                      </Row>
-                      <Row className="show-grid">
-                        <Col xs={4} md={6}>
-                          <Label>Brand: </Label>&nbsp; {this.state.brand}
-                        </Col>
-                        <Col xs={4} md={6}>
-                          <Label>Quantity: </Label>&nbsp; {this.state.quantity}
-                        </Col>
+                        <h2>{this.state.name}</h2>
+                        <p>
+                          <Row className="show-grid">
+                            <Col xs={4} md={6}>
+                              <Label>Price: </Label> &nbsp; {this.state.price}
+                            </Col>
+                            <Col xs={4} md={6}>
+                              <Label>Category: </Label>&nbsp; {this.state.category}
+                            </Col>
+                          </Row>
+                          <Row className="show-grid">
+                            <Col xs={4} md={6}>
+                              <Label>Brand: </Label>&nbsp; {this.state.brand}
+                            </Col>
+                            <Col xs={4} md={6}>
+                              <Label>Quantity: </Label>&nbsp; {this.state.quantity}
+                            </Col>
 
-                      </Row>
-                      <Row className="show-grid">
-                        <FormGroup controlId="formControlsTextarea">
-                          <ControlLabel>Description</ControlLabel>
-                          <FormControl componentClass="textarea" value={this.state.description} disabled={true} />
-                        </FormGroup>
-                      </Row>
-                    </p>
+                          </Row>
+                          <Row className="show-grid">
+                            <FormGroup controlId="formControlsTextarea">
+                              <ControlLabel>Description</ControlLabel>
+                              <FormControl componentClass="textarea" value={this.state.description} disabled={true} />
+                            </FormGroup>
+                          </Row>
+                        </p>
 
 
-                    <label>
-                      <span>Product is Active </span>
-                      <Switch onChange={this.handleChange} checked={this.state.isActive} className="react-switch" />
-                    </label>
+                        <label>
+                          <span>Product is Active </span>
+                          <Switch onChange={this.handleChange} checked={this.state.isActive} className="react-switch" />
+                        </label>
 
-                    <Table striped hover>
-                      <thead>
-                        <tr>
-                          <th>Specification</th>
-                          <th>Specification Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.productDetails.map((prop, key) => {
-                          return (
-                            <tr key={key}>
-                              <td> {prop.specName} </td>
-                              <td> {prop.specValue} </td>
+                        <Table striped hover>
+                          <thead>
+                            <tr>
+                              <th>Specification</th>
+                              <th>Specification Value</th>
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
+                          </thead>
+                          <tbody>
+                            {this.state.productDetails.map((prop, key) => {
+                              return (
+                                <tr key={key}>
+                                  <td> {prop.specName} </td>
+                                  <td> {prop.specValue} </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
 
-                    <Button bsStyle="info" pullRight fill type="submit"  onClick={ this.saveBtn }>
-                      Update
+                        <Button bsStyle="info" pullRight fill type="submit" onClick={this.saveBtn}>
+                          Update
                     </Button>
-                    <div className="clearfix" />
-                  </form>
-                }
-              />
-            </Col>
+                        <div className="clearfix" />
+                      </form>
+                    }
+                  />
+                </Col>
 
-          </Row>
-        </Grid>
-        )}
+              </Row>
+            </Grid>
+          )}
       </div>
     );
   }

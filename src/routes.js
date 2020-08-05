@@ -41,7 +41,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin","Employee","user"],
+    type: ["Admin","Employee","user","Change Manager","Engineer"],
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
@@ -172,7 +172,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["Change Manager","Engineer"],
     path: "/requirements",
     name: "Requirements",
     icon: "pe-7s-note2",
@@ -185,14 +185,6 @@ const dashboardRoutes = [
     name: "Report",
     icon: "pe-7s-graph",
     component: Report,
-    layout: "/admin"
-  },
-  {
-    type: ["Admin"],
-    path: "/test",
-    name: "Test",
-    icon: "pe-7s-graph",
-    component: Test,
     layout: "/admin"
   }
 
