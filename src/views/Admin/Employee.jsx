@@ -74,8 +74,7 @@ class Employee extends Component {
   //save Profile
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files) { }
-    else {
+    if (this.state.files) { 
       //upload image file.name should be userid
       let bucketName = 'images/employee/'
       let file = this.state.files[0]
@@ -83,7 +82,7 @@ class Employee extends Component {
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
-      await uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         () => {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
@@ -94,30 +93,7 @@ class Employee extends Component {
     //.........
   }
 
-  handleUploadChange = async (files) => {
-    console.log("handleUploadChange()")
-    await this.setState({
-      files: files
-    })
-    //upload image file.name should be userid
-    let bucketName = 'images/employee/'
-    let file = this.state.files[0]
-    console.log(file);
-    let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
-    // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
-    let uploadTask = storageRef.put(file)
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      () => {
-        let downloadURL = uploadTask.snapshot.downloadURL
-      }
-    )
-    //show image
-    let storageRef1 = firebase.storage().ref()
-    storageRef1.child(`images/employee/` + this.state.files[0].name).getDownloadURL().then((url) => {
-      this.setState({ image: url })
-    })
-    console.log("End handleUploadChange()")
-  }
+  
   handleUploadChange = async (files) => {
     console.log("handleUploadChange()")
 
@@ -350,7 +326,7 @@ class Employee extends Component {
                             </DropdownButton>
                           </Col>
                         </Row>
-                        <Button bsStyle="info" pullRight fill type="submit" onClick={this.saveBtn}>
+                        <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
                         </Button>
                         <div className="clearfix" />

@@ -51,7 +51,7 @@ class Profile extends Component {
   saveBtn = async () => {
     console.log("saveBtn()");
     if (this.state.files)
-{
+    {
       //upload image file.name should be userid
       let bucketName = 'images/vendor/1/'
       let file = this.state.files[0]
@@ -244,7 +244,7 @@ class Profile extends Component {
                       </Row>
                     </div>
 
-                    <Button bsStyle="info" pullRight fill type="submit" onClick={this.saveBtn}>
+                    <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                       Update
                     </Button>
                     <div className="clearfix" />
