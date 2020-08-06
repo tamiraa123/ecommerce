@@ -14,24 +14,22 @@ import {
   Carousel, Image
 } from "react-bootstrap";
 
+import firebase from '../../firebase';
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
-import firebase from '../../firebase';
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
+
 
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
+
+const urlsFromBackEnd = [
+  "images/vendor/1/products/h1.jpg",
+  "images/vendor/1/products/h2.jpg",
 ];
 
 class Product extends Component {
@@ -45,50 +43,80 @@ class Product extends Component {
       price: "",
       brand: "",
       quantity: "",
-      images: [],
+      category: "",
       isActive: false,
+
       productDetails: [],
-      category: ""
+      images: [],
+      imageLocalURLs: [],
+      imageGlobalURLs: []
     }
     this.onDrop = this.onDrop.bind(this);
   }
   onDrop(picture) {
+    let bucketName = 'images/vendor/1/products/'
+    let tpicture = []//= this.state.imageLocalURLs;
+    let picNames = this.state.images.concat(picture).map(file => file.name);
+    
+    console.log(picNames);
+    for(let i = 0; i < picNames.length; i ++)
+      tpicture.push(bucketName + picNames[i]);
+    
+    
     this.setState({
-      images: this.state.images.concat(picture),
-    });
+      imageLocalURLs: tpicture,
+    }, console.log(this.state.imageLocalURLs));
   }
+  
+
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
 
-    console.log(this.state.images)
-  }
+    console.log(this.state.imageLocalURLs);
 
- //Save Profile
-  saveBtn = () => {
-    // let bucketName = 'images/Vendor/'+vendorid
-    // let file = this.state.files[0]
-    // let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
-    // let uploadTask = storageRef.put(file)
-    // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    //   ()=>{
+  }
+  handleDoneBtn = () => {
+    //  upload picture
+    // let bucketName = 'images/vendor/1/products'
+    // let pictures = this.state.images//this.state.files[0]
+    // for (let i = 0; i < pictures.length; i++) {
+    //   let storageRef = firebase.storage().ref(`${bucketName}/${file[i].name}`)
+    //   let uploadTask = storageRef.put(file[i])
+    //   uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //     () => {
     //       let downloadURL = uploadTask.snapshot.downloadURL
-    //   }
+    //     }
     //   )
+    // }
+
+    //Go back
+    this.props.history.goBack();
   }
+  async componentDidMount() {
+    this.setState({
 
-
-  componentDidMount() {
-    this.state.productDetails = specifications;
-    this.state.images = imgURLs;
-    this.state.name = "Laptop 1";
-    this.state.brand = "Apple";
-    this.state.price = "1000$";
-    this.state.quantity = "10";
-    this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop";
-    this.state.category = "Electronic";
-    console.log(this.state.description);
+      name: "Laptop 1",
+      description: "This laptop is best selling laptop",
+      price: "1000$",
+      brand: "Apple",
+      quantity: "10",
+      category: "Electronic",
+      isActive: true,
+      productDetails: specifications,
+      //images/vendor/1/products/1.jpg
+      imageLocalURLs: urlsFromBackEnd,
+    });
+    //  show picture
+    let storageRef1 = firebase.storage().ref()
+    let tempTable = [urlsFromBackEnd.length];
+    for (let i = 0; i < urlsFromBackEnd.length; i++) {
+      tempTable[i] = (await storageRef1.child(urlsFromBackEnd[i]).getDownloadURL());
+    }
+    this.setState({
+      //"https://firebasestorage.googleapis.com/v0/b/eshop-abfb2.appspot.com/o/images%2Fvendor%2F1%2Fproducts%2F2.jpg?alt=media&token=602fb3e1-ac23-4967-9634-b8030e6b5909"
+      imageGlobalURLs: tempTable
+    }, console.log(this.state.imageGlobalURLs));
   }
 
   render() {
@@ -210,48 +238,18 @@ class Product extends Component {
                       </tbody>
                     </Table>
 
-                    {/* <FormInputs
-                      ncols={["col-md-2 pullRight fill"]}
-                      properties={[
-                        {
-                          label: "Product Images",
-                          type: "submit",
-                          bsClass: "form-control",
-                          name: "uploadPicsButton",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    /> */}
-                    {/* <Row>
-                    <div className="col-md-2">
-                          <Button bsStyle="info" pullLeft fill onClick = {this. }>
-                            Update
-                          </Button>
-                    </div>
-                    </Row> */}
+
                     <ImageUploader
                       withIcon={true}
                       withPreview={true}
-                      buttonText='Choose images'
+                      buttonText='Re-select images'
                       onChange={this.onDrop}
                       imgExtension={['.jpg', '.gif', '.png', '.gif']}
                       maxFileSize={5242880}
+                      defaultImages={this.state.imageGlobalURLs}
                     />
-                    <div>
-                      <Carousel>
-                        {this.state.images.map((url) => {
-                          return (
-                            <Carousel.Item>
-                              <img width={500} height={400} src={url.url} />
-                            </Carousel.Item>
-                          );
-                        })}
-                      </Carousel>
-                    </div>
-                    {/* <FilePond allowMultiple={true} /> */}
-                    <Button bsStyle="info" pullRight fill type="submit" onClick={ this.saveBtn }>
-                      Update
+                    <Button bsStyle="info" pullRight fill onClick={this.handleDoneBtn}>
+                      Done
                     </Button>
                     <div className="clearfix" />
                   </form>
