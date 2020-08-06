@@ -7,31 +7,22 @@ import {
   ControlLabel,
   FormControl,
   Table,
-  Carousel
-} from "react-bootstrap";
+  } from "react-bootstrap";
 
 import firebase from '../../firebase';
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import ImageUploader from 'react-images-upload';
+
 
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const styleCarousel ={
-  display: "block",
-  marginLeft: "auto",
-  marginRight: "auto",
-};
 
-const urlsFromBackEnd = [
-  "images/vendor/1/products/h1.jpg",
-  "images/vendor/1/products/h2.jpg",
-];
-
-class Product extends Component {
+class Newproduct extends Component {
   constructor(props) {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
@@ -46,45 +37,53 @@ class Product extends Component {
       isActive: false,
       productDetails: [],
       images: [],
-      imageLocalURLs: [],
-      imageGlobalURLs: []
+      imageLocalURLs: []
     }
+    this.onDrop = this.onDrop.bind(this);
   }
-
-
+  onDrop(picture) {
+    let bucketName = 'images/vendor/1/products/'
+    this.setState({
+      images: this.state.images.concat(picture),
+      imageLocalURLs: this.state.images.concat(picture).map(file => bucketName + file.name)
+    }
+    );
+  }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value}, console.log(this.state.imageLocalURLs))
+    this.setState({ [name]: value }, () => console.log(this.state))
   }
   handleDoneBtn = () => {
-    //send Post request to update product info price, category, manifacturer, quantity
-
+    //  upload picture
+    let pictures = this.state.images//this.state.files[0]
+    for (let i = 0; i < pictures.length; i++) {
+      let storageRef = firebase.storage().ref(`${this.state.imageLocalURLs}`)
+      let uploadTask = storageRef.put(this.state.images[i])
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {
+          let downloadURL = uploadTask.snapshot.downloadURL
+        }
+      )
+    }
+    ///////////
+    
+    alert("Successfully added");
     //Go back
     this.props.history.goBack();
   }
   async componentDidMount() {
     this.setState({
-      name: "Laptop 1",
-      description: "This laptop is best selling laptop",
-      price: "1000$",
-      brand: "Apple",
-      quantity: "10",
-      category: "Electronic",
-      status: "Active",
+      name: "",
+      description: "",
+      price: "",
+      brand: "",
+      quantity: "",
+      category: "",
+      isActive: false,
       productDetails: specifications,
       //images/vendor/1/products/1.jpg
-      imageLocalURLs: urlsFromBackEnd,
+      imageLocalURLs: "",
     });
-    //  show picture
-    let storageRef1 = firebase.storage().ref()
-    let tempTable = [urlsFromBackEnd.length];
-    for (let i = 0; i < urlsFromBackEnd.length; i++) {
-      tempTable[i] = (await storageRef1.child(urlsFromBackEnd[i]).getDownloadURL());
-    }
-    this.setState({
-      //"https://firebasestorage.googleapis.com/v0/b/eshop-abfb2.appspot.com/o/images%2Fvendor%2F1%2Fproducts%2F2.jpg?alt=media&token=602fb3e1-ac23-4967-9634-b8030e6b5909"
-      imageGlobalURLs: tempTable
-    }, console.log(this.state.imageGlobalURLs));
   }
   render() {
     return (
@@ -93,7 +92,7 @@ class Product extends Component {
           <Row>
             <Col>
               <Card
-                title="Product"
+                title="New Product"
                 content={
                   <form>
                     <FormInputs
@@ -139,7 +138,7 @@ class Product extends Component {
                       }
                     />
                     <FormInputs
-                      ncols={["col-md-9", "col-md-3"]}
+                      ncols={["col-md-12"]}
                       properties={[
                         {
                           label: "Product Name",
@@ -148,15 +147,6 @@ class Product extends Component {
                           placeholder: "Name",
                           defaultValue: this.state.name,
                           name: "productname",
-                          onChange: this.handleChange.bind(this)
-                        },
-                        {
-                          label: "Status",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Status",
-                          defaultValue: this.state.status,
-                          name: "status",
                           onChange: this.handleChange.bind(this)
                         }
                       ]
@@ -206,17 +196,16 @@ class Product extends Component {
                         </tr>
                       </tbody>
                     </Table>
-                    <Carousel >
-                          {this.state.imageGlobalURLs.map((url) => {
-                            return (
-                              <Carousel.Item >
-                                <img style={styleCarousel}  width={300} height={400} src={url} />
-                              </Carousel.Item>
-                            );
-                          })}
-                        </Carousel>
+                    <ImageUploader
+                      withIcon={true}
+                      withPreview={true}
+                      buttonText='Choose images'
+                      onChange={this.onDrop}
+                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                      maxFileSize={5242880}
+                    />
                     <Button bsStyle="info" pullRight fill onClick={this.handleDoneBtn}>
-                      Done
+                      Add
                     </Button>
                     <div className="clearfix" />
                   </form>
@@ -230,4 +219,4 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export default Newproduct;

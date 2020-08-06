@@ -9,6 +9,7 @@ import myRequirement from "./views/Vendor/Vrequirement";
 import myCard from "./views/Vendor/Vcard";
 import myPromo from "./views/Vendor/Vpromotion";
 import myOrder from "./views/Vendor/Vorder";
+import Newproduct from "./views/Vendor/Newproduct";
 
 const routesAdmin = [
   {
@@ -48,11 +49,18 @@ const routesAdmin = [
     layout: "/admin"
   },
   {
+    path: "/myProducts/Newproduct",
+    name: "Newproduct",
+    component: Newproduct,
+    layout: "/admin"
+  },
+  {
     path: "/myProducts/:id",
     name: "My Product",
     component: myProduct,
     layout: "/admin"
   },
+
   {
     path: "/myRequirements/:id",
     name: "Vendor Requirement",

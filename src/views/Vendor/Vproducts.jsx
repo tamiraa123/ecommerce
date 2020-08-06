@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 
 const thArray = ["#", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
 const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","Yes"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","No"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Yes"],
+  ["1", "Laptop1", "$2,738", "Apple", "5","New"],
+  ["2", "Laptop2", "$3,789", "Samsung", "10","Active"],
+  ["3", "Laptop3", "$6,142", "Dell", "7","Downloaded"],
 ];
 
 
@@ -68,7 +68,6 @@ componentDidMount = () =>{
                                   </td>;
                               })}
                             </tr>
-                         
                         );
                       })}
                     </tbody>
@@ -76,16 +75,13 @@ componentDidMount = () =>{
                 }
               />
             </Col>
-
-
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/myproducts/0`}>
+          <Link to={`/admin/myProducts/newProduct`}>
             Add Product 
           </Link>
         </Button>
-
       </div>
     );
   }
