@@ -27,7 +27,7 @@ class Profile extends Component {
 
     this.state = {
       id: 0,
-      image: iconuser,
+      image: "",
       email: "",
       status: statusD[0], //active fired drop
       vendorName: "",
@@ -41,6 +41,7 @@ class Profile extends Component {
         state: "",
         zip: ""
       },
+      imageGlobal: iconuser,
       files: []
     }
 
@@ -64,6 +65,14 @@ class Profile extends Component {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
+      //show image
+      let storageRef1 = firebase.storage().ref()
+      storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+        this.setState({ imageGlobal: url })
+      })
+
+      //save ............. axios
+      
     }
   }
 
@@ -92,18 +101,20 @@ class Profile extends Component {
       reader.onloadend = () => {
         this.setState({
           file: file,
-          image: reader.result
+          imageGlobal: reader.result
         });
       }
       reader.readAsDataURL(file)
     } catch (err) {
-      this.setState({ image: iconuser });
+      this.setState({ imageGlobal: iconuser });
     }
   }
   componentDidMount = async () => {
+    await this.setState({image: "images/vendor/1/Screen Shot 2020-05-27 at 11.23.27.png"})
+
     let storageRef1 = firebase.storage().ref()
     storageRef1.child(this.state.image).getDownloadURL().then((url) => {
-      this.setState({ image: url })
+      this.setState({ imageGlobal: url })
     })
   }
   render() {
@@ -236,7 +247,7 @@ class Profile extends Component {
                         <Col md={4}>
                           <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
                           <div onClick={this.editImage}>
-                            <Image width="100%" src={this.state.image} rounded />
+                            <Image width="100%" src={this.state.imageGlobal} rounded />
                           </div>
                         </Col>
                         <Col md={4}>

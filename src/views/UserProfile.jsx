@@ -56,7 +56,7 @@ class UserProfile extends Component {
   //save Profile
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files) { 
+    if (this.state.files) {
       //upload image file.name should be userid
       let bucketName = 'images/employee/'
       let file = this.state.files[0]
@@ -69,10 +69,15 @@ class UserProfile extends Component {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
-     }
-    else {
+
+      //show image
+      let storageRef1 = firebase.storage().ref()
+      storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+        this.setState({ imageGlobal: url })
+      })
      
     }
+
     //save value
 
     //.........

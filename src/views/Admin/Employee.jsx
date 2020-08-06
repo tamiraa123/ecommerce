@@ -87,6 +87,12 @@ class Employee extends Component {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
+
+       //show image
+       let storageRef1 = firebase.storage().ref()
+       storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+         this.setState({ imageGlobal: url })
+       })
     }
     //save value
 
