@@ -20,6 +20,7 @@ import Vendors from "views/Admin/Vendors.jsx";
 import Category from "views/Admin/Category.jsx";
 import Requirement from "views/Admin/Requirements.jsx";
 import Report from "views/Admin/Report.jsx";
+import EditProducts from "views/Engineer/EditProducts.jsx";
 
 import Test from "views/Admin/Test.jsx";
 
@@ -185,6 +186,14 @@ const dashboardRoutes = [
     name: "Report",
     icon: "pe-7s-graph",
     component: Report,
+    layout: "/admin"
+  },
+  {
+    type: ["Engineer"],
+    path: "/editproducts",
+    name: "EditProducts",
+    icon: "pe-7s-graph",
+    component: EditProducts,
     layout: "/admin"
   }
 

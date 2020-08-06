@@ -8,7 +8,6 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
 import routesAdmin from "routesAdmin.js";
-
 import image from "assets/img/sidebar-3.jpg";
 
 

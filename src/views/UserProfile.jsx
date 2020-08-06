@@ -56,8 +56,7 @@ class UserProfile extends Component {
   //save Profile
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files) { }
-    else {
+    if (this.state.files) { 
       //upload image file.name should be userid
       let bucketName = 'images/employee/'
       let file = this.state.files[0]
@@ -65,11 +64,14 @@ class UserProfile extends Component {
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
-      await uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         () => {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
+     }
+    else {
+     
     }
     //save value
 
@@ -288,9 +290,9 @@ class UserProfile extends Component {
                             }
                           ]}
                         />
-                        <Button bsStyle="info" pullRight fill type="submit" onClick={this.saveBtn}>
+                        <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update Profile
-                    </Button>
+                        </Button>
                         <div className="clearfix" />
                       </form>
                     }
