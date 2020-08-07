@@ -147,23 +147,23 @@ class UserProfile extends Component {
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
 
-    await this.setState({
-      loading: false,
-      id: 1,
-      firstname: "Tamir",
-      lastname: "Baldandorj",
-      email: "tamir.baldandorj@gmail.com",
-      status: "Active",
-      phone: "6418191115",
-      address: {
-        city: "Fairfield",
-        street: "asdasd",
-        state: "Iowa",
-        zip: "52556",
-      },
-      role: "Admin",
-      image: "images/employee/1.jpg",
-    })
+    // await this.setState({
+    //   loading: false,
+    //   id: 1,
+    //   firstname: "Tamir",
+    //   lastname: "Baldandorj",
+    //   email: "tamir.baldandorj@gmail.com",
+    //   status: "Active",
+    //   phone: "6418191115",
+    //   address: {
+    //     city: "Fairfield",
+    //     street: "asdasd",
+    //     state: "Iowa",
+    //     zip: "52556",
+    //   },
+    //   role: "Admin",
+    //   image: "images/employee/1.jpg",
+    // })
 
     //show image
     let storageRef1 = firebase.storage().ref()

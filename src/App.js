@@ -31,8 +31,8 @@ export default class App extends Component {
         // this.setState({token});
         
         this.setState({role});
-        console.log("App.js");
-        console.log(role);
+        // console.log("App.js");
+        // console.log(role);
         if(role === "ROLE_VENDOR")
             this.router.history.push("/admin/profile");
         else
