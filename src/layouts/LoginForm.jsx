@@ -28,13 +28,14 @@ export default class LoginForm extends Component {
 
   doLogIn = () => {
     console.log("LoginForm-> doLogIn")
-    console.log(server.url);
+   
     if (this.state.email === "" || this.state.password === "") {
       this.setState({ error: "Please fill all required fields!" });
     } else {
       console.log("doLogIn()");
+      console.log(server.url+"/login");
       axios
-      .post("10.10.11.139:8080/eshopadmin/login", {
+      .post(server.url+"/login", {
         username: this.state.email,
         password: this.state.password,
       })
