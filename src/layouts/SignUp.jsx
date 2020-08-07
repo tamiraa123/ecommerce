@@ -4,21 +4,23 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
+import server from "../server.json";
+
 {/* <script crossorigin src="..."></script> */ }
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      companyName: "",
+      // companyName: "",
       email: "",
-      vendorContactNo: "",
+      // vendorContactNo: "",
       password: "",
       reppassword: "",
       errors: {
-        companyName: "",
+        // companyName: "",
         email: "",
-        vendorContactNo: "",
+        // vendorContactNo: "",
         password: "",
         reppassword: "",
 
@@ -32,33 +34,37 @@ class UserProfile extends Component {
 
     console.log(this.state);
   }
-  handleRegisterBtn = () => {
-    // axios
-    //   .post('http://10.10.14.62:8080/addVendor',
-    //     {
-    //       vendorname: this.state.companyName,
-    //       email: this.state.email,
-    //       vendorphone: this.state.vendorContactNo,
-    //       password: this.state.password
-    //     }
-    //   )
-    //   .then((result) => {
-    //     window.location = '/';
-    //   })
-    //   .catch((err) =>
-    //     this.setState({ error: "Error" })//err.response.data.error.message
-    //   );
+  handleRegisterBtn = (event) => {
+    axios
+      .post(server.url+"/signup",
+        {
+          // vendorname: this.state.companyName,
+          username: this.state.email,
+          // vendorphone: this.state.vendorContactNo,
+          password: this.state.password,
+          role: "ROLE_VENDOR"
+        }
+      )
+      .then((result) => {
+        window.location = '/';
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" })//err.response.data.error.message
+      );
 
-    // event.preventDefault();
+    event.preventDefault();
 
     if (this.validate()) {
       console.log(this.state);
 
       let input = {};
-      input["companyName"] = "";
+      // input["companyName"] = "";
+      // input["vendorContactNo"] = "";
+      
       input["email"] = "";
       input["password"] = "";
       input["reppassword"] = "";
+      
       this.setState({ input: input });
 
       alert('Demo Form is submited');
@@ -69,10 +75,10 @@ class UserProfile extends Component {
     let errors = {};
     let isValid = true;
 
-    if (!input["companyName"]) {
-      isValid = false;
-      errors["companyName"] = "Please enter your company name.";
-    }
+    // if (!input["companyName"]) {
+    //   isValid = false;
+    //   errors["companyName"] = "Please enter your company name.";
+    // }
 
     if (!input["email"]) {
       isValid = false;
@@ -89,19 +95,19 @@ class UserProfile extends Component {
     }
 //
 
-if (!input["vendorContactNo"]) {
-  isValid = false;
-  errors["vendorContactNo"] = "Please enter your phone number.";
-}
+// if (!input["vendorContactNo"]) {
+//   isValid = false;
+//   errors["vendorContactNo"] = "Please enter your phone number.";
+// }
 
-if (typeof input["vendorContactNo"] !== "undefined") {
+// if (typeof input["vendorContactNo"] !== "undefined") {
 
-  var pattern = new RegExp('((\\(\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}', 'i');
-  if (!pattern.test(input["vendorContactNo"])) {
-    isValid = false;
-    errors["vendorContactNo"] = "Please enter valid phone number.";
-  }
-}
+//   var pattern = new RegExp('((\\(\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}', 'i');
+//   if (!pattern.test(input["vendorContactNo"])) {
+//     isValid = false;
+//     errors["vendorContactNo"] = "Please enter valid phone number.";
+//   }
+// }
 
     if (!input["password"]) {
       isValid = false;
@@ -141,7 +147,7 @@ if (typeof input["vendorContactNo"] !== "undefined") {
                 <form>
                   <div className="text-danger">{this.state.errors.companyName}</div>
                   
-                  <FormInputs
+                  {/* <FormInputs
                     ncols={["col-md-12"]}
                     properties={[
                       {
@@ -153,7 +159,7 @@ if (typeof input["vendorContactNo"] !== "undefined") {
                         onChange: this.handleChange.bind(this)
                       }
                     ]}
-                  />
+                  /> */}
                   <div className="text-danger">{this.state.errors.email}</div>
                   <FormInputs
                     ncols={["col-md-12"]}
@@ -169,7 +175,7 @@ if (typeof input["vendorContactNo"] !== "undefined") {
                       },
                     ]}
                   />
-                  <div className="text-danger">{this.state.errors.vendorContactNo}</div>
+                  {/* <div className="text-danger">{this.state.errors.vendorContactNo}</div>
                   
                   <FormInputs
                     ncols={["col-md-12"]}
@@ -183,7 +189,7 @@ if (typeof input["vendorContactNo"] !== "undefined") {
                         onChange: this.handleChange.bind(this)
                       }
                     ]}
-                  />
+                  /> */}
                   <div className="text-danger">{this.state.errors.password}</div>
                   <FormInputs
                     ncols={["col-md-12"]}
