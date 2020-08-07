@@ -3,7 +3,8 @@ import {
   Grid,
   Row,
   Col,
-  Image
+  Image,
+  Modal
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -43,7 +44,8 @@ class UserProfile extends Component {
       error: null,
       loading: false,
       imageGlobal: iconuser,
-      files: []
+      files: [],
+      show: false
     }
     this.editImage = this.editImage.bind(this);
   }
@@ -56,7 +58,8 @@ class UserProfile extends Component {
   //save Profile
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files) {
+    console.log(this.state.files);
+    if (this.state.files.length) {
       //upload image file.name should be userid
       let bucketName = 'images/employee/'
       let file = this.state.files[0]
@@ -77,11 +80,16 @@ class UserProfile extends Component {
       })
      
     }
-
+    this.setState({ show: true });
     //save value
 
     //.........
   }
+
+  handleCloseModal= () =>  {
+    this.setState({ show: false });
+  }
+
   handleUploadChange = async (files) => {
     console.log("handleUploadChange()")
 
@@ -298,6 +306,24 @@ class UserProfile extends Component {
                         <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update Profile
                         </Button>
+                        <Modal
+                              show={this.state.show}
+                              onHide={this.handleCloseModal}
+                              container={this}
+                              aria-labelledby="contained-modal-title"
+                            >
+                              <Modal.Header closeButton>
+                                <Modal.Title id="contained-modal-title">
+                                  Success
+                                </Modal.Title>
+                              </Modal.Header>
+                              <Modal.Body>
+                                Successfully updated
+                              </Modal.Body>
+                              <Modal.Footer>
+                                <Button onClick={this.handleCloseModal}>Close</Button>
+                              </Modal.Footer>
+                            </Modal>
                         <div className="clearfix" />
                       </form>
                     }

@@ -9,52 +9,54 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import "./LoginForm.css";
 import axios from "axios";
+import server from "../server.json";
 
 
-const rolesD = ["Vendor", "Employee"];
+// const rolesD = ["Vendor", "Employee"];
 export default class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      role: rolesD[0],
+      //role: rolesD[0],
       error: null,
       loading: false,
     };
-    this.handleChangeRole = this.handleChangeRole.bind(this);
+    // this.handleChangeRole = this.handleChangeRole.bind(this);
   }
 
   doLogIn = () => {
     console.log("LoginForm-> doLogIn")
-
+    console.log(server.url);
     if (this.state.email === "" || this.state.password === "") {
       this.setState({ error: "Please fill all required fields!" });
     } else {
-      // console.log("doLogIn()");
-      // axios
-      // .post("http://localhost:4000/user/login", {
-      //   email: this.state.email,
-      //   password: this.state.password,
-      // })
-      // .then((result) => {
+      console.log("doLogIn()");
+      axios
+      .post("10.10.11.139:8080/eshopadmin/login", {
+        username: this.state.email,
+        password: this.state.password,
+      })
+      .then((result) => {
       this.props.onLogin(this.state.role); //result.data[0].token,
-      if(this.state.role == "Employee") {
-        
-        localStorage.setItem("role", "Admin");//here need to set Role of Employee
-      } else {
-        localStorage.setItem("role", this.state.role);
-      }
-      // })
-      // .catch((err) =>
-      //    this.setState({error: "Error" })//err.response.data.error.message
-      // );
+      //if(this.state.role == "Employee") {
+        console.log(result);
+      // localStorage.setItem("userId", result.userId);
+      // localStorage.setItem("role", result.role);//here need to set Role of Employee
+      // } else {
+      //   localStorage.setItem("role", this.state.role);
+      // }
+      })
+      .catch((err) =>
+         this.setState({error: "Error" })//err.response.data.error.message
+      );
     }
   };
 
-  handleChangeRole(event) {
-    this.setState({ role: rolesD[event] });
-  }
+  // handleChangeRole(event) {
+  //   this.setState({ role: rolesD[event] });
+  // }
 
   handleChange(event) {
     const { target: { name, value } } = event
@@ -102,7 +104,7 @@ export default class LoginForm extends Component {
                     ]}
                   />
 
-                  <DropdownButton
+                  {/* <DropdownButton
                     title={this.state.role}
                     id="document-type"
                     onSelect={this.handleChangeRole}
@@ -112,7 +114,7 @@ export default class LoginForm extends Component {
                         {opt}
                       </MenuItem>
                     ))}
-                  </DropdownButton>
+                  </DropdownButton> */}
 
                   <Button bsStyle="info" pullRight fill type="submit" onClick={this.doLogIn}>
                     Login

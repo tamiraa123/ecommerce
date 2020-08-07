@@ -60,7 +60,7 @@ class Employee extends Component {
   //save Profile
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files) {
+    if (this.state.files.length) {
       //upload image file.name should be userid
       let bucketName = 'images/user/'
       let file = this.state.files[0]
