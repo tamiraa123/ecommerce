@@ -26,7 +26,7 @@ import Test from "views/Admin/Test.jsx";
 
 const dashboardRoutes = [
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/index",
     name: "One-Time payment",
     icon: "pe-7s-user",
@@ -34,7 +34,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/profile",
     name: "Profile",
     icon: "pe-7s-user",
@@ -42,7 +42,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin","Employee","user","Change Manager","Engineer"],
+    type: ["ROLE_ADMIN","Employee","user","ROLE_MANAGER","ROLE_ENGINEER"],
     path: "/user",
     name: "User Profile",
     icon: "pe-7s-user",
@@ -50,7 +50,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["user", "Vendor"],
+    type: ["user", "ROLE_VENDOR"],
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
@@ -58,7 +58,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/myProducts",
     name: "My Products",
     icon: "pe-7s-keypad",
@@ -66,7 +66,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/myPromotions",
     name: "Promotions",
     icon: "pe-7s-gift",
@@ -75,7 +75,7 @@ const dashboardRoutes = [
   },
   
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/myCards",
     name: "My cards",
     icon: "pe-7s-cash",
@@ -84,7 +84,7 @@ const dashboardRoutes = [
   },
 
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/myOrders",
     name: "Orders",
     icon: "pe-7s-cart",
@@ -92,7 +92,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Vendor"],
+    type: ["ROLE_VENDOR"],
     path: "/myRequirements",
     name: "My Requirements",
     icon: "pe-7s-pen",
@@ -125,7 +125,7 @@ const dashboardRoutes = [
   },
 
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/employees",
     name: "Employees",
     icon: "pe-7s-users",
@@ -133,7 +133,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/products",
     name: "Products",
     icon: "pe-7s-shopbag",
@@ -141,7 +141,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/payments",
     name: "Payments",
     icon: "pe-7s-cash",
@@ -149,7 +149,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/customers",
     name: "Customers",
     icon: "pe-7s-user-female",
@@ -157,7 +157,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/vendors",
     name: "Vendors",
     icon: "pe-7s-share",
@@ -165,7 +165,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/category",
     name: "Category",
     icon: "pe-7s-network",
@@ -173,7 +173,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Change Manager","Engineer"],
+    type: ["ROLE_MANAGER","ROLE_ENGINEER"],
     path: "/requirements",
     name: "Requirements",
     icon: "pe-7s-note2",
@@ -181,7 +181,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Admin"],
+    type: ["ROLE_ADMIN"],
     path: "/reports",
     name: "Report",
     icon: "pe-7s-graph",
@@ -189,7 +189,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    type: ["Engineer"],
+    type: ["ROLE_ENGINEER"],
     path: "/editproducts",
     name: "EditProducts",
     icon: "pe-7s-graph",

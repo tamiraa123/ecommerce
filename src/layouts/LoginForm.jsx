@@ -26,32 +26,31 @@ export default class LoginForm extends Component {
     // this.handleChangeRole = this.handleChangeRole.bind(this);
   }
 
-  doLogIn = () => {
+  doLogIn = async () => {
     console.log("LoginForm-> doLogIn")
-   
+
     if (this.state.email === "" || this.state.password === "") {
       this.setState({ error: "Please fill all required fields!" });
     } else {
-      console.log("doLogIn()");
-      console.log(server.url+"/login");
-      axios
-      .post(server.url+"/login", {
-        username: this.state.email,
-        password: this.state.password,
-      })
-      .then((result) => {
-      this.props.onLogin(this.state.role); //result.data[0].token,
-      //if(this.state.role == "Employee") {
-        console.log(result);
-      // localStorage.setItem("userId", result.userId);
-      // localStorage.setItem("role", result.role);//here need to set Role of Employee
-      // } else {
-      //   localStorage.setItem("role", this.state.role);
-      // }
-      })
-      .catch((err) =>
-         this.setState({error: "Error" })//err.response.data.error.message
-      );
+     await axios
+        .post(server.url + "/login", {
+          username: this.state.email,
+          password: this.state.password,
+        })
+        .then((result) => {
+          console.log(result);
+          this.props.onLogin(result.data.role); //result.data[0].token,
+          //if(this.state.role == "Employee") {
+          localStorage.setItem("token", result.data.token);
+          localStorage.setItem("userId", result.data.userId);
+          localStorage.setItem("role", result.data.role);//here need to set Role of Employee
+          // } else {
+          //   localStorage.setItem("role", this.state.role);
+          // }
+        })
+        .catch((err) =>
+          this.setState({ error: "Error" })//err.response.data.error.message
+        );
     }
   };
 

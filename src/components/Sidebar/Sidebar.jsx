@@ -15,8 +15,8 @@ class Sidebar extends Component {
     
   }
   
-  fillRole(role){
-    role = localStorage.getItem('role');
+  fillRole = async (role)=>{
+    role = await localStorage.getItem('role');
     
     if(role === null){}
     else{
