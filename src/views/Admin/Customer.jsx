@@ -161,8 +161,10 @@ class Employee extends Component {
       totalScore: 123230,
     })
     //show image
+    console.log(this.state.image);
     let storageRef1 = firebase.storage().ref()
     storageRef1.child(this.state.image).getDownloadURL().then((url) => {
+      
       this.setState({ imageGlobal: url })
     })
   }

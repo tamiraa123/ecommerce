@@ -11,45 +11,46 @@ import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 //Example data
-const thArray = ["#","Vendor Name", "Email", "Phone", "Customer Service Contact No", "Status"];
-const tdArray = [
-  {
-    "id": 1,
-    "image": "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
-    "email": "tamir@rolex.com",
-    "status": "Active",
-    "vendorName": "Rolex",
-    "phone": "8888888888",
-    "custServContactNo": "9999999999",
-    "vendorContactNo": "7777777777",
-    "description": "Best known watch company",
-    "address": {
-        "street": "kjdshfask",
-        "city": "New York",
-        "state": "New York",
-        "zip": "23141552"
-    }
-  },
-  {
-      "id": 2,
-      "image": "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
-      "email": "tamir@rolex.com",
-      "status": "Active",
-      "vendorName": "Rolex",
-      "phone": "8888888888",
-      "custServContactNo": "9999999999",
-      "vendorContactNo": "7777777777",
-      "description": "Best known watch company",
-      "address": {
-          "street": "kjdshfask",
-          "city": "New York",
-          "state": "New York",
-          "zip": "23141552"
-      }
-  }
-];
+const thArray = ["#", "Vendor Name", "Email", "Phone", "Customer Service Contact No", "Status"];
+// const tdArray = [
+//   {
+//     "id": 1,
+//     "image": "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
+//     "email": "tamir@rolex.com",
+//     "status": "Active",
+//     "vendorName": "Rolex",
+//     "phone": "8888888888",
+//     "custServContactNo": "9999999999",
+//     "vendorContactNo": "7777777777",
+//     "description": "Best known watch company",
+//     "address": {
+//         "street": "kjdshfask",
+//         "city": "New York",
+//         "state": "New York",
+//         "zip": "23141552"
+//     }
+//   },
+//   {
+//       "id": 2,
+//       "image": "https://i.pinimg.com/originals/c3/af/ba/c3afba827e7299415cb7034e00bc9533.jpg",
+//       "email": "tamir@rolex.com",
+//       "status": "Active",
+//       "vendorName": "Rolex",
+//       "phone": "8888888888",
+//       "custServContactNo": "9999999999",
+//       "vendorContactNo": "7777777777",
+//       "description": "Best known watch company",
+//       "address": {
+//           "street": "kjdshfask",
+//           "city": "New York",
+//           "state": "New York",
+//           "zip": "23141552"
+//       }
+//   }
+// ];
 
 
 class Vendors extends Component {
@@ -60,22 +61,24 @@ class Vendors extends Component {
     loading: false,
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     //Reading list of vendors
-    // this.setState({ loading: true });
-    //   axios
-    //     .get("http://localhost:4000/employees")
-    //     .then((result) =>{
-
-    //       console.log("hello") 
-    //       this.setState({ vendors : result.data })
-    //       this.setState({ loading: false})
-
-    //     }
-    //     )
-    //     .catch((err) => this.setState({ loading: false, error: err.response }));
+    this.setState({ loading: true });
+    await axios
+      .get(server.url + "/vendors", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then((result) => {
+        this.setState({ vendors: result.data })
+        this.setState({ loading: false })
+      }
+      )
+      .catch((err) => this.setState({ loading: false, error: err.response }));
     //Setting example data
-    this.setState({ vendors: tdArray });
+
+    // this.setState({ vendors: tdArray });
 
   }
 
@@ -105,11 +108,11 @@ class Vendors extends Component {
                           {this.state.vendors.map(props => {
                             return (
                               <tr>
-                                <td><Link to={`/admin/vendors/${props.id}`}>{props.id}</Link></td>
+                                <td><Link to={`/admin/vendors/${props.vendorId}`}>{props.vendorId}</Link></td>
                                 <td>{props.vendorName}</td>
-                                <td>{props.email}</td>
+                                <td>{props.username}</td>
                                 <td>{props.phone}</td>
-                                <td>{props.custServContactNo}</td>
+                                <td>{props.contactMethod}</td>
                                 <td>{props.status}</td>
                               </tr>
                             );

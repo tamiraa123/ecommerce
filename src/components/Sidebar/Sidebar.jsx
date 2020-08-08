@@ -22,7 +22,7 @@ class Sidebar extends Component {
     else{
       this.setState({role: role});
     }
-    console.log(this.state.role);
+   // console.log(this.state.role);
   }
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
