@@ -41,7 +41,9 @@ export default class App extends Component {
     };
 
     handleLogout = () =>{
-        // localStorage.removeItem("token");
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
         // this.setState({ token: null });
         this.router.history.push("/");
     };

@@ -7,104 +7,11 @@ import Card from "components/Card/Card.jsx";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 //Example data
 const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Is Active"];
-const tdArray = [
-  {
-    "id": 12,
-    "name": "Apple 1",
-    "description": "this is apple",
-    "price": 1000,
-    "brand": "Apple",
-    "quantity": "3",
-    "images": [
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      }
-    ],
-    "isActive": false,
-    "productDetails": [
-      {
-        "specName": "CPU",
-        "specValue": "1.5Ghz"
-      },
-      {
-        "specName": "Hard",
-        "specValue": "SSD 500GB"
-      }
-    ],
-    "category": "Electronic"
-  },
-  {
-    "id": 13,
-    "name": "Apple 1",
-    "description": "this is apple",
-    "price": 1000,
-    "brand": "Apple",
-    "quantity": "3",
-    "images": [
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      }
-    ],
-    "isActive": false,
-    "productDetails": [
-      {
-        "specName": "CPU",
-        "specValue": "1.5Ghz"
-      },
-      {
-        "specName": "Hard",
-        "specValue": "SSD 500GB"
-      }
-    ],
-    "category": "Electronic"
-  },
-  {
-    "id": 15,
-    "name": "Apple 1",
-    "description": "this is apple",
-    "price": 1000,
-    "brand": "Apple",
-    "quantity": "3",
-    "images": [
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      },
-      {
-        "url": "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg"
-      }
-    ],
-    "isActive": false,
-    "productDetails": [
-      {
-        "specName": "CPU",
-        "specValue": "1.5Ghz"
-      },
-      {
-        "specName": "Hard",
-        "specValue": "SSD 500GB"
-      }
-    ],
-    "category": "Electronic"
-  }
-];
+
 
 
 class Products extends Component {
@@ -115,24 +22,22 @@ state={
   loading: false,
 }
 
-componentDidMount = () =>{
+componentDidMount = async () =>{
 
-  // this.setState({ loading: true });
-  //   axios
-  //     .get("http://localhost:4000/products")
-  //     .then((result) =>{
-       
-  //       console.log("hello") 
-  //       this.setState({ products : result.data })
-  //       this.setState({ loading: false})
-        
-  //     }
-  //     )
-  //     .catch((err) => this.setState({ loading: false, error: err.response }));
+  this.setState({ loading: true });
+  await axios
+    .get(server.urlHenok + "/products")
+    .then((result) => {
+      console.log(result.data);
+      this.setState({ products: result.data })
+      this.setState({ loading: false })
+    }
+    )
+    .catch((err) => this.setState({ loading: false, error: err.response }));
           
      
      //Setting example data
-      this.setState({products:tdArray});
+     // this.setState({products:tdArray});
 }
 
   render() {
@@ -162,8 +67,8 @@ componentDidMount = () =>{
                        {this.state.products.map(product => {
                         return (
                             <tr>
-                              <td><Link to={`/admin/products/${product.id}`}>{product.id}</Link></td>
-                              <td>{ product.category }</td>
+                              <td><Link to={`/admin/products/${product.productId}`}>{product.productId}</Link></td>
+                              <td>{ product.categoryName }</td>
                               <td>{ product.name }</td>
                               <td>{ product.price }</td>
                               <td>{ product.brand }</td>

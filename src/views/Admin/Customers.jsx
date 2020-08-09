@@ -11,43 +11,44 @@ import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 
 const thArray = ["#", "Email", "First Name", "LastName", "Phone", "State", "City", "isActive"];
 //Example data
 const tdArray = [
   {
-        "id": 1,
-        "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
-        "email": "tamir.baldandorj@gmail.com",
-        "status": "Active",
-        "firstName": "Tamir",
-        "lastName": "Baldandorj",
-        "phone": "6419181115",
-        "address": {
-            "street": "asdfasdf",
-            "city": "Fairfield",
-            "state": "Iowa",
-            "zip": 52556
-        },
-        "totalScore": 100000
+    "id": 1,
+    "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
+    "email": "tamir.baldandorj@gmail.com",
+    "status": "Active",
+    "firstName": "Tamir",
+    "lastName": "Baldandorj",
+    "phone": "6419181115",
+    "address": {
+      "street": "asdfasdf",
+      "city": "Fairfield",
+      "state": "Iowa",
+      "zip": 52556
     },
-    {
-        "id": 2,
-        "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
-        "email": "tamir.baldandorj@gmail.com",
-        "status": "Active",
-        "firstName": "Tamir",
-        "lastName": "Baldandorj",
-        "phone": "6419181115",
-        "address": {
-            "street": "asdfasdf",
-            "city": "Fairfield",
-            "state": "Iowa",
-            "zip": 52556
-        },
-        "totalScore": 130000
-    }
+    "totalScore": 100000
+  },
+  {
+    "id": 2,
+    "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
+    "email": "tamir.baldandorj@gmail.com",
+    "status": "Active",
+    "firstName": "Tamir",
+    "lastName": "Baldandorj",
+    "phone": "6419181115",
+    "address": {
+      "street": "asdfasdf",
+      "city": "Fairfield",
+      "state": "Iowa",
+      "zip": 52556
+    },
+    "totalScore": 130000
+  }
 ];
 
 
@@ -59,20 +60,27 @@ class Customers extends Component {
     loading: false,
   }
 
-  componentDidMount = () => {
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) => {
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    await axios
+      .get(server.url + "/users", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then((result) => {
+        console.log(result.data);
+        this.setState({ customers: result.data })
+        this.setState({ loading: false })
+      }
+      )
+      .catch((err) => this.setState({ loading: false, error: err.response }));
+    //  console.log(this.state.customers);
 
-    //     console.log("hello")
-    //     this.setState({ customers: result.data })
-    //     this.setState({ loading: false })
-    //   }
-    //   )
-    //   .catch((err) => this.setState({ loading: false, error: err.response }));
     //Setting example data
-     this.setState({ customers: tdArray });
+
+
+   // this.setState({ customers: tdArray });
   }
 
   render() {
@@ -101,8 +109,8 @@ class Customers extends Component {
                           {this.state.customers.map(props => {
                             return (
                               <tr>
-                                <td><Link to={`/admin/customers/${props.id}`}>{props.id}</Link></td>
-                                <td>{props.email}</td>
+                                <td><Link to={`/admin/customers/${props.employeeId}`}>{props.employeeId}</Link></td>
+                                <td>{props.username}</td>
                                 <td>{props.firstName}</td>
                                 <td>{props.lastName}</td>
                                 <td>{props.phone}</td>

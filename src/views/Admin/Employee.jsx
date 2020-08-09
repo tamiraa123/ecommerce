@@ -16,8 +16,9 @@ import axios from "axios";
 import Spinner from "../../Spinner";
 import firebase from '../../firebase';
 import iconuser from '../../assets/img/iconuser.png'
+import server from "../../server.json";
 
-const rolesD = ["ADMIN", "ENGINEER", "TICKET MANAGER"];
+const rolesD = ["ROLE_ADMIN", "ROLE_ENGINEER", "ROLE_MANAGER"];
 const statusD = ["ACTIVE", "FIRED", "BREAK"];
 
 const styles = {
@@ -48,7 +49,8 @@ class Employee extends Component {
       error: null,
       loading: false,
       imageGlobal: iconuser,
-      files: []
+      files: [],
+      isAddEmployee:true
     }
 
 
@@ -68,13 +70,23 @@ class Employee extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
+    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
+      this.setState({
+        address: {
+          ...this.state.address, [name]: event.target.value
+        }
+      });
+    } else {
+      this.setState({ [name]: value, event: event })
+    }
+    //console.log(this.state.address);
   }
 
   //save Profile
   saveBtn = async () => {
+    this.setState({ loading: true });
     console.log("saveBtn()");
-    if (this.state.files.length) { 
+    if (this.state.files.length) {
       //upload image file.name should be userid
       let bucketName = 'images/employee/'
       let file = this.state.files[0]
@@ -82,24 +94,66 @@ class Employee extends Component {
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
-       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         () => {
-          let downloadURL = uploadTask.snapshot.downloadURL
+          // let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
 
-       //show image
-       let storageRef1 = firebase.storage().ref()
-       storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
-         this.setState({ imageGlobal: url })
-       })
+      //show image
+      let storageRef1 = firebase.storage().ref()
+      storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+        this.setState({ imageGlobal: url })
+      })
     }
-    //save value
-
+    //save value    //add employee API avah
+    console.log(this.state.address);
+    this.setState({ loading: true });
+    await axios
+      .put(
+        server.url + "/signup/" + this.props.match.params.id,
+        {
+          id: this.state.id,
+          imageUrl: this.state.image,
+          email: this.state.email,
+          status: this.state.status,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          phone: this.state.phone,
+          role: this.state.role,
+          address: this.state.address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+      )
+      .then((result) => {
+        console.log(result)
+        this.setState({
+          loading: false,
+          id: result.data.id,
+          image: result.data.imageUrl,
+          email: result.data.username,
+          status: result.data.status,
+          firstName: result.data.firstName,
+          lastName: result.data.lastName,
+          phone: result.data.phone,
+          address: result.data.address,
+          role: result.data.role,
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );
     //.........
   }
 
-  
+
   handleUploadChange = async (files) => {
     console.log("handleUploadChange()")
 
@@ -131,47 +185,46 @@ class Employee extends Component {
   }
 
   componentDidMount = async () => {
-    //  this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) =>{
-    //         console.log(result.data[0])  
-    //         this.setState({ loading: false, 
-    //                       id: result.data[0].id, 
-    //                       image : result.data[0].image,
-    //                       email : result.data[0].email,
-    //                       status : result.data[0].status,
-    //                       firstName : result.data[0].firstName,
-    //                       lastName : result.data[0].lastName,
-    //                       phone : result.data[0].phone,
-    //                       address : result.data[0].address,
-    //                       role : result.data[0].role,              
-    //                     })
-    //               }
-    //   )
-    //   .catch((err) => 
-    //       this.setState({ loading: false, error: err.response }));
-    //Setting example data
-    await this.setState({
-      loading: false,
-      id: 1,
-      image: "images/employee/1.jpg",
-      email: "tamir.baldandorj@gmail.com",
-      status: "Active",
-      firstName: "Tamir",
-      lastName: "Baldandorj",
-      phone: "6418191115",
-      address: "",
-      role: "Admin",
-      imageGlobal: iconuser,
-      files: []
-    })
 
-    //show image
-    let storageRef1 = firebase.storage().ref()
-    storageRef1.child(this.state.image).getDownloadURL().then((url) => {
-      this.setState({ imageGlobal: url })
-    })
+    if (this.props.match.params.id == 0) {  
+      this.setState({isAddEmployee:true}) 
+    }  //adding Employee
+    else {
+      this.setState({ loading: true,isAddEmployee: false  });
+      await axios
+        .get(server.url + "/employees/" + this.props.match.params.id, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        .then((result) => {
+          console.log(result.data)
+          this.setState({
+            loading: false,
+            id: result.data.id,
+            image: result.data.imageUrl,
+            email: result.data.username,
+            status: result.data.status,
+            firstName: result.data.firstName,
+            lastName: result.data.lastName,
+            phone: result.data.phone,
+            address: result.data.address,
+            role: result.data.role,
+          })
+        }
+        )
+        .catch((err) =>
+          this.setState({ loading: false, error: err.response }));
+      //show image
+      if (this.state.image) {
+        try {
+          let storageRef1 = firebase.storage().ref()
+          storageRef1.child(this.state.image).getDownloadURL().then((url) => {
+            this.setState({ imageGlobal: url })
+          })
+        } catch (err) { }
+      }
+    }
   }
 
   render() {
@@ -236,7 +289,8 @@ class Employee extends Component {
                               placeholder: "Email",
                               defaultValue: this.state.email,
                               name: "email",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              disabled: true
                             },
                           ]
                           }
@@ -264,8 +318,8 @@ class Employee extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Street",
-                              defaultValue: this.state.address.street,
-                              name: "address.street",
+                              defaultValue: this.state.address == null ? "" : this.state.address.street,
+                              name: "street",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}
@@ -278,8 +332,8 @@ class Employee extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "City",
-                              defaultValue: this.state.address.city,
-                              name: "address.city",
+                              defaultValue: this.state.address == null ? "" : this.state.address.city,
+                              name: "city",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -287,8 +341,8 @@ class Employee extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Country",
-                              defaultValue: this.state.address.state,
-                              name: "address.state",
+                              defaultValue: this.state.address == null ? "" : this.state.address.state,
+                              name: "state",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -296,8 +350,8 @@ class Employee extends Component {
                               type: "number",
                               bsClass: "form-control",
                               placeholder: "ZIP Code",
-                              defaultValue: this.state.address.zip,
-                              name: "address.zip",
+                              defaultValue: this.state.address == null ? "" : this.state.address.zip,
+                              name: "zip",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}

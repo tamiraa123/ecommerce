@@ -143,7 +143,7 @@ const dashboardRoutes = [
   {
     type: ["ROLE_ADMIN"],
     path: "/payments",
-    name: "Payments",
+    name: "Payment Method",
     icon: "pe-7s-cash",
     component: Payments,
     layout: "/admin"

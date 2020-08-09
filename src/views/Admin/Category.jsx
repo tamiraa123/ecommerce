@@ -14,6 +14,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import axios from "axios";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 
 //Example data
@@ -54,40 +55,95 @@ class Product extends Component {
         nodes: []
       }],
       selected: '',
+      selectedValue: '',
+      value: '',
       error: null,
-      loading: false
+      loading: false,
     }
     // this.handleChange = this.handleChange.bind(this);
     this.handleChangeTree = this.handleChangeTree.bind(this);
   }
 
-  componentDidMount() {
-
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) => {
-    //     console.log(result.data[0])
-    //     this.setState({
-    //       loading: false,
-    //       category: result.data
-    //     })
-    //   }
-    //   )
-    //   .catch((err) =>
-    //     this.setState({ loading: false, error: err.response }));
-
-    this.setState({ category: treeData });
-    this.setState({ selected: this.state.category[0].key });
+  addBtn = async () => {
+    if (this.state.selected) {
+      await axios
+        .post(server.urlHenok + "/categories/add", {
+          parentId: this.state.selected,
+          value: this.state.value,
+        })
+        .then((result) => {
+          this.setState({ category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: "Error" })
+        );
+    }
+    else {
+      this.setState({ error: "Please select category" })
+    }
+  }
+  editBtn = async () => {
+    if (this.state.selected) {
+      await axios
+        .put(server.urlHenok + "/categories/edit", {
+          categoryId: this.state.selected,
+          value: this.state.value,
+        })
+        .then((result) => {
+          this.setState({ category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: "Error" })
+        );
+    }
+    else {
+      this.setState({ error: "Please select category" })
+    }
+  }
+  deleteBtn = async () => {
+    if (this.state.selected) {
+      await axios
+        .delete(server.urlHenok + "/categories/delete", {
+          categoryId: this.state.selected,
+        })
+        .then((result) => {
+          this.setState({ category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: "Error" })
+        );
+    }
+    else {
+      this.setState({ error: "Please select category" })
+    }
   }
 
-//Selected items
+
+  componentDidMount = async () => {
+
+    this.setState({ loading: true });
+    await axios
+      .get(server.urlHenok + "/categories"
+        // , {headers: {
+        //       Authorization: `Bearer ${localStorage.getItem('token')}`
+        //   },}
+      )
+      .then((result) => {
+        this.setState({ category: result.data, loading: false })
+      }
+      )
+      .catch((err) => this.setState({ loading: false, error: err.response }));
+  }
+
+  //Selected items
   handleChangeTree(event) {
-    this.state.selected = event.key;
+    this.setState({ selected: event.key })
     this.setState({ value: event.label });
+    this.setState({ selectedValue: event.label });
+
   }
 
-//Text input event
+  //Text input event
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
@@ -111,6 +167,7 @@ class Product extends Component {
                         <TreeMenu onClickItem={this.handleChangeTree}
                           data={this.state.category}>
                         </TreeMenu>
+                        <label>Selected <b>{this.state.selectedValue}</b></label>
                         <FormInputs
                           ncols={["col-md-4"]}
                           properties={[
@@ -127,11 +184,12 @@ class Product extends Component {
                           ]
                           }
                         />
+
                         <br />
                         <div className="clearfix" />
-                        <Button bsStyle="info" pullLeft fill type="submit">Add</Button>&nbsp;
-                    <Button bsStyle="info" pullLeft fill type="submit">Edit</Button>&nbsp;
-                    <Button bsStyle="info" pullLeft fill type="submit">Delete</Button>
+                        <Button bsStyle="info" pullLeft fill onClick={this.addBtn}>Add</Button>&nbsp;
+                        <Button bsStyle="info" pullLeft fill onClick={this.editBtn}>Edit</Button>&nbsp;
+                        <Button bsStyle="info" pullLeft fill onClick={this.deleteBtn}>Delete</Button>
                       </form>
                     }
                   />

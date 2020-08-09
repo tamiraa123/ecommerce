@@ -14,6 +14,7 @@ import axios from "axios";
 import Spinner from "../Spinner";
 import firebase from '../firebase';
 import iconuser from '../assets/img/iconuser.png'
+import server from "../server.json";
 
 
 const styles = {
@@ -147,29 +148,60 @@ class UserProfile extends Component {
     //   .catch((err) => 
     //       this.setState({ loading: false, error: err.response }));
 
-    await this.setState({
-      loading: false,
-      id: 1,
-      firstname: "Tamir",
-      lastname: "Baldandorj",
-      email: "tamir.baldandorj@gmail.com",
-      status: "Active",
-      phone: "6418191115",
-      address: {
-        city: "Fairfield",
-        street: "asdasd",
-        state: "Iowa",
-        zip: "52556",
-      },
-      role: "Admin",
-      image: "images/employee/1.jpg",
-    })
+    // await this.setState({
+    //   loading: false,
+    //   id: 1,
+    //   firstname: "Tamir",
+    //   lastname: "Baldandorj",
+    //   email: "tamir.baldandorj@gmail.com",
+    //   status: "Active",
+    //   phone: "6418191115",
+    //   address: {
+    //     city: "Fairfield",
+    //     street: "asdasd",
+    //     state: "Iowa",
+    //     zip: "52556",
+    //   },
+    //   role: "Admin",
+    //   image: "images/employee/1.jpg",
+    // })
 
+    this.setState({ loading: true });
+    console.log(localStorage.getItem('userId'));
+    await axios
+      .get(server.url + "/employees/" + localStorage.getItem('userId'), {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then((result) => {
+        console.log(result.data)
+        this.setState({
+          loading: false,
+          id: result.data.employeeId, 
+          firstname:result.data.firstname,
+          lastname:result.data.lastname,
+          email:result.data.username,
+          status:result.data.status,
+          phone:result.data.phone,
+          address:result.data.address,
+          role:result.data.role,
+          image:result.data.imageUrl,
+        })
+      }
+      )
+      .catch((err) =>
+        this.setState({ loading: false, error: err.response }));
     //show image
-    let storageRef1 = firebase.storage().ref()
-    storageRef1.child(this.state.image).getDownloadURL().then((url) => {
-      this.setState({ imageGlobal: url })
-    })
+    if (this.state.image) {
+      try {
+        let storageRef1 = firebase.storage().ref()
+        storageRef1.child(this.state.image).getDownloadURL().then((url) => {
+          this.setState({ imageGlobal: url })
+        })
+      } catch (err) { }
+    }
+
 
     //this.setState({ imageGlobal: url })
 
@@ -266,8 +298,8 @@ class UserProfile extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Street",
-                              defaultValue: this.state.address.street,
-                              name: "address.street",
+                              defaultValue: this.state.address == null ? "" : this.state.address.street,
+                              name: "street",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}
@@ -280,7 +312,7 @@ class UserProfile extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "City",
-                              defaultValue: this.state.address.city,
+                              defaultValue: this.state.address == null ? "" : this.state.address.city,
                               name: "address.city",
                               onChange: this.handleChange.bind(this)
                             },
@@ -289,7 +321,7 @@ class UserProfile extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Country",
-                              defaultValue: this.state.address.state,
+                              defaultValue: this.state.address == null ? "" : this.state.address.state,
                               name: "address.state",
                               onChange: this.handleChange.bind(this)
                             },
@@ -297,7 +329,7 @@ class UserProfile extends Component {
                               label: "Postal Code",
                               type: "number",
                               bsClass: "form-control",
-                              defaultValue: this.state.address.zip,
+                              defaultValue: this.state.address == null ? "" : this.state.address.zip,
                               name: "address.zip",
                               onChange: this.handleChange.bind(this)
                             }

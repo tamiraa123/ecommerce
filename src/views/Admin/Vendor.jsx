@@ -63,7 +63,16 @@ class Vendor extends Component {
   //Text input event
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
+    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
+      this.setState({
+        address: {
+          ...this.state.address, [name]: event.target.value
+        }
+      });
+    } else {
+      this.setState({ [name]: value, event: event })
+    }
+    //console.log(this.state.address);
   }
 
   handleUploadChange = async (files) => {
@@ -193,19 +202,7 @@ class Vendor extends Component {
       )
       .catch((err) =>
         this.setState({ loading: false, error: err.response }));
-    //Setting example data
-    // await this.setState({
-    //   loading: false,
-    //   id: 1,
-    //   image: "images/employee/1.jpg",
-    //   email: "tamir@rolex.com",
-    //   status: "Active",
-    //   vendorName: "Rolex",
-    //   phone: "77777777777",
-    //   custServContactNo: "888888888",
-    //   description: "sdasdasdas",
-    //   address: "",
-    // })
+
 
     //show image
     if (this.state.image) {
@@ -300,7 +297,7 @@ class Vendor extends Component {
                               bsClass: "form-control",
                               placeholder: "Street",
                               defaultValue: this.state.address.street,
-                              name: "address.street",
+                              name: "street",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}
@@ -314,7 +311,7 @@ class Vendor extends Component {
                               bsClass: "form-control",
                               placeholder: "City",
                               defaultValue: this.state.address.city,
-                              name: "address.city",
+                              name: "city",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -323,7 +320,7 @@ class Vendor extends Component {
                               bsClass: "form-control",
                               placeholder: "Country",
                               defaultValue: this.state.address.state,
-                              name: "address.state",
+                              name: "state",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -332,7 +329,7 @@ class Vendor extends Component {
                               bsClass: "form-control",
                               placeholder: "ZIP Code",
                               defaultValue: this.state.address.zip,
-                              name: "address.zip",
+                              name: "zip",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}
