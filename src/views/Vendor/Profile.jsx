@@ -6,18 +6,18 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  DropdownButton,
-  MenuItem,
   Image
 } from "react-bootstrap";
+import axios from "axios";
+import server from "../../server.json";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import ImageUploader from 'react-images-upload';
 import iconuser from '../../assets/img/iconuser.png'
 import firebase from '../../firebase';
 const statusD = ["NEW", "ACTIVE", "BLOCKED"];
+
 const styleFile = {
   display: "none"
 };
@@ -26,14 +26,16 @@ class Profile extends Component {
     super(props);
 
     this.state = {
+      token: "",
+      role: "",
       id: 0,
       image: "",
       email: "",
       status: statusD[0], //active fired drop
       vendorName: "",
       phone: "",
+      since: "",
       custServContactNo: "",
-      vendorContactNo: "",
       description: "",
       address: {
         street: "",
@@ -48,32 +50,115 @@ class Profile extends Component {
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     // this.handleChange = this.handleChange(this);
   }
+  componentDidMount = async () => {
+    this.setState({ id: localStorage.getItem("userId") });
+    this.setState({ token: localStorage.getItem("token") });
+    this.setState({ role: localStorage.getItem("role") });
+    axios
+      .get(server.url + "/vendors/" + localStorage.getItem("userId"), {
+        headers: {
+          'Authorization': "Bearer " + localStorage.getItem("token")
+        }
+      }
+      )
+      .then((result) => {
+        console.log("data")
+        console.log(result.data)
+        this.setState({
+          description: result.data.description,
+          vendorName: result.data.vendorName,
+          custServContactNo: result.data.contactMethod,
+          phone: result.data.phone,
+          email: result.data.username,
+          status: result.data.status,
+          address: result.data.address,
+          since: result.data.createdDate,
+          image: result.data.imageUrl
+        })
+        let storageRef1 = firebase.storage().ref()
+        // console.log(this.state.image)
+        storageRef1.child(result.data.imageUrl).getDownloadURL().then((url) => {
+          this.setState({ imageGlobal: url }, () => console.log(this.state))
+        })
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" })//err.response.data.error.message
+      );
 
+
+  }
   saveBtn = async () => {
     console.log("saveBtn()");
-    if (this.state.files)
-    {
+    if (this.state.files) {
       //upload image file.name should be userid
-      let bucketName = 'images/vendor/1/'
-      let file = this.state.files[0]
-      console.log(file);
-      let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
-      // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
-      let uploadTask = storageRef.put(file)
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {
-          let downloadURL = uploadTask.snapshot.downloadURL
-        }
-      )
-      //show image
-      let storageRef1 = firebase.storage().ref()
-      storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
-        this.setState({ imageGlobal: url })
-      })
-
-      //save ............. axios
+      let bucketName = `images/vendor/${this.state.id}/`;
       
+      // console.log(file);
+      if (this.state.files[0]) {
+        console.log("pic");
+        let file = this.state.files[0];
+
+        let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
+        // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
+        let uploadTask = storageRef.put(file)
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          () => {
+            let downloadURL = uploadTask.snapshot.downloadURL
+          }
+        )
+        //show image
+        let storageRef1 = firebase.storage().ref()
+        storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+          this.setState({ imageGlobal: url })
+        })
+      }
+      else 
+      console.log("no pic");
     }
+
+    //PUT
+    // this.setState({ loading: true });
+    await axios
+      .put(
+        server.url + "/vendors/" + this.state.id,
+        {
+          vendorId: this.state.id,
+          imageUrl: this.state.image,
+          status: this.state.status,
+          vendorName: this.state.vendorName,
+          phone: this.state.phone,
+          contactMethod: this.state.custServContactNo,
+          description: this.state.description,
+          address: this.state.address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`
+          }
+        },
+      )
+      .then((result) => {
+        // console.log(result)
+        this.setState({
+          // loading: false,
+          id: result.data.vendorId,
+          image: result.data.imageUrl,
+          email: result.data.username,
+          status: result.data.status,
+          vendorName: result.data.vendorName,
+          phone: result.data.phone,
+          custServContactNo: result.data.contactMethod,
+          description: result.data.description,
+          address: result.data.address,
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );
+
   }
 
   handleChangeStatus(event) {
@@ -81,7 +166,14 @@ class Profile extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value})
+    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
+      this.setState({
+        address: {
+          ...this.state.address, [name]: event.target.value
+        }
+      });
+    } else { this.setState({ [name]: value });}
+    console.log(this.state);
   }
   editImage = async () => {
     document.getElementById('selectedFile').click();
@@ -97,6 +189,8 @@ class Profile extends Component {
     //Rendering image to <Image/>
     let reader = new FileReader();
     let file = files[0];
+    let bucketName = `images/vendor/${this.state.id}/`;
+    this.setState({image : bucketName+"/"+file.name});
     try {
       reader.onloadend = () => {
         this.setState({
@@ -109,14 +203,7 @@ class Profile extends Component {
       this.setState({ imageGlobal: iconuser });
     }
   }
-  componentDidMount = async () => {
-    await this.setState({image: "images/vendor/1/Screen Shot 2020-05-27 at 11.23.27.png"})
 
-    let storageRef1 = firebase.storage().ref()
-    storageRef1.child(this.state.image).getDownloadURL().then((url) => {
-      this.setState({ imageGlobal: url })
-    })
-  }
   render() {
     return (
       <div className="content">
@@ -128,7 +215,7 @@ class Profile extends Component {
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-5", "col-md-5", "col-md-2"]}
+                      ncols={["col-md-4", "col-md-3", "col-md-2", "col-md-3"]}
                       properties={[
                         {
                           label: "Vendor Name",
@@ -156,6 +243,16 @@ class Profile extends Component {
                           placeholder: "Status",
                           defaultValue: this.state.status,
                           name: "status",
+                          disabled: true,
+                          onChange: this.handleChange.bind(this)
+                        },
+                        {
+                          label: "Member since",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Status",
+                          defaultValue: this.state.since,
+                          name: "since",
                           disabled: true,
                           onChange: this.handleChange.bind(this)
                         }
@@ -187,7 +284,7 @@ class Profile extends Component {
                           bsClass: "form-control",
                           placeholder: "Vendor Contact Number",
                           defaultValue: this.state.phone,
-                          name: "vendorContactNo",
+                          name: "phone",
                           onChange: this.handleChange.bind(this)
                         }
                       ]}
@@ -200,7 +297,7 @@ class Profile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Street",
-                          defaultValue: this.state.street,
+                          defaultValue: this.state.address.street,
                           name: "street",
                           onChange: this.handleChange.bind(this)
                         }
@@ -214,7 +311,7 @@ class Profile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: this.state.city,
+                          defaultValue: this.state.address.city,
                           name: "city",
                           onChange: this.handleChange.bind(this)
                         },
@@ -223,7 +320,7 @@ class Profile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: this.state.state,
+                          defaultValue: this.state.address.state,
                           name: "state",
                           onChange: this.handleChange.bind(this)
                         },
@@ -232,7 +329,7 @@ class Profile extends Component {
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
-                          defaultValue: this.state.zip,
+                          defaultValue: this.state.address.zip,
                           name: "zip",
                           onChange: this.handleChange.bind(this)
                         }
