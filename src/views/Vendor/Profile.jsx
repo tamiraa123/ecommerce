@@ -103,7 +103,7 @@ class Profile extends Component {
         let uploadTask = storageRef.put(file)
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           () => {
-            let downloadURL = uploadTask.snapshot.downloadURL
+            
           }
         )
         //show image
@@ -166,7 +166,7 @@ class Profile extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
+    if ([name] === "street" || [name] === "city" || [name] === "state" || [name] === "zip") {
       this.setState({
         address: {
           ...this.state.address, [name]: event.target.value

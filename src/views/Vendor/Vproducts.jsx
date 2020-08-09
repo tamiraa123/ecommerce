@@ -1,39 +1,47 @@
 import React, { Component } from "react";
-import { Grid, 
-  Row, 
-  Col, 
-  Table, 
-  Button } from "react-bootstrap";
+import {
+  Grid,
+  Row,
+  Col,
+  Table,
+  Button
+} from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import server from "../../server.json";
 
-
-const thArray = ["#", "Product Name", "Selling Price", "Manifacturer", "Quantity","Status"];
-const tdArray = [
-  ["1", "Laptop1", "$2,738", "Apple", "5","New"],
-  ["2", "Laptop2", "$3,789", "Samsung", "10","Active"],
-  ["3", "Laptop3", "$6,142", "Dell", "7","Downloaded"],
-];
-
+const thArray = ["Product ID", "Product Category", "Product Name", "Selling Price", "Manifacturer", "Quantity", "Status"];
 
 class Vproducts extends Component {
 
-state={
-  products:[],
-}
+  state = {
+    token: "",
+    role: "",
+    userId: "",
+    products: []
+  }
 
-componentDidMount = () =>{
-
-  // axios
-  //   .get("")
-  //   .then((result) => 
-    this.setState({products:tdArray});
-  //)
-  //   .catch((err) => console.log(err.response));
-
-}
+  componentDidMount = () => {
+    this.setState({ token: localStorage.getItem("token") });
+    this.setState({ role: localStorage.getItem("role") });
+    this.setState({ userId: localStorage.getItem("userId") });
+    let url = server.urlHenok + "/products/vendor/4";
+    console.log(url);
+    axios
+      .get(url, { //+localStorage.getItem("userId")
+      }
+      )
+      .then((result) => {
+        console.log("11111111111111111111111");
+        // console.log(result.data.products);
+        // this.setState({ products: result.data.products });
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+      );
+  }
 
   render() {
     return (
@@ -55,19 +63,18 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.products.map((prop, key) => {
+                      {this.state.products.map((product) => {
                         return (
-                         
-                            <tr key={key}>
-                              {prop.map((prop, key) => {
-                                return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/myProducts/${prop}`}>
-                                          {prop}
-                                      </Link>}
-                                      {(key != 0) && <p>{prop}</p>}
-                                  </td>;
-                              })}
-                            </tr>
+                          <tr>
+                            <td><Link to={`/admin/myProducts/${product.productId}`}>
+                              {product.productId}</Link></td>
+                            <td>{product.productCategory}</td>
+                            <td>{product.productName}</td>
+                            <td>{product.price}</td>
+                            <td>{product.manufacturer}</td>
+                            <td>{product.currentQuantity}</td>
+                            <td>{product.status}</td>
+                          </tr>
                         );
                       })}
                     </tbody>
@@ -79,7 +86,7 @@ componentDidMount = () =>{
         </Grid>
         <Button>
           <Link to={`/admin/myProducts/newProduct`}>
-            Add Product 
+            Add Product
           </Link>
         </Button>
       </div>

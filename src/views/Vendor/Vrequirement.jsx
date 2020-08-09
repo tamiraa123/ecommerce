@@ -8,16 +8,12 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl,
-  Table,
-  Label,
-  Carousel, Image
+  FormControl
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import ImageUploader from 'react-images-upload';
 // import { FilePond, registerPlugin } from 'react-filepond';
 // import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 // registerPlugin(FilePondPluginImagePreview);
