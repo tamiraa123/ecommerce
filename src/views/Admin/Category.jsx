@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col
+  Col,
+  Alert,
+  Modal
 } from "react-bootstrap";
 import TreeMenu from 'react-simple-tree-menu';
 import '../../../node_modules/react-simple-tree-menu/dist/main.css';
@@ -17,30 +19,7 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 
 
-//Example data
-const treeData = [
-  {
-    key: '1',
-    label: 'Electronic',
-    nodes: [
-      {
-        key: '1-1',
-        label: 'Laptop',
-        nodes: [
-          {
-            key: '1-1-1',
-            label: 'Apple',
-            nodes: [] // you can remove the nodes property or leave it as an empty array
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: '2',
-    label: 'Watch',
-  },
-];
+
 
 //Send ->  add id = parentid, value  &   edit = id, value,  &  delete = id 
 
@@ -56,7 +35,7 @@ class Product extends Component {
       }],
       selected: '',
       selectedValue: '',
-      value: '',
+      catName: '',
       error: null,
       loading: false,
     }
@@ -66,16 +45,19 @@ class Product extends Component {
 
   addBtn = async () => {
     if (this.state.selected) {
+      var pieces = this.state.selected.split('/');
+      var send = pieces[pieces.length - 1];
+      // console.log(send);
       await axios
         .post(server.urlHenok + "/categories/add", {
-          parentId: this.state.selected,
-          value: this.state.value,
+          parentId: send,
+          value: this.state.catName,
         })
         .then((result) => {
-          this.setState({ category: result.data });
+          this.setState({show:true, category: result.data });
         })
         .catch((err) =>
-          this.setState({ error: "Error" })
+          this.setState({ error: err })
         );
     }
     else {
@@ -84,16 +66,18 @@ class Product extends Component {
   }
   editBtn = async () => {
     if (this.state.selected) {
+      var pieces = this.state.selected.split('/');
+      var send = pieces[pieces.length - 1];
       await axios
         .put(server.urlHenok + "/categories/edit", {
-          categoryId: this.state.selected,
-          value: this.state.value,
+          categoryId: send,
+          value: this.state.catName,
         })
         .then((result) => {
-          this.setState({ category: result.data });
+          this.setState({show:true, category: result.data });
         })
         .catch((err) =>
-          this.setState({ error: "Error" })
+          this.setState({ error: err })
         );
     }
     else {
@@ -102,22 +86,33 @@ class Product extends Component {
   }
   deleteBtn = async () => {
     if (this.state.selected) {
+      var pieces = this.state.selected.split('/');
+      var categoryId = pieces[pieces.length - 1];
       await axios
-        .delete(server.urlHenok + "/categories/delete", {
-          categoryId: this.state.selected,
-        })
+        .delete(server.urlHenok + "/categories/delete/" +  categoryId)
         .then((result) => {
-          this.setState({ category: result.data });
+           this.setState({show:true, category: result.data });
         })
         .catch((err) =>
-          this.setState({ error: "Error" })
+          this.setState({ error: err })
         );
     }
     else {
       this.setState({ error: "Please select category" })
     }
   }
+  handleCloseModal = () => {
+    this.setState({ show: false });
+  }
 
+  //Selected items
+  handleChangeTree = async (event) => {
+    // console.log(event)
+    this.setState({ selected: event.key, catName: event.label })
+    this.setState({ selectedValue: event.label });
+    this.setState({ error: null });
+
+  }
 
   componentDidMount = async () => {
 
@@ -135,19 +130,13 @@ class Product extends Component {
       .catch((err) => this.setState({ loading: false, error: err.response }));
   }
 
-  //Selected items
-  handleChangeTree(event) {
-    this.setState({ selected: event.key })
-    this.setState({ value: event.label });
-    this.setState({ selectedValue: event.label });
 
-  }
 
   //Text input event
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
-    console.log(this.state.value);
+    this.setState({ [name]: value, event: null })
+    // console.log(this.state.catName);
   }
 
 
@@ -160,10 +149,26 @@ class Product extends Component {
             <Grid fluid>
               <Row>
                 <Col md={8}>
+
                   <Card
                     title="Category"
                     content={
                       <form>
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
+                        <Alert bsStyle="warning">
+                          <strong>Add: </strong> select category that needs sub category. Then edit value<br />
+                          <strong>Edit: </strong> select category that needs edit category. Then edit value<br />
+                          <strong>Delete: </strong> select category that needs sub category. Then edit value
+                          </Alert>
                         <TreeMenu onClickItem={this.handleChangeTree}
                           data={this.state.category}>
                         </TreeMenu>
@@ -176,8 +181,9 @@ class Product extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Category Name",
-                              defaultValue: this.state.value,
-                              name: "value",
+
+                              value: this.state.catName,
+                              name: "catName",
                               onChange: this.handleChange.bind(this)
                             },
 
@@ -190,6 +196,24 @@ class Product extends Component {
                         <Button bsStyle="info" pullLeft fill onClick={this.addBtn}>Add</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.editBtn}>Edit</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.deleteBtn}>Delete</Button>
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                       </form>
                     }
                   />

@@ -8,7 +8,9 @@ import {
   FormControl,
   DropdownButton,
   MenuItem,
-  Image
+  Image,
+  Alert,
+  Modal
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -20,7 +22,7 @@ import firebase from '../../firebase';
 import server from "../../server.json";
 
 //Example data
-const statusD = ["SUSPENDED", "ACTIVE", "DELETED"];
+const statusD = ["ACTIVE", "SUSPENDED", "DELETED"];
 
 const styles = {
   border: 0,
@@ -50,7 +52,10 @@ class Vendor extends Component {
       error: null,
       loading: false,
       imageGlobal: iconuser,
-      files: []
+      files: [],
+      cards: [],
+      createdDate: "",
+      show: false
     }
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -76,7 +81,7 @@ class Vendor extends Component {
   }
 
   handleUploadChange = async (files) => {
-    console.log("handleUploadChange()")
+    // console.log("handleUploadChange()")
 
     //saving image to state
     await this.setState({
@@ -102,10 +107,10 @@ class Vendor extends Component {
 
   //save Profile
   saveBtn = async () => {
-    console.log("saveBtn()");
+    // console.log("saveBtn()");
     if (this.state.files.length) {
       //upload image file.name should be userid
-      let bucketName = 'images/vendor/'
+      let bucketName = 'images/vendor'
       let file = this.state.files[0]
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
@@ -115,6 +120,7 @@ class Vendor extends Component {
           //let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
+      await this.setState({ image: `${bucketName}/${file.name}` })
       //show image
       let storageRef1 = firebase.storage().ref()
       storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
@@ -137,6 +143,8 @@ class Vendor extends Component {
           contactMethod: this.state.custServContactNo,
           description: this.state.description,
           address: this.state.address,
+          cards: this.state.cards,
+          createdDate: this.state.createdDate
         },
         {
           headers: {
@@ -147,7 +155,7 @@ class Vendor extends Component {
       .then((result) => {
         // console.log(result)
         this.setState({
-          loading: false,
+          loading: false, show: true,
           id: result.data.vendorId,
           image: result.data.imageUrl,
           email: result.data.username,
@@ -157,12 +165,14 @@ class Vendor extends Component {
           custServContactNo: result.data.contactMethod,
           description: result.data.description,
           address: result.data.address,
+          cards: result.data.cards,
+          createdDate: result.data.createdDate
         })
       }
       )
       .catch((err) => {
         this.setState({ loading: false, error: err.response })
-        console.log(err);
+        // console.log(err);
       }
       );
     //.........
@@ -170,8 +180,11 @@ class Vendor extends Component {
 
   //edit Image
   editImage = async () => {
-    console.log("editImage()")
+    // console.log("editImage()")
     document.getElementById('selectedFile').click();
+  }
+  handleCloseModal = () => {
+    this.setState({ show: false });
   }
 
   componentDidMount = async () => {
@@ -197,6 +210,8 @@ class Vendor extends Component {
           custServContactNo: result.data.contactMethod,
           description: result.data.description,
           address: result.data.address,
+          cards: result.data.cards,
+          createdDate: result.data.createdDate
         })
       }
       )
@@ -228,6 +243,11 @@ class Vendor extends Component {
                     title="Vendor"
                     content={
                       <form>
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
                         <div onClick={this.editImage}>
                           <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded />
@@ -354,6 +374,24 @@ class Vendor extends Component {
                         <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
                         </Button>
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                         <div className="clearfix" />
                       </form>
                     }

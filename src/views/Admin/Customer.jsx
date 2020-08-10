@@ -7,7 +7,10 @@ import {
   DropdownButton,
   MenuItem,
   Image,
-  Label
+  Label,
+  Panel,
+  Modal,
+  Alert
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -17,9 +20,10 @@ import axios from "axios";
 import Spinner from "../../Spinner";
 import firebase from '../../firebase';
 import iconuser from '../../assets/img/iconuser.png'
+import server from "../../server.json";
 
 //Example data
-const statusD = ["ACTIVE", "DEACTIVE"];
+const statusD = ["ACTIVE", "SUSPENDED","DELETED"];
 
 const styles = {
   border: 0,
@@ -38,33 +42,39 @@ class Employee extends Component {
       firstName: "",
       lastName: "",
       phone: "",
-      address: {
+      shippingAddress: {
+        street: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
+      billingAddress: {
         street: "",
         city: "",
         state: "",
         zip: ""
       },
       totalScore: "",
+      cards:[],
       error: null,
       loading: false,
       imageGlobal: iconuser,
-      files: []
+      files: [],
+      show: false
     }
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     // this.handleChange = this.handleChange(this);
 
-
-
   }
   //save Profile
   saveBtn = async () => {
-    console.log("saveBtn()");
+    // console.log("saveBtn()");
     if (this.state.files.length) {
       //upload image file.name should be userid
-      let bucketName = 'images/user/'
+      let bucketName = 'images/user'
       let file = this.state.files[0]
-      console.log(file);
+      // console.log(file);
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
@@ -73,28 +83,98 @@ class Employee extends Component {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
-       //show image
-       let storageRef1 = firebase.storage().ref()
-       storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
-         this.setState({ imageGlobal: url })
-       })
+      await this.setState({ image: `${bucketName}/${file.name}` })
+      //show image
+      let storageRef1 = firebase.storage().ref()
+      storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
+        this.setState({ imageGlobal: url })
+      })
     }
-    //save value
 
-    //.........
+    //save value    //add employee API avah
+    this.setState({ loading: true });
+    await axios
+      .put(
+        server.url + "/users/" + this.props.match.params.id,
+        {
+          employeeId: this.state.id,
+          imageUrl: this.state.image,
+          username: this.state.email,
+          status: this.state.status,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          phone: this.state.phone,
+          shippingAddress: this.state.shippingAddress,
+          billingAddress: this.state.billingAddress,
+          totalScore: this.state.totalScore,
+          cards:this.state.cards
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+      )
+      .then((result) => {
+        // console.log(result)
+        this.setState({
+          loading: false, show: true,
+          id: result.data.employeeId,
+          image: result.data.imageUrl,
+          email: result.data.username,
+          status: result.data.status,
+          firstName: result.data.firstName,
+          lastName: result.data.lastName,
+          phone: result.data.phone,
+          shippingAddress: result.data.shippingAddress,
+          billingAddress: result.data.billingAddress,
+          totalScore: result.data.totalScore,
+          cards: this.state.cards
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        // console.log(err);
+      }
+      );
+  }
+  handleCloseModal = () => {
+    this.setState({ show: false });
   }
 
   //Status change event  
   handleChangeStatus(event) {
     this.setState({ status: statusD[event] });
+    // console.log(this.state.status)
   }
   //input text event 
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
   }
+  //change state shipping
+  handleChangeShipping(event) {
+    const { target: { name, value } } = event
+      this.setState({
+        shippingAddress: {
+          ...this.state.shippingAddress, [name]: event.target.value
+        }
+      });   
+  }
+  //change state billing
+  handleChangeBilling(event) {
+    const { target: { name, value } } = event
+      this.setState({
+        billingAddress: {
+          ...this.state.billingAddress, [name]: event.target.value
+        }
+      });  
+  }
+
+
   handleUploadChange = async (files) => {
-    console.log("handleUploadChange()")
+    // console.log("handleUploadChange()")
 
     //saving image to state
     await this.setState({
@@ -120,53 +200,47 @@ class Employee extends Component {
 
   //edit Image
   editImage = async () => {
-    console.log("editImage()")
+    // console.log("editImage()")
     document.getElementById('selectedFile').click();
   }
 
   componentDidMount = async () => {
-    //Reading list of employees
-    //  this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) =>{
-    //         console.log(result.data[0])  
-    //         this.setState({ loading: false, 
-    //                       id: result.data[0].id, 
-    //                       image : result.data[0].image,
-    //                       email : result.data[0].email,
-    //                       status : result.data[0].status,
-    //                       firtName : result.data[0].firtName,
-    //                       lastName : result.data[0].lastName,
-    //                       phone : result.data[0].phone,
-    //                       address : result.data[0].address,
-    //                       totalScore : result.data[0].totalScore,
-    //                     })
-    //               }
-    //   )
-    //   .catch((err) => 
-    //       this.setState({ loading: false, error: err.response }));
-
-    //Setting example data
-    await this.setState({
-      loading: false,
-      id: 1,
-      image: "images/employee/1.jpg",
-      email: "tamir.baldandorj@gmail.com",
-      status: "Active",
-      firtName: "Tamir",
-      lastName: "Baldandorj",
-      phone: "6419181115",
-      address: "",
-      totalScore: 123230,
-    })
+    this.setState({ loading: true, isAddEmployee: false });
+    await axios
+      .get(server.url + "/users/" + this.props.match.params.id, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then((result) => {
+        // console.log(result.data)
+        this.setState({
+          loading: false,
+          id: result.data.employeeId,
+          image: result.data.imageUrl,
+          email: result.data.username,
+          status: result.data.status,
+          firstName: result.data.firstName,
+          lastName: result.data.lastName,
+          phone: result.data.phone,
+          shippingAddress: result.data.shippingAddress,
+          billingAddress: result.data.billingAddress,
+          totalScore: result.data.totalScore,
+          cards:result.data.cards
+        })
+      }
+      )
+      .catch((err) =>
+        this.setState({ loading: false, error: err.response }));
     //show image
-    console.log(this.state.image);
-    let storageRef1 = firebase.storage().ref()
-    storageRef1.child(this.state.image).getDownloadURL().then((url) => {
-      
-      this.setState({ imageGlobal: url })
-    })
+    if (this.state.image) {
+      try {
+        let storageRef1 = firebase.storage().ref()
+        storageRef1.child(this.state.image).getDownloadURL().then((url) => {
+          this.setState({ imageGlobal: url })
+        })
+      } catch (err) { }
+    }
   }
 
   render() {
@@ -182,6 +256,11 @@ class Employee extends Component {
                     title="Customers Profile"
                     content={
                       <form>
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <Row className="show-grid">
                           <Col xs={12} md={5}>
                             <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
@@ -190,23 +269,9 @@ class Employee extends Component {
                             </div>
                           </Col>
                           <Col xs={6} md={4}>
-                            <h4><Label bsStyle="success">Total Score:</Label> {this.state.totalScore}</h4>
+                            <h4><Label bsStyle="success">Total Score:</Label> {this.state.totalScore == null ? "0" : this.state.totalScore} point</h4>
                           </Col>
-                          {/* <FormInputs
-                            ncols={["col-md-5"]}
-                            onChange={this.handleChange}
-                            properties={[
-                              {
-                                label: "Image URL",
-                                type: "text",
-                                bsClass: "form-control",
-                                placeholder: "Image URL",
-                                defaultValue: this.state.image,
-                                name: "image",
-                                onChange: this.handleChange.bind(this)
-                              }
-                            ]}
-                          /> */}
+
                         </Row>
                         <FormInputs
                           ncols={["col-md-3", "col-md-3", "col-md-6"]}
@@ -217,6 +282,7 @@ class Employee extends Component {
                               bsClass: "form-control",
                               placeholder: "First Name",
                               name: "firstName",
+                              defaultValue: this.state.firstName,
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -235,7 +301,8 @@ class Employee extends Component {
                               placeholder: "Email",
                               defaultValue: this.state.email,
                               name: "email",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              disabled: "true"
                             },
                           ]
                           }
@@ -255,52 +322,114 @@ class Employee extends Component {
                             }
                           ]}
                         />
-                        <FormInputs
-                          ncols={["col-md-12"]}
-                          properties={[
-                            {
-                              label: "Street",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "Street",
-                              defaultValue: this.state.address.street,
-                              name: "street",
-                              onChange: this.handleChange.bind(this)
-                            }
-                          ]}
-                        />
-                        <FormInputs
-                          ncols={["col-md-4", "col-md-4", "col-md-4"]}
-                          properties={[
-                            {
-                              label: "City",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "City",
-                              defaultValue: this.state.address.city,
-                              name: "city",
-                              onChange: this.handleChange.bind(this)
-                            },
-                            {
-                              label: "State",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "Country",
-                              defaultValue: this.state.address.state,
-                              name: "state",
-                              onChange: this.handleChange.bind(this)
-                            },
-                            {
-                              label: "Postal Code",
-                              type: "number",
-                              bsClass: "form-control",
-                              placeholder: "ZIP Code",
-                              defaultValue: this.state.address.zip,
-                              name: "zip",
-                              onChange: this.handleChange.bind(this)
-                            }
-                          ]}
-                        />
+
+                        <Panel>
+                          <Panel.Heading>
+                            <Panel.Title componentClass="h3">Shipping address</Panel.Title>
+                          </Panel.Heading>
+                          <Panel.Body>
+                            <FormInputs
+                              ncols={["col-md-12"]}
+                              properties={[
+                                {
+                                  label: "Street",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "Street",
+                                  defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.street,
+                                  name: "street",
+                                  onChange: this.handleChangeShipping.bind(this)
+                                }
+                              ]}
+                            />
+                            <FormInputs
+                              ncols={["col-md-4", "col-md-4", "col-md-4"]}
+                              properties={[
+                                {
+                                  label: "City",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "City",
+                                  defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.city,
+                                  name: "city",
+                                  onChange: this.handleChangeShipping.bind(this)
+                                },
+                                {
+                                  label: "State",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "Country",
+                                  defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.state,
+                                  name: "state",
+                                  onChange: this.handleChangeShipping.bind(this)
+                                },
+                                {
+                                  label: "Postal Code",
+                                  type: "number",
+                                  bsClass: "form-control",
+                                  placeholder: "ZIP Code",
+                                  defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.zip,
+                                  name: "zip",
+                                  onChange: this.handleChangeShipping.bind(this)
+                                }
+                              ]}
+                            />
+
+                          </Panel.Body>
+                        </Panel>
+                        <Panel>
+                          <Panel.Heading>
+                            <Panel.Title componentClass="h3">Billing address</Panel.Title>
+                          </Panel.Heading>
+                          <Panel.Body>
+                            <FormInputs
+                              ncols={["col-md-12"]}
+                              properties={[
+                                {
+                                  label: "Street",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "Street",
+                                  defaultValue: this.state.billingAddress == null ? "" : this.state.billingAddress.street,
+                                  name: "street",
+                                  onChange: this.handleChangeBilling.bind(this)
+                                }
+                              ]}
+                            />
+                            <FormInputs
+                              ncols={["col-md-4", "col-md-4", "col-md-4"]}
+                              properties={[
+                                {
+                                  label: "City",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "City",
+                                  defaultValue: this.state.billingAddress == null ? "" : this.state.billingAddress.city,
+                                  name: "city",
+                                  onChange: this.handleChangeBilling.bind(this)
+                                },
+                                {
+                                  label: "State",
+                                  type: "text",
+                                  bsClass: "form-control",
+                                  placeholder: "Country",
+                                  defaultValue: this.state.billingAddress == null ? "" : this.state.billingAddress.state,
+                                  name: "state",
+                                  onChange: this.handleChangeBilling.bind(this)
+                                },
+                                {
+                                  label: "Postal Code",
+                                  type: "number",
+                                  bsClass: "form-control",
+                                  placeholder: "ZIP Code",
+                                  defaultValue: this.state.billingAddress == null ? "" : this.state.billingAddress.zip,
+                                  name: "zip",
+                                  onChange: this.handleChangeBilling.bind(this)
+                                }
+                              ]}
+                            />
+                          </Panel.Body>
+                        </Panel>
                         <Row className="show-grid">
                           <Col xs={6} md={3}>
                             <ControlLabel>STATUS</ControlLabel><br />
@@ -320,6 +449,24 @@ class Employee extends Component {
                         <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
                         </Button>
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                         <div className="clearfix" />
                       </form>
                     }

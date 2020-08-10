@@ -4,7 +4,8 @@ import {
   Row,
   Col,
   Image,
-  Modal
+  Modal,
+  Alert
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -53,18 +54,27 @@ class UserProfile extends Component {
   //input text change
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
-
+    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
+      this.setState({
+        address: {
+          ...this.state.address, [name]: event.target.value
+        }
+      });
+    } else {
+      this.setState({ [name]: value, event: event })
+    }
   }
-  //save Profile
+
+  //save UserProfile
   saveBtn = async () => {
-    console.log("saveBtn()");
-    console.log(this.state.files);
+    // console.log("saveBtn()");
+    // console.log(this.state.files);
+    this.setState({ loading: true });
     if (this.state.files.length) {
       //upload image file.name should be userid
-      let bucketName = 'images/employee/'
+      let bucketName = `images/employee`
       let file = this.state.files[0]
-      console.log(file);
+      // console.log(file);
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
@@ -73,26 +83,67 @@ class UserProfile extends Component {
           let downloadURL = uploadTask.snapshot.downloadURL
         }
       )
-
+      await this.setState({ image: `${bucketName}/${file.name}` })
       //show image
       let storageRef1 = firebase.storage().ref()
       storageRef1.child(`${bucketName}/${file.name}`).getDownloadURL().then((url) => {
         this.setState({ imageGlobal: url })
       })
-     
     }
-    this.setState({ show: true });
-    //save value
 
+    //save value    //add employee API avah
+    let urlLocal = server.url + "/employees/" + localStorage.getItem('userId');
+    await axios
+      .put(urlLocal,
+        {
+          employeeId: this.state.id,
+          firstName: this.state.firstname,
+          lastName: this.state.lastname,
+          username: this.state.email,
+          status: this.state.status,
+          phone: this.state.phone,
+          address: this.state.address,
+          imageUrl: this.state.image,
+          role: this.state.role
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+      )
+      .then((result) => {
+        // console.log(result)
+        this.setState({
+          loading: false, show: true,
+          id: result.data.employeeId,
+          firstname: result.data.firstName,
+          lastname: result.data.lastName,
+          email: result.data.username,
+          status: result.data.status,
+          phone: result.data.phone,
+          address: result.data.address,
+          role: result.data.role,
+          image: result.data.imageUrl,
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        // console.log(err);
+      }
+      );
     //.........
+
+
   }
 
-  handleCloseModal= () =>  {
+  handleCloseModal = () => {
     this.setState({ show: false });
   }
 
   handleUploadChange = async (files) => {
-    console.log("handleUploadChange()")
+    // console.log("handleUploadChange()")
 
     //saving image to state
     await this.setState({
@@ -117,57 +168,14 @@ class UserProfile extends Component {
 
   //edit Image
   editImage = async () => {
-    console.log("editImage()")
+    // console.log("editImage()")
     document.getElementById('selectedFile').click();
   }
 
-
-  //load
   componentDidMount = async () => {
-    console.log("UserProfile->componentDidMount")
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/profile")
-    //   .then((result) =>
-    //     //console.log(result.data[0].id)  
-    //     this.setState({ loading: false, 
-    //                   id: result.data[0].id, 
-    //                   firstname:result.data[0].firstname,
-    //                   lastname:result.data[0].lastname,
-    //                   email:result.data[0].email,
-    //                   status:result.data[0].status,
-    //                   phone:result.data[0].phone,
-    //                   address.city:result.data[0].city,
-    //                   address.street:result.data[0].street,
-    //                   address.state:result.data[0].state,
-    //                   address.zip:result.data[0].zip,
-    //                   role:result.data[0].role,
-    //                   image:result.data[0].image,
-    //                 })
-    //   )
-    //   .catch((err) => 
-    //       this.setState({ loading: false, error: err.response }));
-
-    // await this.setState({
-    //   loading: false,
-    //   id: 1,
-    //   firstname: "Tamir",
-    //   lastname: "Baldandorj",
-    //   email: "tamir.baldandorj@gmail.com",
-    //   status: "Active",
-    //   phone: "6418191115",
-    //   address: {
-    //     city: "Fairfield",
-    //     street: "asdasd",
-    //     state: "Iowa",
-    //     zip: "52556",
-    //   },
-    //   role: "Admin",
-    //   image: "images/employee/1.jpg",
-    // })
+    // console.log("UserProfile->componentDidMount")
 
     this.setState({ loading: true });
-    console.log(localStorage.getItem('userId'));
     await axios
       .get(server.url + "/employees/" + localStorage.getItem('userId'), {
         headers: {
@@ -175,18 +183,18 @@ class UserProfile extends Component {
         },
       })
       .then((result) => {
-        console.log(result.data)
+        // console.log(result.data)
         this.setState({
           loading: false,
-          id: result.data.employeeId, 
-          firstname:result.data.firstname,
-          lastname:result.data.lastname,
-          email:result.data.username,
-          status:result.data.status,
-          phone:result.data.phone,
-          address:result.data.address,
-          role:result.data.role,
-          image:result.data.imageUrl,
+          id: result.data.employeeId,
+          firstname: result.data.firstName,
+          lastname: result.data.lastName,
+          email: result.data.username,
+          status: result.data.status,
+          phone: result.data.phone,
+          address: result.data.address,
+          role: result.data.role,
+          image: result.data.imageUrl,
         })
       }
       )
@@ -201,14 +209,8 @@ class UserProfile extends Component {
         })
       } catch (err) { }
     }
-
-
     //this.setState({ imageGlobal: url })
-
-
   }
-
-
   render() {
     return (
       <div className="content">
@@ -217,32 +219,22 @@ class UserProfile extends Component {
         ) : (
             <Grid fluid>
               <Row>
-                <Col md={8}>
+                <Col md={12}>
                   <Card
                     title="Edit Profile"
                     content={
                       <form>
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
                         <div onClick={this.editImage}>
                           <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded />
                         </div>
                         <br />
-                        {/* <Button value="Browse..." >Upload    </Button> */}
 
-                        {/* <FormInputs
-                          ncols={["col-md-12"]}
-                          properties={[
-                            {
-                              label: "Image URL",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "City",
-                              defaultValue: this.state.image,
-                              name: "image",
-                              onChange: this.handleChange.bind(this)
-                            },
-                          ]}
-                        /> */}
                         <FormInputs
                           ncols={["col-md-4", "col-md-4", "col-md-4"]}
                           properties={[
@@ -313,7 +305,7 @@ class UserProfile extends Component {
                               bsClass: "form-control",
                               placeholder: "City",
                               defaultValue: this.state.address == null ? "" : this.state.address.city,
-                              name: "address.city",
+                              name: "city",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -322,7 +314,7 @@ class UserProfile extends Component {
                               bsClass: "form-control",
                               placeholder: "Country",
                               defaultValue: this.state.address == null ? "" : this.state.address.state,
-                              name: "address.state",
+                              name: "state",
                               onChange: this.handleChange.bind(this)
                             },
                             {
@@ -330,7 +322,7 @@ class UserProfile extends Component {
                               type: "number",
                               bsClass: "form-control",
                               defaultValue: this.state.address == null ? "" : this.state.address.zip,
-                              name: "address.zip",
+                              name: "zip",
                               onChange: this.handleChange.bind(this)
                             }
                           ]}
@@ -339,23 +331,23 @@ class UserProfile extends Component {
                           Update Profile
                         </Button>
                         <Modal
-                              show={this.state.show}
-                              onHide={this.handleCloseModal}
-                              container={this}
-                              aria-labelledby="contained-modal-title"
-                            >
-                              <Modal.Header closeButton>
-                                <Modal.Title id="contained-modal-title">
-                                  Success
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
                                 </Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                Successfully updated
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
                               </Modal.Body>
-                              <Modal.Footer>
-                                <Button onClick={this.handleCloseModal}>Close</Button>
-                              </Modal.Footer>
-                            </Modal>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                         <div className="clearfix" />
                       </form>
                     }

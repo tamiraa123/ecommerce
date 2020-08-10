@@ -10,7 +10,8 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 
 //Example data
-const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Is Active"];
+const thArray = ["#","Category" ,"Product Name", "Price", "Brand", "Quantity","Status"];
+
 
 
 
@@ -23,21 +24,22 @@ state={
 }
 
 componentDidMount = async () =>{
-
   this.setState({ loading: true });
   await axios
-    .get(server.urlHenok + "/products")
+    .get(server.urlHenok + "/products"
+    // , {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('token')}`
+    //   },
+    // }
+    )
     .then((result) => {
-      console.log(result.data);
+      // console.log(result.data);
       this.setState({ products: result.data })
       this.setState({ loading: false })
     }
     )
     .catch((err) => this.setState({ loading: false, error: err.response }));
-          
-     
-     //Setting example data
-     // this.setState({products:tdArray});
 }
 
   render() {
@@ -69,11 +71,11 @@ componentDidMount = async () =>{
                             <tr>
                               <td><Link to={`/admin/products/${product.productId}`}>{product.productId}</Link></td>
                               <td>{ product.categoryName }</td>
-                              <td>{ product.name }</td>
+                              <td>{ product.productName }</td>
                               <td>{ product.price }</td>
-                              <td>{ product.brand }</td>
-                              <td>{ product.quantity }</td>
-                              <td>{ product.isActive ? "true" : "false" }</td>
+                              <td>{ product.manufacturer }</td>
+                              <td>{ product.currentQuantity }</td>
+                              <td>{ product.status.split(".")[1]}</td>
                             </tr>
                         );
                       })}

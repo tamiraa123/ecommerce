@@ -6,7 +6,9 @@ import {
   ControlLabel,
   DropdownButton,
   MenuItem,
-  Image
+  Image,
+  Modal,
+  Alert
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -19,7 +21,7 @@ import iconuser from '../../assets/img/iconuser.png'
 import server from "../../server.json";
 
 const rolesD = ["ROLE_ADMIN", "ROLE_ENGINEER", "ROLE_MANAGER"];
-const statusD = ["ACTIVE", "FIRED", "BREAK"];
+const statusD = ["ACTIVE", "SUSPENDED", "DELETED"];
 
 const styles = {
   border: 0,
@@ -50,11 +52,9 @@ class Employee extends Component {
       loading: false,
       imageGlobal: iconuser,
       files: [],
-      isAddEmployee:true
+      isAddEmployee: true,
+      show: false
     }
-
-
-
 
     this.handleChangeRole = this.handleChangeRole.bind(this);
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -79,18 +79,16 @@ class Employee extends Component {
     } else {
       this.setState({ [name]: value, event: event })
     }
-    //console.log(this.state.address);
   }
 
   //save Profile
   saveBtn = async () => {
     this.setState({ loading: true });
-    console.log("saveBtn()");
+    // console.log("saveBtn()");
     if (this.state.files.length) {
       //upload image file.name should be userid
-      let bucketName = 'images/employee/'
+      let bucketName = 'images/employee'
       let file = this.state.files[0]
-      console.log(file);
       let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
       // let storageRef = firebase.storage().ref(`${bucketName}/${"1.jps"}`)
       let uploadTask = storageRef.put(file)
@@ -107,21 +105,19 @@ class Employee extends Component {
       })
     }
     //save value    //add employee API avah
-    console.log(this.state.address);
-    this.setState({ loading: true });
+    let urlLocal = server.url + "/employees/" + localStorage.getItem('userId');
     await axios
-      .put(
-        server.url + "/signup/" + this.props.match.params.id,
+      .put(urlLocal,
         {
-          id: this.state.id,
-          imageUrl: this.state.image,
-          email: this.state.email,
-          status: this.state.status,
+          employeeId: this.state.id,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
+          username: this.state.email,
+          status: this.state.status,
           phone: this.state.phone,
-          role: this.state.role,
           address: this.state.address,
+          imageUrl: this.state.image,
+          role: this.state.role,
         },
         {
           headers: {
@@ -130,32 +126,33 @@ class Employee extends Component {
         },
       )
       .then((result) => {
-        console.log(result)
         this.setState({
-          loading: false,
-          id: result.data.id,
-          image: result.data.imageUrl,
-          email: result.data.username,
-          status: result.data.status,
+          loading: false, show: true,
+          id: result.data.employeeId,
           firstName: result.data.firstName,
           lastName: result.data.lastName,
+          email: result.data.username,
+          status: result.data.status,
           phone: result.data.phone,
           address: result.data.address,
           role: result.data.role,
+          image: result.data.imageUrl,
         })
       }
       )
       .catch((err) => {
         this.setState({ loading: false, error: err.response })
-        console.log(err);
+
       }
       );
     //.........
   }
-
+  handleCloseModal = () => {
+    this.setState({ show: false });
+  }
 
   handleUploadChange = async (files) => {
-    console.log("handleUploadChange()")
+    // console.log("handleUploadChange()")
 
     //saving image to state
     await this.setState({
@@ -180,17 +177,17 @@ class Employee extends Component {
   }
   //edit Image
   editImage = async () => {
-    console.log("editImage()")
+    //console.log("editImage()")
     document.getElementById('selectedFile').click();
   }
 
   componentDidMount = async () => {
 
-    if (this.props.match.params.id == 0) {  
-      this.setState({isAddEmployee:true}) 
+    if (this.props.match.params.id == 0) {
+      this.setState({ isAddEmployee: true })
     }  //adding Employee
     else {
-      this.setState({ loading: true,isAddEmployee: false  });
+      this.setState({ loading: true, isAddEmployee: false });
       await axios
         .get(server.url + "/employees/" + this.props.match.params.id, {
           headers: {
@@ -198,7 +195,7 @@ class Employee extends Component {
           },
         })
         .then((result) => {
-          console.log(result.data)
+          // console.log(result.data)
           this.setState({
             loading: false,
             id: result.data.id,
@@ -240,27 +237,17 @@ class Employee extends Component {
                     title="Employee Profile"
                     content={
                       <form>
-
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
                         <div onClick={this.editImage}>
                           <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded />
                         </div>
 
-                        {/* <FormInputs
-                          ncols={["col-md-5"]}
-                          onChange={this.handleChange}
-                          properties={[
-                            {
-                              label: "Image URL",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "Image URL",
-                              defaultValue: this.state.image,
-                              name: "image",
-                              onChange: this.handleChange.bind(this)
-                            }
-                          ]}
-                        /> */}
+
                         <FormInputs
                           ncols={["col-md-3", "col-md-3", "col-md-6"]}
                           properties={[
@@ -390,6 +377,24 @@ class Employee extends Component {
                           Update
                         </Button>
                         <div className="clearfix" />
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                       </form>
                     }
                   />

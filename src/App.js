@@ -52,8 +52,8 @@ export default class App extends Component {
         <Router ref={(router) => (this.router = router)} >
             <Switch>
             <Route path="/admin" render={props => <AdminLayout {...props} token={this.handleLogout} role={this.state.role}/>} />
-            <Route path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
-            <Route path = "/" 
+            <Route  path = "/signUp" render={()=><SignUp onLogin = {this.handleLogin}/>}/>
+            <Route  path = "/" 
                         render={()=><Login onLogin = {this.handleLogin} />}/>
             </Switch>
         </Router>

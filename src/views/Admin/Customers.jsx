@@ -14,42 +14,7 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 
 
-const thArray = ["#", "Email", "First Name", "LastName", "Phone", "State", "City", "isActive"];
-//Example data
-const tdArray = [
-  {
-    "id": 1,
-    "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
-    "email": "tamir.baldandorj@gmail.com",
-    "status": "Active",
-    "firstName": "Tamir",
-    "lastName": "Baldandorj",
-    "phone": "6419181115",
-    "address": {
-      "street": "asdfasdf",
-      "city": "Fairfield",
-      "state": "Iowa",
-      "zip": 52556
-    },
-    "totalScore": 100000
-  },
-  {
-    "id": 2,
-    "image": "https://www.vocalcom.com/wp-content/uploads/the-role-of-emotions-in-the-customer-experience.jpg",
-    "email": "tamir.baldandorj@gmail.com",
-    "status": "Active",
-    "firstName": "Tamir",
-    "lastName": "Baldandorj",
-    "phone": "6419181115",
-    "address": {
-      "street": "asdfasdf",
-      "city": "Fairfield",
-      "state": "Iowa",
-      "zip": 52556
-    },
-    "totalScore": 130000
-  }
-];
+const thArray = ["#", "Email", "First Name", "LastName", "Phone", "State", "City", "Status"];
 
 
 class Customers extends Component {
@@ -109,13 +74,13 @@ class Customers extends Component {
                           {this.state.customers.map(props => {
                             return (
                               <tr>
-                                <td><Link to={`/admin/customers/${props.employeeId}`}>{props.employeeId}</Link></td>
+                                <td><Link to={`/admin/customers/${props.customerId}`}>{props.customerId}</Link></td>
                                 <td>{props.username}</td>
                                 <td>{props.firstName}</td>
                                 <td>{props.lastName}</td>
                                 <td>{props.phone}</td>
-                                <td>{props.address.state}</td>
-                                <td>{props.address.city}</td>
+                                <td>{this.state.state == null ? "" : this.state.address.state}</td>
+                                <td>{this.state.city == null ? "" : this.state.address.city}</td>
                                 <td>{props.status}</td>
                               </tr>
                             );
