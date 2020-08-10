@@ -5,13 +5,17 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl} from "react-bootstrap";
+  FormControl,
+  Modal,
+  Alert
+} from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 
 
@@ -33,49 +37,92 @@ class Product extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) => {
-    //     console.log(result.data[0])
-    //     this.setState({
-    //       loading: false,
-    //       id: result.data[0].id,
-    //       name: result.data[0].name,
-    //       description: result.data[0].description,
-    //       url: result.data[0].url,
-    //       rangeFrom: result.data[0].rangeFrom,
-    //       rangeTo: result.data[0].rangeTo
-    //     })
-    //   }
-    //   )
-    //   .catch((err) =>
-    //     this.setState({ loading: false, error: err.response }));
-    //Setting example
-    this.setState({
-          id: 1,
-          name: "Amex",
-          description: "sadasda",
-          url: "https://americanexpress.com",
-          rangeFrom: 1001,
-          rangeTo: 2000
-    })
+  handleCloseModal = () => {
+    this.setState({ show: false });
+    this.props.history.goBack();
   }
 
-//Text Input event
-  handleChange(event) {
-    const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
+  saveBtn = async () => {
+    console.log('sadfas')
+    this.setState({ loading: true });
+    await axios
+      .post(
+        server.urlAde + "/card/addpaymentmethod",
+        {
+          id: this.state.id == 0 ? null:this.state.id,
+          name: this.state.name,
+          description: this.state.description,
+          url: this.state.url,
+          rangeFrom: this.state.rangeFrom,
+          rangeTo: this.state.rangeTo
+        }
+        // ,{
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem('token')}`
+        //   }
+        // },
+      )
+      .then((result) => {
+         console.log(result)
+         this.setState({loading:false,show:true});
+        // this.setState({
+        //   loading: false, show: true,
+        //   id: result.data.id,
+        //   name: result.data.name,
+        //   description: result.data.description,
+        //   url: result.data.url,
+        //   rangeFrom: result.data.rangeFrom,
+        //   rangeTo: result.data.rangeTo
+        // })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        // console.log(err);
+      }
+      );
+    
+    //....
   }
-//Save action
-  handleSavebtn = () => {
-    this.props.history.goBack();
+    //Text Input event
+    handleChange(event) {
+      const { target: { name, value } } = event
+      this.setState({ [name]: value, event: event })
+    }
+  
+
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    if (this.props.match.params.id == 0) { 
+      this.setState({id : 0,loading:false}); 
+    }
+    else {
+      await axios
+        .get(server.urlAde + "/card/paymentmethod/" + this.props.match.params.id
+          // , {headers: {
+          //     Authorization: `Bearer ${localStorage.getItem('token')}`
+          //   },}
+        )
+        .then((result) => {
+          console.log(result)
+          this.setState({
+            loading: false,
+            id: result.data.id,
+            name: result.data.name,
+            description: result.data.description,
+            url: result.data.url,
+            rangeFrom: result.data.rangeFrom,
+            rangeTo: result.data.rangeTo
+          })
+        }
+        )
+        .catch((err) =>
+          this.setState({ loading: false, error: err.response }));
+    }
   }
-//Back to history
-  goBack = () => {
-    this.props.history.goBack();
-  };
+
+
+
   render() {
     return (
       <div className="content">
@@ -89,7 +136,11 @@ class Product extends Component {
                     title="Payment method"
                     content={
                       <form>
-
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <FormInputs
                           ncols={["col-md-4", "col-md-6"]}
                           properties={[
@@ -116,7 +167,7 @@ class Product extends Component {
                         />
                         <FormGroup controlId="formControlsTextarea">
                           <ControlLabel>Description</ControlLabel>
-                          <FormControl componentClass="textarea" value={this.state.description} />
+                          <FormControl componentClass="textarea" value={this.state.description} name = "description" onChange = {this.handleChange.bind(this)}/>
                         </FormGroup>
                         <FormInputs
                           ncols={["col-md-3", "col-md-3"]}
@@ -142,9 +193,27 @@ class Product extends Component {
                           ]
                           }
                         />
-                        <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
+                        <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
                     </Button>
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                         <div className="clearfix" />
                       </form>
                     }

@@ -10,6 +10,7 @@ import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 //Example data
 const thArray = ["#", "Subject", "Start Date", "Due Date", "End Date", "Status"];
@@ -45,21 +46,22 @@ class Requirements extends Component {
     loading: false,
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
 
-    // this.setState({ loading: true });
-    //   axios
-    //     .get("http://localhost:4000/employees")
-    //     .then((result) =>{
-    //       console.log(result.data) 
-    //       this.setState({ requirements : result.data })
-    //       this.setState({ loading: false})
-    //     }
-    //     )
-    //     .catch((err) => this.setState({ loading: false, error: err.response }));
-    //Setting example data
-    this.setState({ requirements: tdArray });
-
+    this.setState({ loading: true });
+    await axios
+      .get(server.url + "/requirements", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+      .then((result) => {
+        console.log(result.data);
+        this.setState({ requirements: result.data })
+        this.setState({ loading: false })
+      }
+      )
+      .catch((err) => this.setState({ loading: false, error: err.response }));
   }
 
   render() {
@@ -90,9 +92,9 @@ class Requirements extends Component {
                               <tr>
                                 <td><Link to={`/admin/requirements/${props.id}`}>{props.id}</Link></td>
                                 <td>{props.subject}</td>
-                                <td>{props.startDate}</td>
+                                <td>{props.createdDate}</td>
                                 <td>{props.dueDate}</td>
-                                <td>{props.endDate}</td>
+                                <td>{props.endedDate}</td>
                                 <td>{props.status}</td>
                               </tr>
                             );

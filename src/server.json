@@ -1,4 +1,5 @@
 {
     "url": "http://10.10.11.139:8080/eshopadmin",
-    "urlHenok": "http://10.10.11.139:8080/eshopshoppingcart"
+    "urlHenok": "http://10.10.11.139:8080/eshopshoppingcart",
+    "urlAde": "http://10.10.11.139:8080/eshop-bankapi"
 }
