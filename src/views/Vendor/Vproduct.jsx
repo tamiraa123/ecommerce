@@ -14,22 +14,24 @@ import firebase from '../../firebase';
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import axios from "axios";
+import server from "../../server.json";
 
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },
   { specName: "Hard SSD", specValue: "500GB" },
 ];
-const styleCarousel ={
+const styleCarousel = {
   display: "block",
   marginLeft: "auto",
   marginRight: "auto",
 };
 
-const urlsFromBackEnd = [
-  "images/vendor/1/products/h1.jpg",
-  "images/vendor/1/products/h2.jpg",
-];
+// const urlsFromBackEnd = [
+//   "images/vendor/VE1597012145741/products/logo.png",
+//   "images/vendor/VE1597012145741/products/logo1.png",
+// ];
 
 class Product extends Component {
   constructor(props) {
@@ -54,37 +56,93 @@ class Product extends Component {
 
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value}, console.log(this.state.imageLocalURLs))
+    this.setState({ [name]: value }, console.log(this.state.imageLocalURLs))
   }
-  handleDoneBtn = () => {
+  handleDoneBtn = async () => {
     //send Post request to update product info price, category, manifacturer, quantity
+    await axios
+      .put(
+        server.urlHenok + "/products/update/" + this.props.match.params.id,
+        {
+          price: this.state.price,
+          manufacturer: this.state.brand,
+          currentQuantity: this.state.quantity,
+          productDetails: [],
+          status: this.state.status
+        }
+      )
+      .then((result) => {
+        console.log(result)
+        // this.setState({
+        //   // loading: false,
+        //   id: result.data.vendorId,
+        //   image: result.data.imageUrl,
+        //   email: result.data.username,
+        //   status: result.data.status,
+        //   vendorName: result.data.vendorName,
+        //   phone: result.data.phone,
+        //   custServContactNo: result.data.contactMethod,
+        //   description: result.data.description,
+        //   address: result.data.address,
+        // })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );
+
 
     //Go back
     this.props.history.goBack();
   }
-  async componentDidMount() {
-    this.setState({
-      name: "Laptop 1",
-      description: "This laptop is best selling laptop",
-      price: "1000$",
-      brand: "Apple",
-      quantity: "10",
-      category: "Electronic",
-      status: "Active",
-      productDetails: specifications,
-      //images/vendor/1/products/1.jpg
-      imageLocalURLs: urlsFromBackEnd,
-    });
+  componentDidMount = async () => {
+    console.log(this.props.match.params.id);
+    await axios
+      .get(server.urlHenok + "/products/" + this.props.match.params.id)
+      .then((result) => {
+        console.log("data", result.data);
+        this.setState({
+          id: result.data.productId,
+          name: result.data.productName,
+          description: result.data.description,
+          brand: result.data.manufacturer,
+          price: result.data.price,
+          quantity: result.data.currentQuantity,
+          categoryId: result.data.categoryId,
+          categoryName: result.data.categoryName,
+          // productDetails : result.productDetails,
+          vendorId: result.data.vendorId,
+          status: result.data.status,
+          // images: [],
+          imageLocalURLs: result.data.imageList,
+          imageGlobalURLs: []
+        },
+          () => {
+            console.log(this.state)
+          }
+        )
+
+
+
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" })//err.response.data.error.message
+      );
+
+
     //  show picture
-    let storageRef1 = firebase.storage().ref()
-    let tempTable = [urlsFromBackEnd.length];
-    for (let i = 0; i < urlsFromBackEnd.length; i++) {
-      tempTable[i] = (await storageRef1.child(urlsFromBackEnd[i]).getDownloadURL());
+    if (this.state.images) {
+      let storageRef1 = firebase.storage().ref()
+      let tempTable = [this.state.imageLocalURLs.length];
+      for (let i = 0; i < this.state.imageLocalURLs.length; i++) {
+        tempTable[i] = (await storageRef1.child(this.state.imageLocalURLs[i]).getDownloadURL());
+      }
+      this.setState({
+        imageGlobalURLs: tempTable
+      }, console.log(tempTable));
     }
-    this.setState({
-      //"https://firebasestorage.googleapis.com/v0/b/eshop-abfb2.appspot.com/o/images%2Fvendor%2F1%2Fproducts%2F2.jpg?alt=media&token=602fb3e1-ac23-4967-9634-b8030e6b5909"
-      imageGlobalURLs: tempTable
-    }, console.log(this.state.imageGlobalURLs));
   }
   render() {
     return (
@@ -104,8 +162,9 @@ class Product extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "category",
-                          defaultValue: this.state.category,
-                          name: "category",
+                          defaultValue: this.state.categoryName,
+                          name: "categoryName",
+                          disabled : true,
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -147,7 +206,8 @@ class Product extends Component {
                           bsClass: "form-control",
                           placeholder: "Name",
                           defaultValue: this.state.name,
-                          name: "productname",
+                          name: "name",
+                          disabled : true,
                           onChange: this.handleChange.bind(this)
                         },
                         {
@@ -165,6 +225,7 @@ class Product extends Component {
                     <FormGroup controlId="formControlsTextarea">
                       <ControlLabel>Product Description</ControlLabel>
                       <FormControl
+                        disabled = "true"
                         name="description"
                         rows="5"
                         componentClass="textarea"
@@ -194,7 +255,7 @@ class Product extends Component {
                                       bsClass: "form-control",
                                       placeholder: "Name",
                                       defaultValue: prop.specValue,
-                                      name: "name",
+                                      name: "specValue",
                                       onChange: this.handleChange.bind(this)
                                     }
                                   ]
@@ -207,14 +268,14 @@ class Product extends Component {
                       </tbody>
                     </Table>
                     <Carousel >
-                          {this.state.imageGlobalURLs.map((url) => {
-                            return (
-                              <Carousel.Item >
-                                <img style={styleCarousel}  width={300} height={400} src={url} />
-                              </Carousel.Item>
-                            );
-                          })}
-                        </Carousel>
+                      {this.state.imageGlobalURLs.map((url) => {
+                        return (
+                          <Carousel.Item >
+                            <img style={styleCarousel} width={300} height={400} src={url} />
+                          </Carousel.Item>
+                        );
+                      })}
+                    </Carousel>
                     <Button bsStyle="info" pullRight fill onClick={this.handleDoneBtn}>
                       Done
                     </Button>

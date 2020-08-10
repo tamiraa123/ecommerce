@@ -37,6 +37,7 @@ class Profile extends Component {
       since: "",
       custServContactNo: "",
       description: "",
+      cards : "",
       address: {
         street: "",
         city: "",
@@ -65,16 +66,18 @@ class Profile extends Component {
         console.log("data")
         console.log(result.data)
         this.setState({
-          description: result.data.description,
+          // description: result.data.description,
           vendorName: result.data.vendorName,
           custServContactNo: result.data.contactMethod,
           phone: result.data.phone,
           email: result.data.username,
           status: result.data.status,
-          address: result.data.address,
           since: result.data.createdDate,
-          image: result.data.imageUrl
+          image: result.data.imageUrl,
+          cards : result.cards
         })
+        if (result.data.address) {this.setState({address: result.data.address})}
+        if (result.data.description) {this.setState({description: result.data.description})}
         let storageRef1 = firebase.storage().ref()
         // console.log(this.state.image)
         storageRef1.child(result.data.imageUrl).getDownloadURL().then((url) => {
@@ -92,7 +95,7 @@ class Profile extends Component {
     if (this.state.files) {
       //upload image file.name should be userid
       let bucketName = `images/vendor/${this.state.id}/`;
-      
+
       // console.log(file);
       if (this.state.files[0]) {
         console.log("pic");
@@ -103,7 +106,7 @@ class Profile extends Component {
         let uploadTask = storageRef.put(file)
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           () => {
-            
+
           }
         )
         //show image
@@ -112,21 +115,22 @@ class Profile extends Component {
           this.setState({ imageGlobal: url })
         })
       }
-      else 
-      console.log("no pic");
+      else
+        console.log("no pic");
     }
 
     //PUT
     // this.setState({ loading: true });
     await axios
       .put(
-        server.url + "/vendors/" + this.state.id,
+        server.url + "/vendors/" + localStorage.getItem("userId"),
         {
-          vendorId: this.state.id,
+          vendorId: localStorage.getItem("userId"),
           imageUrl: this.state.image,
           status: this.state.status,
           vendorName: this.state.vendorName,
           phone: this.state.phone,
+          cards : this.state.cards,
           contactMethod: this.state.custServContactNo,
           description: this.state.description,
           address: this.state.address,
@@ -138,7 +142,7 @@ class Profile extends Component {
         },
       )
       .then((result) => {
-        // console.log(result)
+        console.log(result)
         this.setState({
           // loading: false,
           id: result.data.vendorId,
@@ -166,13 +170,13 @@ class Profile extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    if ([name] === "street" || [name] === "city" || [name] === "state" || [name] === "zip") {
+    if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {
       this.setState({
         address: {
           ...this.state.address, [name]: event.target.value
         }
       });
-    } else { this.setState({ [name]: value });}
+    } else { this.setState({ [name]: value }); }
     console.log(this.state);
   }
   editImage = async () => {
@@ -190,7 +194,7 @@ class Profile extends Component {
     let reader = new FileReader();
     let file = files[0];
     let bucketName = `images/vendor/${this.state.id}/`;
-    this.setState({image : bucketName+"/"+file.name});
+    this.setState({ image: bucketName + "/" + file.name });
     try {
       reader.onloadend = () => {
         this.setState({

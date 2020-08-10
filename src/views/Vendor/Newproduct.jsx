@@ -7,14 +7,16 @@ import {
   ControlLabel,
   FormControl,
   Table,
-  } from "react-bootstrap";
+} from "react-bootstrap";
 
 import firebase from '../../firebase';
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import ImageUploader from 'react-images-upload';
-
+import TreeMenu from 'react-simple-tree-menu';
+import axios from "axios";
+import server from "../../server.json";
 
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
@@ -27,22 +29,26 @@ class Newproduct extends Component {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
     this.state = {
+      role: "",
+      token : "",
+      userId : "",
       id: 0,
       name: "",
       description: "",
-      price: "",
+      price: 0,
       brand: "",
-      quantity: "",
-      category: "",
-      isActive: false,
+      quantity: 0,
+      categoryId: null,
+      categoryName: null,
       productDetails: [],
       images: [],
       imageLocalURLs: []
     }
     this.onDrop = this.onDrop.bind(this);
+    this.handleChangeTree = this.handleChangeTree.bind(this);
   }
   onDrop(picture) {
-    let bucketName = 'images/vendor/1/products/'
+    let bucketName = `images/vendor/${localStorage.getItem("userId")}/products/`
     this.setState({
       images: this.state.images.concat(picture),
       imageLocalURLs: this.state.images.concat(picture).map(file => bucketName + file.name)
@@ -51,27 +57,61 @@ class Newproduct extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value }, () => console.log(this.state))
+    this.setState({ [name]: value, event: event }, () => console.log(this.state))
   }
-  handleDoneBtn = () => {
+  handleChangeTree(event) {
+    console.log(event)
+    this.setState({ categoryId: event.key });
+    this.setState({ categoryName: event.label });
+  }
+  handleDoneBtn = (event) => {
     //  upload picture
     let pictures = this.state.images//this.state.files[0]
     for (let i = 0; i < pictures.length; i++) {
-      let storageRef = firebase.storage().ref(`${this.state.imageLocalURLs}`)
+      let storageRef = firebase.storage().ref(`${this.state.imageLocalURLs[i]}`)
       let uploadTask = storageRef.put(this.state.images[i])
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {
-          let downloadURL = uploadTask.snapshot.downloadURL
-        }
-      )
+      console.log(this.state.imageLocalURLs[i]);
+      // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      //   () => {
+      //     let downloadURL = uploadTask.snapshot.downloadURL
+      //   }
+      // )
     }
-    ///////////
-    
+    ///////////POST
+    let path = server.urlHenok+"/products/create";
+    console.log(path);
+  axios
+    .post(path,
+      {
+        productName: this.state.name,
+        price: this.state.price,
+        description: this.state.description,
+        manufacturer: this.state.brand,
+        currentQuantity: this.state.quantity,
+        productDetails: [],
+        vendorId: localStorage.getItem("userId"),
+        categoryName: this.state.categoryName,
+        categoryId: this.state.categoryId,
+        status: "NEW",
+        imageList: this.state.imageLocalURLs
+      }
+    )
+    .then((result) => {
+      console.log(result);
+      // window.location = '/';
+    })
+    .catch((err) =>
+      this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+    );
+    event.preventDefault();
     alert("Successfully added");
     //Go back
     this.props.history.goBack();
   }
   async componentDidMount() {
+    this.setState({ token: localStorage.getItem("token") });
+    this.setState({ role: localStorage.getItem("role") });
+    this.setState({ userId: localStorage.getItem("userId") });
     this.setState({
       name: "",
       description: "",
@@ -79,11 +119,22 @@ class Newproduct extends Component {
       brand: "",
       quantity: "",
       category: "",
-      isActive: false,
       productDetails: specifications,
       //images/vendor/1/products/1.jpg
       imageLocalURLs: "",
     });
+    
+    let url = server.urlHenok + "/categories";
+    axios
+    .get(url)
+    .then((result) => {
+      // console.log("11111111111111111111111");
+      console.log(result.data);
+      this.setState({ category: result.data});
+    })
+    .catch((err) =>
+      this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+    );
   }
   render() {
     return (
@@ -95,18 +146,12 @@ class Newproduct extends Component {
                 title="New Product"
                 content={
                   <form>
+                    <TreeMenu onClickItem={this.handleChangeTree}
+                      data={this.state.category}>
+                    </TreeMenu>
                     <FormInputs
-                      ncols={["col-md-5", "col-md-3", "col-md-2", "col-md-2"]}
+                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
-                        {
-                          label: "Product Category",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "category",
-                          defaultValue: this.state.category,
-                          name: "category",
-                          onChange: this.handleChange.bind(this)
-                        },
                         {
                           label: "Manufacturer",
                           type: "text",
@@ -146,7 +191,7 @@ class Newproduct extends Component {
                           bsClass: "form-control",
                           placeholder: "Name",
                           defaultValue: this.state.name,
-                          name: "productname",
+                          name: "name",
                           onChange: this.handleChange.bind(this)
                         }
                       ]

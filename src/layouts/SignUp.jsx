@@ -6,7 +6,6 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import server from "../server.json";
 
-{/* <script crossorigin src="..."></script> */ }
 
 class UserProfile extends Component {
   constructor(props) {

@@ -38,7 +38,7 @@ export default class LoginForm extends Component {
           password: this.state.password,
         })
         .then((result) => {
-          //console.log(result);
+          console.log(result);
           
           //if(this.state.role == "Employee") {
           localStorage.setItem("token", result.data.token);

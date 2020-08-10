@@ -27,16 +27,14 @@ class Vproducts extends Component {
     this.setState({ token: localStorage.getItem("token") });
     this.setState({ role: localStorage.getItem("role") });
     this.setState({ userId: localStorage.getItem("userId") });
-    let url = server.urlHenok + "/products/vendor/4";
-    console.log(url);
+    let url = server.urlHenok + "/products/vendor/"+localStorage.getItem("userId");
+    // console.log(url);
     axios
-      .get(url, { //+localStorage.getItem("userId")
-      }
-      )
+      .get(url)
       .then((result) => {
-        console.log("11111111111111111111111");
-        // console.log(result.data.products);
-        // this.setState({ products: result.data.products });
+        // console.log("11111111111111111111111");
+        console.log(result.data);
+        this.setState({ products: result.data });
       })
       .catch((err) =>
         this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
@@ -68,7 +66,7 @@ class Vproducts extends Component {
                           <tr>
                             <td><Link to={`/admin/myProducts/${product.productId}`}>
                               {product.productId}</Link></td>
-                            <td>{product.productCategory}</td>
+                            <td>{product.categoryName}</td>
                             <td>{product.productName}</td>
                             <td>{product.price}</td>
                             <td>{product.manufacturer}</td>
