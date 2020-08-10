@@ -6,15 +6,12 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  Table,
-  Label,
-  Carousel, Image
+  Table
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import ImageUploader from 'react-images-upload';
 const specifications = [
   { specName: "CPU", specValue: "1,5 Ghz" },
   { specName: "RAM", specValue: "16 GB" },

@@ -14,13 +14,10 @@ import server from "../../server.json";
 
 const thArray = ["Card Number", "Card Holder", "status", "cvv", "Expiration Date"];
 
-
-
 class Vcards extends Component {
 
   state = {
-    cards: [],
-    // products: []
+    cards: []
   }
 
   componentDidMount = () => {
