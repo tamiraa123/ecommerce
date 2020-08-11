@@ -22,7 +22,7 @@ import Requirement from "views/Admin/Requirements.jsx";
 import Report from "views/Admin/Report.jsx";
 import EditProducts from "views/Engineer/EditProducts.jsx";
 
-import Test from "views/Admin/Test.jsx";
+
 
 const dashboardRoutes = [
   {
