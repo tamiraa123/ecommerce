@@ -49,7 +49,7 @@ class Product extends Component {
       var send = pieces[pieces.length - 1];
       // console.log(send);
       await axios
-        .post(server.urlHenok + "/categories/add", {
+        .post(server.url + "/categories/add", {
           parentId: send,
           value: this.state.catName,
         },
@@ -75,7 +75,7 @@ class Product extends Component {
       var send = pieces[pieces.length - 1];
       console.log(this.state.catName);
       await axios
-        .put(server.urlHenok + "/categories/edit", {
+        .put(server.url + "/categories/edit", {
           categoryId: send,
           value: this.state.catName,
         },
@@ -102,7 +102,7 @@ class Product extends Component {
       var pieces = this.state.selected.split('/');
       var categoryId = pieces[pieces.length - 1];
       await axios
-        .delete(server.urlHenok + "/categories/delete/" +  categoryId,{
+        .delete(server.url + "/categories/delete/" +  categoryId,{
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           },
@@ -135,7 +135,7 @@ class Product extends Component {
 
     this.setState({ loading: true });
     await axios
-      .get(server.urlHenok + "/categories"
+      .get(server.url + "/categories"
         , {headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`
           },}

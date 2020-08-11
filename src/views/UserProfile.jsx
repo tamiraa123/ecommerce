@@ -354,7 +354,7 @@ class UserProfile extends Component {
                         <div className="clearfix" />
                       </form>
                     }
-                  />
+                  /> 
                 </Col>
               </Row>
             </Grid>

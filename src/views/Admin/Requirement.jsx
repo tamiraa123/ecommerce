@@ -59,7 +59,7 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .put(
-        server.urlHenok + "/requirements/" + this.props.match.params.id,
+        server.url + "/requirements/" + this.props.match.params.id,
         {
           id: this.state.id,
           vendorId: this.state.vendorId,
@@ -125,7 +125,7 @@ class Product extends Component {
 
     //Set engineers
     await axios
-      .get(server.urlHenok + "/employees/engineers"
+      .get(server.url + "/employees/engineers"
         , {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -145,7 +145,7 @@ class Product extends Component {
         this.setState({ loading: false, error: err.response }));
 
     await axios
-      .get(server.urlHenok + "/requirements/" + this.props.match.params.id
+      .get(server.url + "/requirements/" + this.props.match.params.id
         , {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

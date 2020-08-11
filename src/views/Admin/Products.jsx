@@ -26,7 +26,7 @@ state={
 componentDidMount = async () =>{
   this.setState({ loading: true });
   await axios
-    .get(server.urlHenok + "/products"
+    .get(server.url + "/products"
     , {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`

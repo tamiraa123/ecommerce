@@ -49,7 +49,7 @@ class Requirements extends Component {
   componentDidMount = async () => {
     if (localStorage.getItem('role') == "ROLE_ENGINEER") {
       await axios
-        .get(server.urlHenok + "/requirements/engineer/" + localStorage.getItem('userId')
+        .get(server.url + "/requirements/engineer/" + localStorage.getItem('userId')
           , {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`

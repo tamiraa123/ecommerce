@@ -74,7 +74,7 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .put(
-        server.urlHenok + "/products/updatestatus/" + this.props.match.params.id,
+        server.url + "/products/updatestatus/" + this.props.match.params.id,
         {
           status: this.state.status
         },
@@ -113,7 +113,7 @@ class Product extends Component {
 
     this.setState({ loading: true });
     await axios
-      .get(server.urlHenok + "/products/" + this.props.match.params.id
+      .get(server.url + "/products/" + this.props.match.params.id
         , {headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           },}
