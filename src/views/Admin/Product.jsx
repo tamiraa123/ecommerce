@@ -114,12 +114,12 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .get(server.urlHenok + "/products/" + this.props.match.params.id
-        // , {headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`
-        //   },}
+        , {headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },}
       )
       .then((result) => {
-        // console.log(result)
+         console.log(result)
         this.setState({
           loading: false,
           id: result.data.productId,
@@ -228,7 +228,7 @@ class Product extends Component {
                             ))}
                           </DropdownButton>
                         </label>
-                        {this.state.productDetails ? (<div><i>No specification</i></div>) : (
+                        {this.state.productDetails == null ? (<div><i>No specification</i></div>) : (
                           <Table striped hover>
                             <thead>
                               <tr>
@@ -248,7 +248,7 @@ class Product extends Component {
                             </tbody>
                           </Table>
                         )}
-                        <Button bsStyle="info" pullRight fill type="submit" onClick={this.saveBtn}>
+                        <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
                         </Button>
                         <Modal

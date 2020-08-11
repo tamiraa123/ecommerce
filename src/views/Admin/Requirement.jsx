@@ -7,7 +7,9 @@ import {
   ControlLabel,
   FormControl,
   DropdownButton,
-  MenuItem
+  MenuItem,
+  Alert,
+  Modal
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
@@ -15,16 +17,15 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
-import { Multiselect } from 'multiselect-react-dropdown';
 import server from "../../server.json";
 
 //Example data
-const engineers = [
-  { id: 1, name: "Tamir" },
-  { id: 2, name: "Munkhzorig" },
-  { id: 3, name: "Enkhbayar" },
-];
-const statusD = ["NEW", "ACTIVE", "BLOCKED"];
+// const engineers = [
+//   { id: 1, name: "Tamir" },
+//   { id: 2, name: "Munkhzorig" },
+//   { id: 3, name: "Enkhbayar" },
+// ];
+const statusD = ["CREATED", "RECEIVED", "ONGOING", "ANSWERED", "CLOSED", "DELETED"];
 
 class Product extends Component {
   constructor(props) {
@@ -39,9 +40,9 @@ class Product extends Component {
       status: statusD[0],
       description: "",
       // assignTo: engineers[0].id,
-      
-      vendorId:"",
-      lastModifiedDate:"",
+      engineers: [],
+      vendorId: "",
+      lastModifiedDate: "",
 
       error: null,
       loading: false
@@ -50,47 +51,67 @@ class Product extends Component {
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleChangeAssignTo = this.handleChangeAssignTo.bind(this);
   }
+  handleCloseModal = () => {
+    this.setState({ show: false });
+  }
+  //Save Status of Product
+  saveBtn = async () => {
+    this.setState({ loading: true });
+    await axios
+      .put(
+        server.urlHenok + "/requirements/" + this.props.match.params.id,
+        {
+          id: this.state.id,
+          vendorId: this.state.vendorId,
+          subject: this.state.subject,
+          createdDate: this.state.startDate,
+          dueDate: this.state.dueDate,
+          endedDate: this.state.endDate,
+          status: this.state.status,
+          description: this.state.description,
+          engineer: this.state.assignTo,
+          lastModifiedDate: this.state.lastModifiedDate,
 
-  componentDidMount = async()=> {
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) => {
-    //     console.log(result.data[0])
-    //     this.setState({
-    //       loading: false,
-    //       id: result.data[0].id,
-    //       subject: result.data[0].subject,
-    //       startDate: result.data[0].startDate,
-    //       dueDate: result.data[0].dueDate,
-    //       endDate: result.data[0].endDate,
-    //       status: result.data[0].status,
-    //       description:result.data[0].description,
-    //       assignTo: result.data[0].assignTo,
-    //     })
-    //   }
-    //   )
-    //   .catch((err) =>
-    //     this.setState({ loading: false, error: err.response }));
-    //Setting example data
-    this.setState({ loading: false, 
-      id: 1, 
-      subject: "sldasd",
-      startDate: "2020-08-08",
-      dueDate: "2020-08-18",
-      endDate: "2020-08-18",
-      status: "Active",
-      description: "sfdsafsdf",
-      assignTo: 2,            
-    })
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+      )
+      .then((result) => {
+        // console.log(result)
+        this.setState({
+          loading: false, show: true,
+          id: result.data.id,
+          subject: result.data.subject,
+          startDate: result.data.createdDate,
+          dueDate: result.data.dueDate,
+          endDate: result.data.endedDate,
+          status: result.data.status,
+          description: result.data.description,
+          assignTo: result.data.engineer,
+          lastModifiedDate: result.data.lastModifiedDate,
+          vendorId: result.data.vendorId
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        // console.log(err);
+      }
+      );
+    //....
   }
   //Status event
   handleChangeStatus(event) {
     this.setState({ status: statusD[event] });
+    console.log(this.state.status);
   }
   //Assign to event
   handleChangeAssignTo(event) {
-    console.log(engineers.filter(eng => eng.id == this.state.assignTo).map(person => person.name));
+    //console.log(this.state.engineers.filter(eng => eng.id == this.state.assignTo).map(person => person.name));
+
     this.setState({ assignTo: event });
   }
   //Text input events
@@ -98,6 +119,63 @@ class Product extends Component {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
   }
+
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+
+    //Set engineers
+    await axios
+      .get(server.urlHenok + "/employees/engineers"
+        , {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result)
+        this.setState({
+          loading: false,
+          engineers: result.data
+        })
+
+      }
+      )
+      .catch((err) =>
+        this.setState({ loading: false, error: err.response }));
+
+    await axios
+      .get(server.urlHenok + "/requirements/" + this.props.match.params.id
+        , {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result)
+        this.setState({
+          loading: false,
+          id: result.data.id,
+          subject: result.data.subject,
+          startDate: result.data.createdDate,
+          dueDate: result.data.dueDate,
+          endDate: result.data.endedDate,
+          status: result.data.status,
+          description: result.data.description,
+          assignTo: result.data.engineer,
+          lastModifiedDate: result.data.lastModifiedDate,
+          vendorId: result.data.vendorId
+        })
+
+      }
+      )
+      .catch((err) =>
+        this.setState({ loading: false, error: err.response }));
+
+
+  }
+
 
   render() {
     return (
@@ -112,6 +190,11 @@ class Product extends Component {
                     title="Requirement"
                     content={
                       <form>
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <div className="typo-line">
                           <p className="category">Request Id:</p> {this.state.id}
                         </div>
@@ -134,16 +217,8 @@ class Product extends Component {
                               placeholder: "Start Date",
                               defaultValue: this.state.startDate,
                               name: "startDate",
-                              onChange: this.handleChange.bind(this)
-                            },
-                            {
-                              label: "End Date",
-                              type: "date",
-                              bsClass: "form-control",
-                              placeholder: "End Date",
-                              defaultValue: this.state.endDate,
-                              name: "endDate",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              disabled: true
                             },
                             {
                               label: "Due Date",
@@ -151,31 +226,42 @@ class Product extends Component {
                               bsClass: "form-control",
                               placeholder: "Start Date",
                               defaultValue: this.state.dueDate,
-                              name: "DueDate",
-                              onChange: this.handleChange.bind(this)
+                              name: "dueDate",
+                              onChange: this.handleChange.bind(this),
+                              disabled: (this.state.status == "CLOSED" || localStorage.getItem('role') == "ROLE_ENGINEER") ? true : false,
+
+
                             },
+                            {
+                              label: "Ended Date",
+                              type: "date",
+                              bsClass: "form-control",
+                              placeholder: "End Date",
+                              defaultValue: this.state.endDate,
+                              name: "endDate",
+                              onChange: this.handleChange.bind(this),
+                              disabled: "true"
+                            }
 
                           ]}
                         />
                         <Row>
                           <Col xs={6} md={4}>
-                            {/* <ControlLabel>ASSIGN TO</ControlLabel><br />
+                            <ControlLabel>ASSIGN TO</ControlLabel><br />
                             <DropdownButton
-                              title={engineers.filter(eng => eng.id == this.state.assignTo).map(person => person.name)}
+                              title={this.state.engineers.filter(eng => eng.personId == this.state.assignTo).map(person => person.firstName)}
                               id="document-type"
                               onSelect={this.handleChangeAssignTo}
+                              disabled= {(localStorage.getItem('role') == "ROLE_ENGINEER") ? true : false}
                             >
-                              {engineers.map((opt) => (
-                                <MenuItem key={opt.id} eventKey={opt.id}>
-                                  {opt.name}
+                              {this.state.engineers.map((opt) => (
+                                <MenuItem key={opt.personId} eventKey={opt.personId}>
+                                  {opt.firstName}
                                 </MenuItem>
                               ))}
-                            </DropdownButton> */}
-                            <Multiselect
-                              options={engineers}
-                              displayValue="key"
-                              style={this.style}
-                            />
+
+                            </DropdownButton>
+
                           </Col>
                           <Col xs={6} md={4}>
                             <ControlLabel>STATUS</ControlLabel><br />
@@ -193,12 +279,27 @@ class Product extends Component {
                             </DropdownButton>
                           </Col>
                         </Row>
-
-
-
-                        <Button bsStyle="info" pullRight fill type="submit">
+                        <Button bsStyle="info" pullRight fill onClick={this.saveBtn}>
                           Update
-                    </Button>
+                        </Button>
+                        <Modal
+                          show={this.state.show}
+                          onHide={this.handleCloseModal}
+                          container={this}
+                          aria-labelledby="contained-modal-title"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">
+                              Success
+                                </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
+                          <Modal.Footer>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
+                          </Modal.Footer>
+                        </Modal>
                         <div className="clearfix" />
                       </form>
                     }

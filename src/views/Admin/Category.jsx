@@ -52,7 +52,12 @@ class Product extends Component {
         .post(server.urlHenok + "/categories/add", {
           parentId: send,
           value: this.state.catName,
-        })
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },)
         .then((result) => {
           this.setState({show:true, category: result.data });
         })
@@ -68,12 +73,20 @@ class Product extends Component {
     if (this.state.selected) {
       var pieces = this.state.selected.split('/');
       var send = pieces[pieces.length - 1];
+      console.log(this.state.catName);
       await axios
         .put(server.urlHenok + "/categories/edit", {
           categoryId: send,
           value: this.state.catName,
-        })
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+        )
         .then((result) => {
+          console.log(result)
           this.setState({show:true, category: result.data });
         })
         .catch((err) =>
@@ -89,7 +102,11 @@ class Product extends Component {
       var pieces = this.state.selected.split('/');
       var categoryId = pieces[pieces.length - 1];
       await axios
-        .delete(server.urlHenok + "/categories/delete/" +  categoryId)
+        .delete(server.urlHenok + "/categories/delete/" +  categoryId,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
         .then((result) => {
            this.setState({show:true, category: result.data });
         })
@@ -119,9 +136,9 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .get(server.urlHenok + "/categories"
-        // , {headers: {
-        //       Authorization: `Bearer ${localStorage.getItem('token')}`
-        //   },}
+        , {headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+          },}
       )
       .then((result) => {
         this.setState({ category: result.data, loading: false })

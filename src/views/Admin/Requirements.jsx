@@ -19,22 +19,22 @@ const tdArray = [
     "id": 1,
     "subject": "Add Product",
     "startDate": "2020-08-08",
-      "dueDate": "2020-08-18",
-      "endDate": "2020-08-18",
+    "dueDate": "2020-08-18",
+    "endDate": "2020-08-18",
     "status": "New",
     "description": "",
     "assignTo": 1
-},
-{
+  },
+  {
     "id": 2,
     "subject": "Add Product",
     "startDate": "2020-08-08",
-      "dueDate": "2020-08-18",
-      "endDate": "2020-08-18",
+    "dueDate": "2020-08-18",
+    "endDate": "2020-08-18",
     "status": "Active",
     "description": "",
     "assignTo": 2
-}
+  }
 ];
 
 
@@ -47,21 +47,41 @@ class Requirements extends Component {
   }
 
   componentDidMount = async () => {
-
-    this.setState({ loading: true });
-    await axios
-      .get(server.url + "/requirements", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-      })
-      .then((result) => {
-        console.log(result.data);
-        this.setState({ requirements: result.data })
-        this.setState({ loading: false })
-      }
-      )
-      .catch((err) => this.setState({ loading: false, error: err.response }));
+    if (localStorage.getItem('role') == "ROLE_ENGINEER") {
+      await axios
+        .get(server.urlHenok + "/requirements/engineer/" + localStorage.getItem('userId')
+          , {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+          }
+        )
+        .then((result) => {
+          console.log(result)
+          console.log(result.data);
+          this.setState({ requirements: result.data })
+          this.setState({ loading: false })
+        }
+        )
+        .catch((err) =>
+          this.setState({ loading: false, error: err.response }));
+    }
+    else {
+      this.setState({ loading: true });
+      await axios
+        .get(server.url + "/requirements", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        .then((result) => {
+          console.log(result.data);
+          this.setState({ requirements: result.data })
+          this.setState({ loading: false })
+        }
+        )
+        .catch((err) => this.setState({ loading: false, error: err.response }));
+    }
   }
 
   render() {

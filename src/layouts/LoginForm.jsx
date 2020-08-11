@@ -52,7 +52,7 @@ export default class LoginForm extends Component {
           // }
         })
         .catch((err) =>
-          this.setState({ error: "Error" })//err.response.data.error.message
+          this.setState({ error: "Username or Password is incorrect" })//err.response.data.error.message
         );
     }
   };
