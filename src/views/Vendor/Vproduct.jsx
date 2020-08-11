@@ -117,7 +117,7 @@ class Product extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value }, console.log(this.state.imageLocalURLs))
+    this.setState({ [name]: value }, console.log(this.state))
   }
   handleDoneBtn = async (event) => {
     //send Post request to update product info price, category, manifacturer, quantity
