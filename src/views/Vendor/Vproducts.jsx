@@ -30,7 +30,11 @@ class Vproducts extends Component {
     let url = server.urlHenok + "/products/vendor/"+localStorage.getItem("userId");
     // console.log(url);
     axios
-      .get(url)
+      .get(url,{
+        headers: {
+          'Authorization': "Bearer " + localStorage.getItem("token")
+        }
+      })
       .then((result) => {
         // console.log("11111111111111111111111");
         console.log(result.data);

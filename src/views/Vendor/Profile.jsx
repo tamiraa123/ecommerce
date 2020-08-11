@@ -137,7 +137,7 @@ class Profile extends Component {
         },
         {
           headers: {
-            Authorization: `Bearer ${this.state.token}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         },
       )
