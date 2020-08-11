@@ -8,10 +8,10 @@ import {
 } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
-import axios from "axios";
+
 import { Link } from "react-router-dom";
 import server from "../../server.json";
-
+import axios from "axios";
 const thArray = ["Card Number", "Card Holder", "status", "cvv", "Expiration Date"];
 
 class Vcards extends Component {
@@ -22,15 +22,16 @@ class Vcards extends Component {
 
   componentDidMount = () => {
     axios
-      .get(server.url + "/vendors/5f2d88cb9fc1544dbd0df91a", {
+      .get(server.url + "/vendors/" + localStorage.getItem("userId"), {
         headers: {
-          'Authorization': "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlZWdpaUBnbWFpbC5jb20iLCJpYXQiOjE1OTY4NDU0NDgsImV4cCI6MTU5NjkzMTg0OH0._iJFR5bxruD7X17aiLeW-fz3sTaqcpAsBmNiwRf3zChunmTapHqniBrLQPvEOxYipg6l8-inbHy0PjyYXOUZzg"
+          'Authorization': "Bearer " + localStorage.getItem("token")
         }
       }
       )
       .then((result) => {
         console.log(result.data.cards);
-        this.setState({cards : result.data.cards});
+        if (result.data.cards)
+          this.setState({ cards: result.data.cards });
       })
       .catch((err) =>
         this.setState({ error: "Error" })//err.response.data.error.message
@@ -58,16 +59,16 @@ class Vcards extends Component {
                     </thead>
                     <tbody>
                       {this.state.cards.map(card => {
-                            return (
-                              <tr>
-                                <td><Link to={`/admin/myCards/${card.cardNumber}`}>
-                                  {card.cardNumber}</Link></td>
-                                <td>{card.holderName}</td>
-                                <td>{card.cardStatus}</td>
-                                <td>{card.cvv}</td>
-                                <td>{card.expirationDate}</td>
-                              </tr>
-                            );
+                        return (
+                          <tr>
+                            <td><Link to={`/admin/myCards/${card.cardNumber}`}>
+                              {card.cardNumber}</Link></td>
+                            <td>{card.holderName}</td>
+                            <td>{card.cardStatus}</td>
+                            <td>{card.cvv}</td>
+                            <td>{card.expirationDate}</td>
+                          </tr>
+                        );
                       })}
                     </tbody>
                   </Table>

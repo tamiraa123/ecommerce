@@ -14,64 +14,150 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-// import { FilePond, registerPlugin } from 'react-filepond';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-// registerPlugin(FilePondPluginImagePreview);
+import server from "../../server.json";
+import axios from "axios";
 
-const specifications = [
-  { specName: "CPU", specValue: "1,5 Ghz" },
-  { specName: "RAM", specValue: "16 GB" },
-  { specName: "Hard SSD", specValue: "500GB" },
-];
-const imgURLs = [
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-  { url: "https://images-na.ssl-images-amazon.com/images/I/61EVOldh9XL._AC_SL1000_.jpg" },
-];
+let map = new Map()
+map.set("CREATED", 0)
+map.set("RECEIVED", 1)
+map.set("ONGOING", 2)
+map.set("ANSWERED", 3)
+map.set("CLOSED", 4)
+map.set("DELETED", 5)
 
+let d = new Date();
+let date = d.toString();
 class Product extends Component {
   constructor(props) {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
     this.state = {
-      reqNo: 0,
-      reqStatus: "In Progress",
-      reqDesc: "test desc",
-      assignedTo: "Munkhzorig",
-      createdDate: "2020-07-30",
-      startDate: "2020-07-31",
-      finishDate: "2020-07-31",
-      finishDate: "2020-07-31",
-      closeDate: "2020-08-01",
-      reqName: "Add COLOR option",
-      reqDesc: "Test req"
+      reqNo: null,
+      reqStatus: "",
+      reqDesc: "",
+      assignedTo: null,
+      createdDate: null,
+      startDate: null,
+      finishDate: null,
+      closeDate: null,
+      reqName: "",
     }
-    this.onDrop = this.onDrop.bind(this);
   }
-  onDrop(picture) {
-    this.setState({
-      images: this.state.images.concat(picture),
-    });
-  }
+
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
-
-    console.log(this.state.images)
+    console.log(map.get(this.state.reqStatus), this.state)
   }
 
-  componentDidMount() {
-    this.state.productDetails = specifications;
-    this.state.images = imgURLs;
-    this.state.name = "Laptop 1";
-    this.state.brand = "Apple";
-    this.state.price = "1000$";
-    this.state.quantity = "10";
-    this.state.isActive = true;
-    this.state.description = "This laptop is best selling laptop"
-    this.state.category = "Electronic"
+  componentDidMount = async () => {
+    if (this.props.match.params.id != "new") {
+      this.setState({ loading: true });
+      await axios
+        .get(server.url + "/requirements/" + this.props.match.params.id, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          this.setState({
+            reqNo: result.data.id,
+            reqStatus: result.data.status,
+            reqDesc: result.data.description,
+            assignedTo: result.data.engineer,
+            createdDate: result.data.createdDate,
+            startDate: result.data.createdDate,
+            finishDate: result.data.endedDate,
+            closeDate: result.data.dueDate,
+            reqName: result.data.subject,
+          }, () => console.log(this.state))
+          this.setState({ loading: false })
+        }
+        )
+        .catch((err) => this.setState({ loading: false, error: err.response }));
+    }
+    else {
+      this.setState({
+        reqNo: "Will be provided soon",
+        reqStatus: "CREATED",
+        createdDate: date
+      });
+    }
   }
 
+  handleDoneBtn = async (event) => {
+    if (this.props.match.params.id == "new") {
+      console.log(server.urlHenok + "/requirements");
+      await axios
+        .post(
+          server.urlHenok + "/requirements",
+          {
+            vendorId: localStorage.getItem("userId"),
+            subject: this.state.reqName,
+            lastModifiedDate: null,
+            dueDate: null,
+            endedDate: null,
+            status: 0,
+            description: this.state.reqDesc,
+            engineer: this.state.assignedTo,
+            comments: null
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          },
+        )
+        .then((result) => {
+          console.log(result)
+          alert("Successful")
+        }
+        )
+        .catch((err) => {
+          this.setState({ loading: false, error: err.response })
+          console.log(err);
+        }
+        );
+
+
+      //Go back
+      // this.props.history.goBack();
+    }
+    else {
+      await axios
+        .put(
+          server.urlHenok + "/requirements/" + this.props.match.params.id,
+          {
+            id: this.state.reqNo,
+            vendorId: localStorage.getItem("userId"),
+            status: map.get(this.state.reqStatus),
+            description: this.state.reqDesc,
+            engineer: this.state.assignedTo,
+            lastModifiedDate: this.state.lastModifiedDate,
+            endedDate: this.state.endedDate,
+            dueDate: this.state.dueDate,
+            subject: this.state.reqName,
+            comment: ""
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          },
+        )
+        .then((result) => {
+          console.log(result)
+          alert("Successful")
+        }
+        )
+        .catch((err) => {
+          this.setState({ loading: false, error: err.response })
+          console.log(err);
+        }
+        );
+    }
+  }
   render() {
     return (
       <div className="content">
@@ -93,7 +179,7 @@ class Product extends Component {
                           defaultValue: this.state.reqNo,
                           name: "reqNo",
                           onChange: this.handleChange.bind(this),
-                          disabled : true
+                          disabled: true
                         },
 
                         {
@@ -103,9 +189,10 @@ class Product extends Component {
                           placeholder: "Requirement Status",
                           defaultValue: this.state.reqStatus,
                           name: "reqStatus",
+                          disabled: true,
                           onChange: this.handleChange.bind(this)
                         },
-                        
+
                         {
                           label: "Assigned To",
                           type: "text",
@@ -182,11 +269,11 @@ class Product extends Component {
                       }
                     />
                     <FormGroup controlId="formControlsTextarea">
-                      <ControlLabel>Requirement description</ControlLabel>
-                      <FormControl componentClass="textarea" defaultValue = {this.state.reqDesc}/>
+                      <ControlLabel>Description</ControlLabel>
+                      <FormControl name="reqDesc" onChange={this.handleChange.bind(this)} componentClass="textarea" value={this.state.reqDesc} />
                     </FormGroup>
 
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info" pullRight fill onClick={this.handleDoneBtn}>
                       Done
                     </Button>
                     <div className="clearfix" />

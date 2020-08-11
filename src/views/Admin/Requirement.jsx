@@ -15,7 +15,6 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
-import { Multiselect } from 'multiselect-react-dropdown';
 import server from "../../server.json";
 
 //Example data
@@ -171,11 +170,7 @@ class Product extends Component {
                                 </MenuItem>
                               ))}
                             </DropdownButton> */}
-                            <Multiselect
-                              options={engineers}
-                              displayValue="key"
-                              style={this.style}
-                            />
+                          
                           </Col>
                           <Col xs={6} md={4}>
                             <ControlLabel>STATUS</ControlLabel><br />

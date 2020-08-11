@@ -18,7 +18,7 @@ class Vcard extends Component {
     super(props);
     // this.onDrop = this.onDrop.bind(this);
     this.state = {
-      provider : "",
+      cvv : "",
       fullname : "",
       expDate : "",
       cnum : ""
@@ -35,7 +35,7 @@ class Vcard extends Component {
   }
 
   componentDidMount() {
-    this.setState({provider : "Amex"});
+    this.setState({cvv : "111"});
     this.setState({fullname : "Munkhzorig"});
     this.setState({expDate : "20200202"});
     this.setState({cnum : "213123123"});
@@ -54,17 +54,6 @@ class Vcard extends Component {
                     <FormInputs
                       ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
-                        {
-                          label: "Financial Service Provider",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Financial Service Provider",
-                          defaultValue: this.state.provider,
-                          name: "provider",
-                          disabled: true,
-                          onChange: this.handleChange.bind(this)
-                        },
-
                         {
                           label: "CNumber",
                           type: "number",
@@ -91,6 +80,16 @@ class Vcard extends Component {
                           placeholder: "Expiration date",
                           defaultValue: this.state.expDate,
                           name: "expDate",
+                          onChange: this.handleChange.bind(this)
+                        },
+                        {
+                          label: "CVV",
+                          type: "password",
+                          bsClass: "form-control",
+                          placeholder: "CVV",
+                          defaultValue: this.state.cvv,
+                          name: "cvv",
+                          disabled: false,
                           onChange: this.handleChange.bind(this)
                         },
                       ]
