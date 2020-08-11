@@ -15,6 +15,8 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import Spinner from "../../Spinner";
+import { Multiselect } from 'multiselect-react-dropdown';
+import server from "../../server.json";
 
 //Example data
 const engineers = [
@@ -31,12 +33,16 @@ class Product extends Component {
     this.state = {
       id: 0,
       subject: "",
-      startDate: "",
+      startDate: "", //createdDate
       dueDate: "",
       endDate: "",
       status: statusD[0],
       description: "",
-      assignTo: engineers[0].id,
+      // assignTo: engineers[0].id,
+      
+      vendorId:"",
+      lastModifiedDate:"",
+
       error: null,
       loading: false
     }
@@ -45,7 +51,7 @@ class Product extends Component {
     this.handleChangeAssignTo = this.handleChangeAssignTo.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = async()=> {
     // this.setState({ loading: true });
     // axios
     //   .get("http://localhost:4000/employees")
@@ -153,7 +159,7 @@ class Product extends Component {
                         />
                         <Row>
                           <Col xs={6} md={4}>
-                            <ControlLabel>ASSIGN TO</ControlLabel><br />
+                            {/* <ControlLabel>ASSIGN TO</ControlLabel><br />
                             <DropdownButton
                               title={engineers.filter(eng => eng.id == this.state.assignTo).map(person => person.name)}
                               id="document-type"
@@ -164,7 +170,12 @@ class Product extends Component {
                                   {opt.name}
                                 </MenuItem>
                               ))}
-                            </DropdownButton>
+                            </DropdownButton> */}
+                            <Multiselect
+                              options={engineers}
+                              displayValue="key"
+                              style={this.style}
+                            />
                           </Col>
                           <Col xs={6} md={4}>
                             <ControlLabel>STATUS</ControlLabel><br />

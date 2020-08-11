@@ -75,7 +75,7 @@ componentDidMount = async () =>{
                               <td>{ product.price }</td>
                               <td>{ product.manufacturer }</td>
                               <td>{ product.currentQuantity }</td>
-                              <td>{ product.status.split(".")[1]}</td>
+                              <td>{ product.status}</td>
                             </tr>
                         );
                       })}

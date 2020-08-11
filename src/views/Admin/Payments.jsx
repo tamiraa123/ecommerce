@@ -11,28 +11,11 @@ import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner";
+import server from "../../server.json";
 
 
 const thArray = ["#", "Bank Name", "Description", "URL", "RangeFrom", "RangeTo"];
-//Example data
-const tdArray = [
-  {
-    "id": 1,
-    "name": "Amex",
-    "description": "Founded in 1850",
-    "url": "https://americanexpress.com",
-    "rangeFrom": 1001,
-    "rangeTo": 2000
-},
-{
-    "id": 2,
-    "name": "Visa",
-    "description": "Founded in 1958",
-    "url": "https://visa.com",
-    "rangeFrom": 2001,
-    "rangeTo": 3000
-}
-];
+
 class Payments extends Component {
   state = {
     payments: [],
@@ -40,21 +23,24 @@ class Payments extends Component {
     loading: false,
   }
 
-  componentDidMount = () => {
+  componentDidMount =async () => {
 
-    // this.setState({ loading: true });
-    // axios
-    //   .get("http://localhost:4000/employees")
-    //   .then((result) => {
-    //     console.log("hello")
-    //     this.setState({ payments: result.data })
-    //     this.setState({ loading: false })
-
-    //   }
-    //   )
-    //   .catch((err) => this.setState({ loading: false, error: err.response }));
-    //Setting example data
-     this.setState({payments:tdArray});
+    this.setState({ loading: true });
+    await axios
+      .get(server.urlAde + "/card/allpaymentmethod"
+      // , {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('token')}`
+      //   },
+      // }
+      )
+      .then((result) => {
+        console.log(result.data);
+        this.setState({ payments: result.data })
+        this.setState({ loading: false })
+      }
+      )
+      .catch((err) => this.setState({ loading: false, error: err.response }));
   }
   render() {
     return (

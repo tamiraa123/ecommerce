@@ -20,10 +20,13 @@ import server from "../server.json";
 
 const styles = {
   border: 0,
+  cursor: 'pointer'
 };
 const styleFile = {
   display: "none"
 };
+
+
 class UserProfile extends Component {
   constructor(props) {
     super(props);
@@ -174,7 +177,7 @@ class UserProfile extends Component {
 
   componentDidMount = async () => {
     // console.log("UserProfile->componentDidMount")
-
+    
     this.setState({ loading: true });
     await axios
       .get(server.url + "/employees/" + localStorage.getItem('userId'), {

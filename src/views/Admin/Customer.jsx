@@ -27,6 +27,7 @@ const statusD = ["ACTIVE", "SUSPENDED","DELETED"];
 
 const styles = {
   border: 0,
+  cursor: 'pointer'
 };
 const styleFile = {
   display: "none"

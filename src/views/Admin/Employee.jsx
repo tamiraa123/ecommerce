@@ -10,6 +10,7 @@ import {
   Modal,
   Alert
 } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -25,6 +26,7 @@ const statusD = ["ACTIVE", "SUSPENDED", "DELETED"];
 
 const styles = {
   border: 0,
+  cursor: 'pointer'
 };
 const styleFile = {
   display: "none"
@@ -53,7 +55,8 @@ class Employee extends Component {
       imageGlobal: iconuser,
       files: [],
       isAddEmployee: true,
-      show: false
+      show: false,
+      redirect:false
     }
 
     this.handleChangeRole = this.handleChangeRole.bind(this);
@@ -84,6 +87,8 @@ class Employee extends Component {
   //save Profile
   saveBtn = async () => {
     this.setState({ loading: true });
+
+   
     // console.log("saveBtn()");
     if (this.state.files.length) {
       //upload image file.name should be userid
@@ -105,7 +110,7 @@ class Employee extends Component {
       })
     }
     //save value    //add employee API avah
-    let urlLocal = server.url + "/employees/" + localStorage.getItem('userId');
+    let urlLocal = server.url + "/employees/" + this.props.match.params.id;
     await axios
       .put(urlLocal,
         {
@@ -145,6 +150,10 @@ class Employee extends Component {
 
       }
       );
+      if(this.props.match.params.id==localStorage.getItem('userId'))
+      {
+        this.setState({redirect:true});
+      }
     //.........
   }
   handleCloseModal = () => {
@@ -237,6 +246,9 @@ class Employee extends Component {
                     title="Employee Profile"
                     content={
                       <form>
+                        {this.state.redirect && (
+                          <Redirect to='/' />
+                        )}
                         {this.state.error && (
                           <Alert bsStyle="danger">
                             {this.state.error}
