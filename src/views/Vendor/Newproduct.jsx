@@ -71,11 +71,11 @@ class Newproduct extends Component {
       let storageRef = firebase.storage().ref(`${this.state.imageLocalURLs[i]}`)
       let uploadTask = storageRef.put(this.state.images[i])
       console.log(this.state.imageLocalURLs[i]);
-      // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      //   () => {
-      //     let downloadURL = uploadTask.snapshot.downloadURL
-      //   }
-      // )
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {
+          let downloadURL = uploadTask.snapshot.downloadURL
+        }
+      )
     }
     ///////////POST
     let path = server.urlHenok+"/products/create";
@@ -94,19 +94,27 @@ class Newproduct extends Component {
         categoryId: this.state.categoryId,
         status: "NEW",
         imageList: this.state.imageLocalURLs
-      }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      },
+      
     )
     .then((result) => {
       console.log(result);
+      alert("Successfully added");
+      this.props.history.goBack();
       // window.location = '/';
     })
     .catch((err) =>
       this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
     );
-    event.preventDefault();
-    alert("Successfully added");
+    // event.preventDefault();
+    // 
     //Go back
-    this.props.history.goBack();
+    // 
   }
   async componentDidMount() {
     this.setState({ token: localStorage.getItem("token") });
@@ -126,7 +134,11 @@ class Newproduct extends Component {
     
     let url = server.urlHenok + "/categories";
     axios
-    .get(url)
+    .get(url,        {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    },)
     .then((result) => {
       // console.log("11111111111111111111111");
       console.log(result.data);
