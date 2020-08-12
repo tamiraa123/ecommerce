@@ -22,7 +22,6 @@ import server from "../../server.json";
 
 
 //Send ->  add id = parentid, value  &   edit = id, value,  &  delete = id 
-
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +37,9 @@ class Product extends Component {
       catName: '',
       error: null,
       loading: false,
+      show: false,
+      success: false,
+      yesno: false
     }
     // this.handleChange = this.handleChange.bind(this);
     this.handleChangeTree = this.handleChangeTree.bind(this);
@@ -45,81 +47,98 @@ class Product extends Component {
 
   addBtn = async () => {
     if (this.state.selected) {
-      var pieces = this.state.selected.split('/');
-      var send = pieces[pieces.length - 1];
-      // console.log(send);
-      await axios
-        .post(server.url + "/categories/add", {
-          parentId: send,
-          value: this.state.catName,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        },)
-        .then((result) => {
-          this.setState({show:true, category: result.data });
-        })
-        .catch((err) =>
-          this.setState({ error: err })
-        );
+      this.setState({show:true});
+      if (this.state.yesno) {
+        var pieces = this.state.selected.split('/');
+        var send = pieces[pieces.length - 1];
+        // console.log(send);
+        await axios
+          .post(server.url + "/categories/add", {
+            parentId: send,
+            value: this.state.catName,
+          },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+              }
+            })
+          .then((result) => {
+            this.setState({ show: true, category: result.data });
+          })
+          .catch((err) =>
+            this.setState({ error: err })
+          );
+      }
+      else {
+        this.setState({ error: "Please select category" })
+      }
     }
-    else {
-      this.setState({ error: "Please select category" })
-    }
+    this.setState({ yesno: false })
   }
   editBtn = async () => {
+
     if (this.state.selected) {
-      var pieces = this.state.selected.split('/');
-      var send = pieces[pieces.length - 1];
-      console.log(this.state.catName);
-      await axios
-        .put(server.url + "/categories/edit", {
-          categoryId: send,
-          value: this.state.catName,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        },
-        )
-        .then((result) => {
-          console.log(result)
-          this.setState({show:true, category: result.data });
-        })
-        .catch((err) =>
-          this.setState({ error: err })
-        );
+      this.setState({show:true});
+      if (this.state.yesno) {
+        var pieces = this.state.selected.split('/');
+        var send = pieces[pieces.length - 1];
+        console.log(this.state.catName);
+        await axios
+          .put(server.url + "/categories/edit", {
+            categoryId: send,
+            value: this.state.catName,
+          },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+              }
+            },
+          )
+          .then((result) => {
+            console.log(result)
+            this.setState({ show: true, category: result.data });
+          })
+          .catch((err) =>
+            this.setState({ error: err })
+          );
+      }
+      else {
+        this.setState({ error: "Please select category" })
+      }
     }
-    else {
-      this.setState({ error: "Please select category" })
-    }
+    this.setState({ yesno: false })
   }
   deleteBtn = async () => {
     if (this.state.selected) {
-      var pieces = this.state.selected.split('/');
-      var categoryId = pieces[pieces.length - 1];
-      await axios
-        .delete(server.url + "/categories/delete/" +  categoryId,{
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        })
-        .then((result) => {
-           this.setState({show:true, category: result.data });
-        })
-        .catch((err) =>
-          this.setState({ error: err })
-        );
+      this.setState({show:true});
+      if (this.state.yesno) {
+        var pieces = this.state.selected.split('/');
+        var categoryId = pieces[pieces.length - 1];
+        await axios
+          .delete(server.url + "/categories/delete/" + categoryId, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+          })
+          .then((result) => {
+            this.setState({ show: true, category: result.data });
+          })
+          .catch((err) =>
+            this.setState({ error: err })
+          );
+      }
+      else {
+        this.setState({ error: "Please select category" })
+      }
     }
-    else {
-      this.setState({ error: "Please select category" })
-    }
+    this.setState({ yesno: false })
   }
   handleCloseModal = () => {
-    this.setState({ show: false });
+    this.setState({ show: false, yesno: false });
+    
+  }
+  handleYesModal = async () => {
+   await this.setState({ show: false, yesno: true });
   }
 
   //Selected items
@@ -136,9 +155,11 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .get(server.url + "/categories"
-        , {headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-          },}
+        , {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
       )
       .then((result) => {
         this.setState({ category: result.data, loading: false })
@@ -166,7 +187,6 @@ class Product extends Component {
             <Grid fluid>
               <Row>
                 <Col md={8}>
-
                   <Card
                     title="Category"
                     content={
@@ -176,9 +196,9 @@ class Product extends Component {
                             {this.state.error}
                           </Alert>
                         )}
-                        {this.state.error && (
-                          <Alert bsStyle="danger">
-                            {this.state.error}
+                        {this.state.success && (
+                          <Alert bsStyle="success">
+                            Successfull
                           </Alert>
                         )}
                         <Alert bsStyle="warning">
@@ -213,6 +233,8 @@ class Product extends Component {
                         <Button bsStyle="info" pullLeft fill onClick={this.addBtn}>Add</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.editBtn}>Edit</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.deleteBtn}>Delete</Button>
+
+
                         <Modal
                           show={this.state.show}
                           onHide={this.handleCloseModal}
@@ -221,14 +243,15 @@ class Product extends Component {
                         >
                           <Modal.Header closeButton>
                             <Modal.Title id="contained-modal-title">
-                              Success
+                              Warning
                                 </Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
-                            Successfully updated
-                              </Modal.Body>
+                            Are you sure?
+                          </Modal.Body>
                           <Modal.Footer>
-                            <Button onClick={this.handleCloseModal}>Close</Button>
+                            <Button onClick={this.handleYesModal}>Yes</Button>
+                            <Button onClick={this.handleCloseModal}>No</Button>
                           </Modal.Footer>
                         </Modal>
                       </form>

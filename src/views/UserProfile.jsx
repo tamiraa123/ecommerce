@@ -16,8 +16,9 @@ import Spinner from "../Spinner";
 import firebase from '../firebase';
 import iconuser from '../assets/img/iconuser.png'
 import server from "../server.json";
+import bgavatar from "../assets/img/bgavatar.jpeg";
 
-
+//custom css
 const styles = {
   border: 0,
   cursor: 'pointer'
@@ -25,7 +26,13 @@ const styles = {
 const styleFile = {
   display: "none"
 };
-
+ const StyleAvatar = {
+   height:"100px"
+ }
+ const avatar = {
+  height:"210px",
+  width:"210px"
+}
 
 class UserProfile extends Component {
   constructor(props) {
@@ -177,7 +184,7 @@ class UserProfile extends Component {
 
   componentDidMount = async () => {
     // console.log("UserProfile->componentDidMount")
-    
+
     this.setState({ loading: true });
     await axios
       .get(server.url + "/employees/" + localStorage.getItem('userId'), {
@@ -232,9 +239,30 @@ class UserProfile extends Component {
                             {this.state.error}
                           </Alert>
                         )}
+
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
-                        <div onClick={this.editImage}>
-                          <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded />
+                        <div >
+                          <div className="card card-user">
+                            <div className="image">
+                              <img src={bgavatar} />
+                            </div>
+                            <div className={StyleAvatar}>
+                              <div className="author">
+                                <a href="#pablo">
+                                  <img style={avatar}
+                                    className="avatar border-gray"
+                                    src={this.state.imageGlobal}
+                                    onClick={this.editImage}
+                                  />
+                                  <h4 className="title">
+                                    <small>{this.state.firstname + " " + this.state.lastname}</small>
+                                  </h4>
+                                </a>
+                              </div>
+                            </div>
+                            <hr />
+                          </div>
+                          {/* <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded /> */}
                         </div>
                         <br />
 
@@ -354,7 +382,7 @@ class UserProfile extends Component {
                         <div className="clearfix" />
                       </form>
                     }
-                  /> 
+                  />
                 </Col>
               </Row>
             </Grid>

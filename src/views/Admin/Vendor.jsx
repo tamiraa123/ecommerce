@@ -20,16 +20,25 @@ import Spinner from "../../Spinner";
 import iconuser from '../../assets/img/iconuser.png'
 import firebase from '../../firebase';
 import server from "../../server.json";
+import bgavatar from "../../assets/img/bgavatar.jpeg";
 
 //Example data
 const statusD = ["ACTIVE", "SUSPENDED", "DELETED"];
 
 const styles = {
   border: 0,
+  cursor: 'pointer'
 };
 const styleFile = {
   display: "none"
 };
+const StyleAvatar = {
+  height:"100px"
+}
+const avatar = {
+ height:"210px",
+ width:"210px"
+}
 
 class Vendor extends Component {
   constructor(props) {
@@ -238,7 +247,7 @@ class Vendor extends Component {
         ) : (
             <Grid fluid>
               <Row>
-                <Col md={8}>
+                <Col md={12}>
                   <Card
                     title="Vendor"
                     content={
@@ -248,11 +257,35 @@ class Vendor extends Component {
                             {this.state.error}
                           </Alert>
                         )}
+                        <Row>
+                         <Col xs={12} md={12}>
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
-                        <div onClick={this.editImage}>
-                          <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded />
+                        <div >
+                          <div className="card card-user">
+                            <div className="image">
+                              <img src={bgavatar} />
+                            </div>
+                            <div className={StyleAvatar}>
+                              <div className="author">
+                                <a href="#pablo">
+                                  <img style={avatar}
+                                    className="avatar border-gray"
+                                    src={this.state.imageGlobal}
+                                    onClick={this.editImage}
+                                  />
+                                  <h4 className="title">
+                                    <small>{this.state.vendorName}</small>
+                                  </h4>
+                                </a>
+                              </div>
+                            </div>
+                            <hr />
+                          </div>
+                          {/* <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded /> */}
                         </div>
-
+                        <br/>
+                        </Col>
+                        </Row>
 
                         <FormInputs
                           ncols={["col-md-6", "col-md-6"]}

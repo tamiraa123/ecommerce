@@ -1850,8 +1850,8 @@ body > .navbar-collapse[data-color="purple"]:after {
   margin-top: -70px; }
 
 .card-user .avatar {
-  width: 124px;
-  height: 124px;
+  width: 210px;
+  height: 210px;
   border: 5px solid #FFFFFF;
   position: relative;
   margin-bottom: 15px; }
@@ -1862,7 +1862,7 @@ body > .navbar-collapse[data-color="purple"]:after {
   line-height: 24px; }
 
 .card-user .content {
-  min-height: 240px; }
+  min-height: 100px; }
 
 .card-user .footer,
 .card-price .footer {
