@@ -22,7 +22,7 @@ class Promo extends Component {
       promoName: "",
       from: "",
       to: "",
-      productid: "",
+      productId: "",
       productName: "",
       discount: "",
       promotionDescription: ""
@@ -44,30 +44,7 @@ class Promo extends Component {
 
       //Product List
 
-      let url = server.urlHenok + "/products/vendor/" + localStorage.getItem("userId");
-      await axios
-        .get(url,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-        .then((result) => {
-          console.log("prod res:", result)
-          let size = result.data.length;
-          console.log("size", size)
-          products = [];
-          for (let i = 0; i < size; i++) {
-            products.push({ label: result.data[i].productName, value: result.data[i].productId, children: [] });
-          }
-
-          console.log("products", products);
-        })
-        .catch((err) =>
-          this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
-        );
-
-      this.setState({ loading: true });
+      
       await axios
         .get(server.url + "/promotions/" + this.props.match.params.id, {
           headers: {
@@ -81,7 +58,7 @@ class Promo extends Component {
             promoName: result.data.promoName,
             from: result.data.startDate,
             to: result.data.endDate,
-            productid: result.data.productId,
+            productId: result.data.productId,
             discount: result.data.promotionPercentage,
             promotionDescription: result.data.promotionDescription,
           }, () => console.log(this.state))
@@ -90,7 +67,33 @@ class Promo extends Component {
         )
         .catch((err) => this.setState({ loading: false, error: err.response }));
 
-
+        let url = server.urlHenok + "/products/vendor/" + localStorage.getItem("userId");
+        console.log(url);
+        await axios
+          .get(url,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+          .then((result) => {
+            console.log("prod res:", result)
+            let size = result.data.length;
+            console.log("size", size)
+            products = [];
+            for (let i = 0; i < size; i++) {
+              products.push({ label: result.data[i].productName, value: result.data[i].productId, children: [] });
+              if(result.data[i].productId == this.state.productId)
+                this.setState({productName : result.data[i].productName});
+            }
+  
+            console.log("products", products);
+          })
+          .catch((err) =>
+            this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+          );
+  
+        this.setState({ loading: true });
 
     }
     else {
@@ -108,18 +111,18 @@ class Promo extends Component {
         .put(
           server.urlHenok + "/promotions/update/" + this.props.match.params.id,
           {
-            id: "5f30ae4f301eb50d91907224",//this.state.promoNo,
-            productId: "15DE5HIM80HJK",//this.state.productId,
+            id: this.state.promoNo,
+            productId: this.state.productId,
             vendorId: localStorage.getItem("userId"),
-            promoName: "test", //this.state.promoName,
-            promotionPercentage: 10, //this.state.discount,
-            startDate: "2019-12-28", //this.state.from,
-            endDate: "2019-12-28", //this.state.to,
-            promotionDescription: "test",//this.state.promotionDescription
+            promoName: this.state.promoName,
+            promotionPercentage: this.state.discount,
+            startDate: this.state.from,
+            endDate: this.state.to,
+            promotionDescription: this.state.promotionDescription
           },
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdW5rQG11bmsuY29tIiwiaWF0IjoxNTk3MTc4Mzg3LCJleHAiOjE1OTcyNjQ3ODd9.KY63_84uoA0utptn3eqXRbnv50-6ff-B5owKjCezJoH_yTZOPxTTPBINgVtmaZmhepTZZ1zZg_gr1dTmcs3wSQ`// ${localStorage.getItem("token")}`
+              Authorization: `Bearer ${localStorage.getItem("token")}`
             }
           },
         )
@@ -136,7 +139,39 @@ class Promo extends Component {
 
     }
     else {
+      // console.log(server.urlHenok + "/requirements");
+      await axios
+        .post(
+          server.urlHenok + "/promotions/add",
+          {
+            productId: this.state.productId,
+            vendorId: localStorage.getItem("userId"),
+            promoName: this.state.promoName,
+            promotionPercentage: this.state.discount,
+            startDate: this.state.from,
+            endDate: this.state.to,
+            promotionDescription: this.state.promotionDescription
+        },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          },
+        )
+        .then((result) => {
+          console.log(result)
+          alert("Successful")
+        }
+        )
+        .catch((err) => {
+          this.setState({ loading: false, error: err.response })
+          console.log(err);
+        }
+        );
 
+
+      //Go back
+      // this.props.history.goBack();   
     }
     //Go back
     // this.props.history.goBack();
