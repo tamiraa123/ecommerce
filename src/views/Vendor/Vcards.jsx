@@ -12,7 +12,7 @@ import Card from "components/Card/Card.jsx";
 import { Link } from "react-router-dom";
 import server from "../../server.json";
 import axios from "axios";
-const thArray = ["Card Number", "Card Holder", "status", "cvv", "Expiration Date"];
+const thArray = ["#", "Card Number", "Card Holder", "status", "Expiration Date", "cvv", ""];
 
 class Vcards extends Component {
 
@@ -37,7 +37,37 @@ class Vcards extends Component {
         this.setState({ error: "Error" })//err.response.data.error.message
       );
   }
+  handleRemoveSpecificRow = async (idx) => {
+    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard");
+    await axios
+      .patch(
+        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard",
+        this.state.cards[idx],
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        },
+      )
+      .then((result) => {
+        console.log(result)
+        alert("Card has been deleted")
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );  
+      // const cards = [...this.state.cards]
+          // cards.splice(idx, 1)
+    
+    // this.setState({ cards })
+  }
 
+foo(idx){
+  console.log(idx)
+}
   render() {
     return (
       <div className="content">
@@ -45,7 +75,7 @@ class Vcards extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="Card List"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -58,19 +88,38 @@ class Vcards extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.cards.map(card => {
-                        return (
-                          <tr>
-                            <td><Link to={`/admin/myCards/${card.cardNumber}`}>
-                              {card.cardNumber}</Link></td>
-                            <td>{card.holderName}</td>
-                            <td>{card.cardStatus}</td>
-                            <td>{card.cvv}</td>
-                            <td>{card.expirationDate}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
+                  {this.state.cards.map((item, idx) => (
+                    <tr id="addr0" key={idx}>
+                      <td>{idx}</td>
+                      <td style={{width:"20%"}}>
+                        {this.state.cards[idx].cardNumber}
+                        
+                      </td>
+                      <td>
+                        {this.state.cards[idx].holderName}
+                      </td>
+                      <td>
+                        {this.state.cards[idx].cardStatus}
+                      </td>
+                      <td>
+                        {this.state.cards[idx].expirationDate}
+                      </td>
+                      <td>
+                        {this.state.cards[idx].cvv}
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-outline-danger btn-sm"
+                          // onClick= {(idx)=>{handleRemoveSpecificRow(idx)}}
+                        onClick= {()=>{this.handleRemoveSpecificRow(idx)}}
+                        
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
                   </Table>
                 }
               />
@@ -80,7 +129,7 @@ class Vcards extends Component {
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/myCards/0`}>
+          <Link to={`/admin/myCards/new`}>
             Add a Card
           </Link>
         </Button>

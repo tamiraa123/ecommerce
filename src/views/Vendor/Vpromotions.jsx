@@ -6,33 +6,34 @@ import { Grid,
   Button } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
-import axios from "axios";
+
 import { Link } from "react-router-dom";
-
-
-const thArray = ["#", "Promotion Name", "Discount", "Product", "From", "To","Is Active"];
-const tdArray = [
-  ["1", "Thanks Giving week", "20%", "1","2020-11-12","2020-11-19","No"],
-  ["2", "Black Friday", , "50%", "1","2020-12-05","2020-12-05","Yes"],
-  ["3", "Independent day", , "10%", "1","2020-07-08","2020-07-19","Yes"],
-];
-
+import axios from "axios";
+import server from "../../server.json";
+const thArray = ["Promotion Number", "Promotion Name", "Discount","From","To", "Product"];
 
 class Products extends Component {
 
 state={
-  products:[],
+  promos:[],
 }
 
-componentDidMount = () =>{
-
-  // axios
-  //   .get("")
-  //   .then((result) => 
-    this.setState({products:tdArray});
-  //)
-  //   .catch((err) => console.log(err.response));
-
+componentDidMount = async () => {
+  console.log(server.url + "/promotions");
+  this.setState({ loading: true });
+  await axios
+    .get(server.url + "/promotions", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((result) => {
+      console.log(result.data);
+      this.setState({ promos: result.data })
+      this.setState({ loading: false })
+      }
+    )
+    .catch((err) => this.setState({ loading: false, error: err.response }));
 }
 
   render() {
@@ -55,21 +56,18 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.products.map((prop, key) => {
+                      {this.state.promos.map(card => {
                         return (
-                         
-                            <tr key={key}>
-                              {prop.map((prop, key) => {
-                                return <td key={key}>
-                                      {/* {(key == 0) && <Link to={`/admin/myPromotions/${prop}`}>  */}
-                                      {(key == 0) && <Link to={`/admin/myPromotions/1`}> 
-                                          {prop}
-                                      </Link>}
-                                      {(key != 0) && <p>{prop}</p>}
-                                  </td>;
-                              })}
-                            </tr>
-                         
+                          <tr>
+                            <td><Link to={`/admin/myPromotions/${card.id}`}>
+                              {card.id}</Link></td>
+                            <td>{card.promoName}</td>
+                            <td>{card.promotionPercentage}</td>
+                            <td>{card.startDate}</td>
+                            <td>{card.endDate}</td>
+                            <td><Link to={`/admin/myProducts/${card.productId}`}>
+                              {card.productId}</Link></td>
+                          </tr>
                         );
                       })}
                     </tbody>
@@ -82,7 +80,7 @@ componentDidMount = () =>{
           </Row>
         </Grid>
         <Button>
-          <Link to={`/admin/myPromotions/0`}>
+          <Link to={`/admin/myPromotions/new`}>
             Add Promotion 
           </Link>
         </Button>
