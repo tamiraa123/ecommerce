@@ -11,7 +11,8 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
+import server from "../../server.json";
+import axios from "axios";
 
 class Vcard extends Component {
   constructor(props) {
@@ -20,13 +21,40 @@ class Vcard extends Component {
     this.state = {
       cvv : "",
       fullname : "",
-      expDate : "",
+      expDate : null,
       cnum : ""
     }
   }
-  handleSavebtn= () => {
-    //save action
-   this.props.history.goBack();
+  
+  handleSavebtn= async () => {
+    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard");
+    await axios
+      .patch(
+        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard",
+        {
+          cardNumber : this.state.cnum,
+          holderName : this.state.fullname,
+          expirationDate : this.state.expDate,
+          cvv : this.state.cvv,
+          cardStatus : true
+      },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        },
+      )
+      .then((result) => {
+        console.log(result)
+        alert("Successful")
+        this.props.history.goBack();
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );  
   }
 
   handleChange(event) {
@@ -35,10 +63,7 @@ class Vcard extends Component {
   }
 
   componentDidMount() {
-    this.setState({cvv : "111"});
-    this.setState({fullname : "Munkhzorig"});
-    this.setState({expDate : "20200202"});
-    this.setState({cnum : "213123123"});
+    
   }
 
   render() {
@@ -96,7 +121,7 @@ class Vcard extends Component {
                       }
                     />
                     <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
-                      Done
+                      Add card
                     </Button>
                     <div className="clearfix" />
                   </form>
