@@ -24,11 +24,12 @@ class Vproducts extends Component {
   }
 
   componentDidMount = () => {
+    console.log("asd")
     this.setState({ token: localStorage.getItem("token") });
     this.setState({ role: localStorage.getItem("role") });
     this.setState({ userId: localStorage.getItem("userId") });
-    let url = server.urlHenok + "/products/vendor/"+localStorage.getItem("userId");
-    // console.log(url);
+    let url = server.url + "/products/vendor/"+localStorage.getItem("userId");
+     console.log(url);
     axios
       .get(url,{
         headers: {

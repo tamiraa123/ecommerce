@@ -38,10 +38,10 @@ class Vcards extends Component {
       );
   }
   handleRemoveSpecificRow = async (idx) => {
-    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard");
+    console.log(server.url + "/vendors/"+localStorage.getItem("userId")+"/removedcard");
     await axios
       .patch(
-        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard",
+        server.url + "/vendors/"+localStorage.getItem("userId")+"/removedcard",
         this.state.cards[idx],
         {
           headers: {

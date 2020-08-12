@@ -44,6 +44,7 @@ export default class LoginForm extends Component {
           localStorage.setItem("token", result.data.token);
           localStorage.setItem("userId", result.data.userId);
           localStorage.setItem("username", result.data.username);
+          localStorage.setItem("status", result.data.status);
           
           localStorage.setItem("role", result.data.role);//here need to set Role of Employee
           this.props.onLogin(result.data.role); //result.data[0].token,

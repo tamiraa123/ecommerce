@@ -67,7 +67,7 @@ class Promo extends Component {
         )
         .catch((err) => this.setState({ loading: false, error: err.response }));
 
-        let url = server.urlHenok + "/products/vendor/" + localStorage.getItem("userId");
+        let url = server.url + "/products/vendor/" + localStorage.getItem("userId");
         console.log(url);
         await axios
           .get(url,
@@ -105,11 +105,11 @@ class Promo extends Component {
   handleDoneBtn = async (event) => {
     //send Post request to update product info price, category, manifacturer, quantity
     if (this.props.match.params.id != "new") {
-      console.log("url: ",server.urlHenok + "/promotions/" + this.props.match.params.id)
+      console.log("url: ",server.url + "/promotions/" + this.props.match.params.id)
       console.log(this.state)
       await axios
         .put(
-          server.urlHenok + "/promotions/update/" + this.props.match.params.id,
+          server.url + "/promotions/update/" + this.props.match.params.id,
           {
             id: this.state.promoNo,
             productId: this.state.productId,
@@ -139,10 +139,9 @@ class Promo extends Component {
 
     }
     else {
-      // console.log(server.urlHenok + "/requirements");
       await axios
         .post(
-          server.urlHenok + "/promotions/add",
+          server.url + "/promotions/add",
           {
             productId: this.state.productId,
             vendorId: localStorage.getItem("userId"),

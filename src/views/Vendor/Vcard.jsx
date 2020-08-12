@@ -27,10 +27,10 @@ class Vcard extends Component {
   }
   
   handleSavebtn= async () => {
-    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard");
+    console.log(server.url + "/vendors/"+localStorage.getItem("userId")+"/addedcard");
     await axios
       .patch(
-        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard",
+        server.url + "/vendors/"+localStorage.getItem("userId")+"/addedcard",
         {
           cardNumber : this.state.cnum,
           holderName : this.state.fullname,

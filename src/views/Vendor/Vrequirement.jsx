@@ -88,10 +88,10 @@ class Product extends Component {
 
   handleDoneBtn = async (event) => {
     if (this.props.match.params.id == "new") {
-      console.log(server.urlHenok + "/requirements");
+      console.log(server.url + "/requirements");
       await axios
         .post(
-          server.urlHenok + "/requirements",
+          server.url + "/requirements",
           {
             vendorId: localStorage.getItem("userId"),
             subject: this.state.reqName,
@@ -127,7 +127,7 @@ class Product extends Component {
     else {
       await axios
         .put(
-          server.urlHenok + "/requirements/" + this.props.match.params.id,
+          server.url + "/requirements/" + this.props.match.params.id,
           {
             id: this.state.reqNo,
             vendorId: localStorage.getItem("userId"),

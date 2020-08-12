@@ -135,7 +135,7 @@ class Product extends Component {
     
     await axios
       .put(
-        server.urlHenok + "/products/update/" + this.props.match.params.id,
+        server.url + "/products/update/" + this.props.match.params.id,
         {
           productName : this.state.name,
           description : this.state.description,
@@ -173,7 +173,7 @@ class Product extends Component {
   componentDidMount = async () => {
     console.log(this.props.match.params.id);
     await axios
-      .get(server.urlHenok + "/products/" + this.props.match.params.id,
+      .get(server.url + "/products/" + this.props.match.params.id,
       {
         headers: {
           'Authorization': "Bearer " + localStorage.getItem("token")
@@ -210,7 +210,7 @@ class Product extends Component {
       );
 
     //Load categories
-    let url = server.urlHenok + "/categories";
+    let url = server.url + "/categories";
     axios
       .get(url,
         {
