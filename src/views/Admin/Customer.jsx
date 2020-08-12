@@ -252,7 +252,7 @@ class Employee extends Component {
         ) : (
             <Grid fluid>
               <Row>
-                <Col md={8}>
+                <Col md={12}>
                   <Card
                     title="Customers Profile"
                     content={

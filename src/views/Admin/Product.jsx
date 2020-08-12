@@ -85,10 +85,10 @@ class Product extends Component {
         },
       )
       .then((result) => {
-        // console.log(result)
+         console.log(result)
         this.setState({
           loading: false,show: true,
-          status: result.data,
+          status: map.get(result.data),
         })
       }
       )
@@ -106,6 +106,7 @@ class Product extends Component {
   }
 
   handleCloseModal = () => {
+    console.log(this.state.status)
     this.setState({ show: false });
   }
 
@@ -165,7 +166,7 @@ class Product extends Component {
         ) : (
             <Grid fluid>
               <Row>
-                <Col md={9}>
+                <Col md={12}>
                   <Card
                     title="Product"
                     content={
