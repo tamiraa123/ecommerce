@@ -153,6 +153,7 @@ class Employee extends Component {
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value, event: event })
+    this.setState({ error: event.target.validationMessage });
   }
   //change state shipping
   handleChangeShipping(event) {
@@ -162,6 +163,7 @@ class Employee extends Component {
           ...this.state.shippingAddress, [name]: event.target.value
         }
       });   
+      this.setState({ error: event.target.validationMessage });
   }
   //change state billing
   handleChangeBilling(event) {
@@ -171,6 +173,7 @@ class Employee extends Component {
           ...this.state.billingAddress, [name]: event.target.value
         }
       });  
+      this.setState({ error: event.target.validationMessage });
   }
 
 
@@ -284,7 +287,8 @@ class Employee extends Component {
                               placeholder: "First Name",
                               name: "firstName",
                               defaultValue: this.state.firstName,
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
                               label: "Last Name",
@@ -293,7 +297,8 @@ class Employee extends Component {
                               placeholder: "Last Name",
                               defaultValue: this.state.lastName,
                               name: "lastName",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
                               label: "E-mail",
@@ -319,7 +324,8 @@ class Employee extends Component {
                               placeholder: "Phone Number",
                               defaultValue: this.state.phone,
                               name: "phone",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[0-9]{10}$",
                             }
                           ]}
                         />

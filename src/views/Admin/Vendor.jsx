@@ -23,7 +23,7 @@ import server from "../../server.json";
 import bgavatar from "../../assets/img/bgavatar.jpeg";
 
 //Example data
-const statusD = ["ACTIVE", "SUSPENDED", "DELETED"];
+const statusD = ["NEW","ACTIVE", "SUSPENDED", "DELETED"];
 
 const styles = {
   border: 0,
@@ -86,6 +86,7 @@ class Vendor extends Component {
     } else {
       this.setState({ [name]: value, event: event })
     }
+    this.setState({ error: event.target.validationMessage });
     //console.log(this.state.address);
   }
 
@@ -207,7 +208,7 @@ class Vendor extends Component {
         },
       })
       .then((result) => {
-        // console.log(result)
+        console.log(result)
         this.setState({
           loading: false,
           id: result.data.vendorId,
@@ -297,7 +298,8 @@ class Vendor extends Component {
                               placeholder: "Vendor Name",
                               name: "vendorName",
                               defaultValue: this.state.vendorName,
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
                               label: "E-mail",
@@ -328,7 +330,8 @@ class Vendor extends Component {
                               placeholder: "Vendor Phone Number",
                               defaultValue: this.state.phone,
                               name: "phone",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[0-9]{10}$",
                             },
                             {
                               label: "Customer Service Contact Number",
@@ -337,7 +340,8 @@ class Vendor extends Component {
                               placeholder: "Customer Service Contact Number",
                               defaultValue: this.state.custServContactNo,
                               name: "custServContactNo",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[0-9]{10}$",
                             }
                           ]}
                         />
@@ -349,7 +353,7 @@ class Vendor extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Street",
-                              defaultValue: this.state.address.street,
+                              defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.street,
                               name: "street",
                               onChange: this.handleChange.bind(this)
                             }
@@ -363,7 +367,7 @@ class Vendor extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "City",
-                              defaultValue: this.state.address.city,
+                              defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.city,
                               name: "city",
                               onChange: this.handleChange.bind(this)
                             },
@@ -372,7 +376,7 @@ class Vendor extends Component {
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Country",
-                              defaultValue: this.state.address.state,
+                              defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.state,
                               name: "state",
                               onChange: this.handleChange.bind(this)
                             },
@@ -381,7 +385,7 @@ class Vendor extends Component {
                               type: "number",
                               bsClass: "form-control",
                               placeholder: "ZIP Code",
-                              defaultValue: this.state.address.zip,
+                              defaultValue: this.state.shippingAddress == null ? "" : this.state.shippingAddress.zip,
                               name: "zip",
                               onChange: this.handleChange.bind(this)
                             }
