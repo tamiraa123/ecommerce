@@ -4,13 +4,11 @@ import vRequirements from "views/Vendor/Vrequirements.jsx";
 import vCards from "views/Vendor/Vcards.jsx";
 import vPromos from "views/Vendor/Vpromotions.jsx";
 import vOrders from "views/Vendor/Vorders.jsx";
-import Dashboard from "views/Dashboard.jsx";
+import Dashboard from "views/Vendor/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import Profile from "views/Vendor/Profile.jsx";
 import Onetime from "views/Vendor/OneTime.jsx";
-import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
-import Notifications from "views/Notifications.jsx";
 
 import Employees from "views/Admin/Employees.jsx";
 import Products from "views/Admin/Products.jsx";
@@ -111,31 +109,12 @@ const dashboardRoutes = [
   {
     type: ["user"],
     status : ["ACTIVE"],
-    path: "/typography",
-    name: "Typography",
-    icon: "pe-7s-news-paper",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    type: ["user"],
-    status : ["ACTIVE"],
     path: "/icons",
     name: "Icons",
     icon: "pe-7s-science",
     component: Icons,
     layout: "/admin"
   },
-  {
-    type: ["user"],
-    status : ["ACTIVE"],
-    path: "/notifications",
-    name: "Notifications",
-    icon: "pe-7s-bell",
-    component: Notifications,
-    layout: "/admin"
-  },
-
   {
     type: ["ROLE_ADMIN"],
     status : ["ACTIVE"],

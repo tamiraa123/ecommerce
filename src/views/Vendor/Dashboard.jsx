@@ -4,22 +4,8 @@ import { Grid, Row, Col } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import { Tasks } from "components/Tasks/Tasks.jsx";
-import {
-  // dataPie,
-  // legendPie,
-  dataSales,
-  optionsSales,
-  responsiveSales,
-  legendSales,
-  dataBar,
-  optionsBar,
-  responsiveBar,
-  legendBar
-} from "variables/Variables.jsx";
-import server from "../server.json";
+import server from "../../server.json";
 import axios from "axios";
-// import { dataPie } from "variables/Variables";
 
 const groupBy = key => array =>
   array.reduce((objectsByKeyValue, obj) => {
@@ -28,11 +14,6 @@ const groupBy = key => array =>
     return objectsByKeyValue;
   }, {});
 const groupByStatus = groupBy('status');
-// const groupByColor = groupBy('');
-
-
-
-
 
 class Dashboard extends Component {
   state = {
