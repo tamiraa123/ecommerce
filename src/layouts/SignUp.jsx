@@ -1,83 +1,64 @@
 import React, { Component } from "react";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Alert, Modal } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from "axios";
 import server from "../server.json";
 
-
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // companyName: "",
       email: "",
-      // vendorContactNo: "",
       password: "",
       reppassword: "",
       errors: {
-        // companyName: "",
         email: "",
-        // vendorContactNo: "",
         password: "",
         reppassword: "",
-
-      }
-
+      },
+      show: false
     }
+    this.handleHide = this.handleHide.bind(this);
   }
+  handleHide() {
+    window.history.back();
+  }
+
+ 
   handleChange(event) {
     const { target: { name, value } } = event
     this.setState({ [name]: value })
-
     console.log(this.state);
   }
   handleRegisterBtn = (event) => {
-    axios
-      .post(server.url+"/signup",
-        {
-          // vendorname: this.state.companyName,
-          username: this.state.email,
-          // vendorphone: this.state.vendorContactNo,
-          password: this.state.password,
-          role: "ROLE_VENDOR"
-        }
-      )
-      .then((result) => {
-        window.location = '/';
-      })
-      .catch((err) =>
-        this.setState({ error: "Error" })//err.response.data.error.message
-      );
-
-    event.preventDefault();
-
+    
     if (this.validate()) {
-      console.log(this.state);
+      //console.log(this.state);
 
-      let input = {};
-      // input["companyName"] = "";
-      // input["vendorContactNo"] = "";
-      
-      input["email"] = "";
-      input["password"] = "";
-      input["reppassword"] = "";
-      
-      this.setState({ input: input });
+      axios
+        .post(server.url + "/signup",
+          {
+            username: this.state.email,
+            password: this.state.password,
+            role: "ROLE_VENDOR"
+          }
+        )
+        .then((result) => {
+          alert(result);
+        })
+        .catch((err) => {
+          this.setState({ show: true })
+          // alert(err);
 
-      alert('Demo Form is submited');
+        });
     }
   }
   validate() {
     let input = this.state;
     let errors = {};
     let isValid = true;
-
-    // if (!input["companyName"]) {
-    //   isValid = false;
-    //   errors["companyName"] = "Please enter your company name.";
-    // }
 
     if (!input["email"]) {
       isValid = false;
@@ -92,21 +73,6 @@ class UserProfile extends Component {
         errors["email"] = "Please enter valid email address.";
       }
     }
-//
-
-// if (!input["vendorContactNo"]) {
-//   isValid = false;
-//   errors["vendorContactNo"] = "Please enter your phone number.";
-// }
-
-// if (typeof input["vendorContactNo"] !== "undefined") {
-
-//   var pattern = new RegExp('((\\(\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}', 'i');
-//   if (!pattern.test(input["vendorContactNo"])) {
-//     isValid = false;
-//     errors["vendorContactNo"] = "Please enter valid phone number.";
-//   }
-// }
 
     if (!input["password"]) {
       isValid = false;
@@ -143,23 +109,14 @@ class UserProfile extends Component {
             <Card
               title="Register as a Vendor to e-Shop"
               content={
+
                 <form>
-                  <div className="text-danger">{this.state.errors.companyName}</div>
-                  
-                  {/* <FormInputs
-                    ncols={["col-md-12"]}
-                    properties={[
-                      {
-                        name: "companyName",
-                        label: "*Company Name",
-                        type: "text",
-                        bsClass: "form-control",
-                        placeholder: "Company Name",
-                        onChange: this.handleChange.bind(this)
-                      }
-                    ]}
-                  /> */}
-                  <div className="text-danger">{this.state.errors.email}</div>
+                  {this.state.errors.email && (
+                    <Alert bsStyle="danger">
+                      {this.state.errors.email}
+                    </Alert>
+                  )}
+
                   <FormInputs
                     ncols={["col-md-12"]}
                     properties={[
@@ -174,22 +131,12 @@ class UserProfile extends Component {
                       },
                     ]}
                   />
-                  {/* <div className="text-danger">{this.state.errors.vendorContactNo}</div>
-                  
-                  <FormInputs
-                    ncols={["col-md-12"]}
-                    properties={[
-                      {
-                        name: "vendorContactNo",
-                        label: "*Phone number",
-                        type: "text",
-                        bsClass: "form-control",
-                        placeholder: "Vendor phone number",
-                        onChange: this.handleChange.bind(this)
-                      }
-                    ]}
-                  /> */}
-                  <div className="text-danger">{this.state.errors.password}</div>
+
+                  {this.state.errors.password && (
+                    <Alert bsStyle="danger">
+                      {this.state.errors.password}
+                    </Alert>
+                  )}
                   <FormInputs
                     ncols={["col-md-12"]}
                     properties={[
@@ -203,7 +150,11 @@ class UserProfile extends Component {
                       }
                     ]}
                   />
-                  <div className="text-danger">{this.state.errors.reppassword}</div>
+                  {this.state.errors.reppassword && (
+                    <Alert bsStyle="danger">
+                      {this.state.errors.reppassword}
+                    </Alert>
+                  )}
                   <FormInputs
                     ncols={["col-md-12"]}
                     properties={[
@@ -217,14 +168,12 @@ class UserProfile extends Component {
                       }
                     ]}
                   />
-
-
-
                   <Button bsStyle="info" pullRight fill onClick={this.handleRegisterBtn}>
                     Register
                     </Button>
                   <div className="clearfix" />
                 </form>
+               
               }
             />
           </Col>
@@ -232,6 +181,26 @@ class UserProfile extends Component {
           </Col>
 
         </Row>
+        <Modal
+                  show={this.state.show}
+                  onHide={this.handleHide}
+                  container={this}
+                  aria-labelledby="contained-modal-title"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title">
+                      Contained Modal
+                      
+   </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    You are registered now. Please maintain your account information just after login.
+ </Modal.Body>
+                  <Modal.Footer>
+                    <Button onClick={this.handleHide}>Close</Button>
+                  </Modal.Footer>
+                </Modal>
+                
       </Grid>
     );
   }

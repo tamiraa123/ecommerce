@@ -27,7 +27,7 @@ import EditProducts from "views/Engineer/EditProducts.jsx";
 const dashboardRoutes = [
   {
     type: ["ROLE_VENDOR"],
-    status : ["NEW_VENDOR"],
+    status : ["NEW"],
     path: "/index",
     name: "One-Time payment",
     icon: "pe-7s-user",
@@ -36,7 +36,7 @@ const dashboardRoutes = [
   },
   {
     type: ["ROLE_VENDOR"],
-    status : ["ACTIVE" , "NEW_VENDOR"],
+    status : ["ACTIVE" , "NEW"],
     path: "/profile",
     name: "Profile",
     icon: "pe-7s-user",
@@ -82,7 +82,7 @@ const dashboardRoutes = [
   
   {
     type: ["ROLE_VENDOR"],
-    status : ["ACTIVE", "NEW_VENDOR"],
+    status : ["ACTIVE", "NEW"],
     path: "/myCards",
     name: "My cards",
     icon: "pe-7s-cash",

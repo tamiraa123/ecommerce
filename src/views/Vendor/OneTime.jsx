@@ -3,8 +3,10 @@ import {
   Grid,
   Row,
   Col,
+  
 } from "react-bootstrap";
 import server from "../../server.json";
+import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import axios from "axios";
 import { Card } from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -23,7 +25,7 @@ class Profile extends Component {
     this.state = {
       cards: [],
       label: "",
-      index: index,
+      index: 0,
       status : "",
       isActive: "",
     }
@@ -34,7 +36,7 @@ class Profile extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value, event: event })
+    this.setState({ [name]: value, event: event }, console.log(this.state.cards[this.state.index]))
   }
   componentDidMount = async () => {
     this.setState({isActive : false})
@@ -52,7 +54,7 @@ class Profile extends Component {
           let size = result.data.cards.length;
           cardList = [];
           for (let i = 0; i < size; i++) {
-            cardList.push({ value: i, label: result.data.cards[i].cardNumber + " Discovery", children: [] });
+            cardList.push({ value: i, label: result.data.cards[i].cardNumber + " VISA", children: [] });
           }
         }
         else{
@@ -62,6 +64,38 @@ class Profile extends Component {
       .catch((err) =>
         this.setState({ error: "Error" })//err.response.data.error.message
       );
+  }
+  handlePaybtn= async () => {
+    
+    console.log(this.state.cards[this.state.index]);
+    await axios
+      .post(
+        server.url + "/vendors/onetimepayment/"+localStorage.getItem("userId"),
+        {
+          cardNumber : this.state.cards[this.state.index].cardNumber,
+          holderName : this.state.cards[this.state.index].holderName,
+          expirationDate : this.state.cards[this.state.index].expirationDate,
+          cvv : this.state.cards[this.state.index].cvv,
+          cardStatus : this.state.cards[this.state.index].cardStatus,
+          bankName : this.state.cards[this.state.index].bankName
+      },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        },
+      )
+      .then((result) => {
+        console.log(result)
+        alert("result")
+        // this.props.history.goBack();
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+        console.log(err);
+      }
+      );  
   }
   render() {
     return (
@@ -81,11 +115,27 @@ class Profile extends Component {
                         "e-Shop team"
                        </small>
                     </blockquote>
+                    <FormInputs
+                      ncols={["col-md-6"]}
+                      properties={[
+                        {
+                          label: "Service Provider",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Service Provider",
+                          defaultValue: this.state.bankName,
+                          name: "bankName",
+                          onChange: this.handleChange.bind(this)
+                        }
+                      ]
+                      }
+                    />
                     <Button
-                     disabled={this.state.status?true:false}
+                    disabled={this.state.status?true:false}
                     bsStyle="info" 
                     pullRight fill 
-                    type="submit">
+                    onClick={this.handlePaybtn}
+                    >
                       Pay now
                     </Button>
                     <div className="text-danger">{this.state.status}</div>
