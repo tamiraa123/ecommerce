@@ -64,7 +64,8 @@ class Employee extends Component {
       files: [],
       isAddEmployee: true,
       show: false,
-      redirect:false
+      redirect:false,
+      password:''
     }
 
     this.handleChangeRole = this.handleChangeRole.bind(this);
@@ -119,9 +120,10 @@ class Employee extends Component {
       })
     }
     //save value    //add employee API avah
-    let urlLocal = server.url + "/employees/" + this.props.match.params.id;
-    await axios
-      .put(urlLocal,
+    let urlLocal = server.url + "/employees";
+    if(this.state.isAddEmployee){
+      await axios
+      .post(urlLocal,
         {
           employeeId: this.state.id,
           firstName: this.state.firstName,
@@ -132,6 +134,7 @@ class Employee extends Component {
           address: this.state.address,
           imageUrl: this.state.image,
           role: this.state.role,
+          password:this.state.password,
         },
         {
           headers: {
@@ -151,6 +154,7 @@ class Employee extends Component {
           address: result.data.address,
           role: result.data.role,
           image: result.data.imageUrl,
+          password: result.data.password
         })
       }
       )
@@ -159,6 +163,50 @@ class Employee extends Component {
 
       }
       );
+    }
+    else{
+    await axios
+      .put(urlLocal,
+        {
+          employeeId: this.state.id,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          username: this.state.email,
+          status: this.state.status,
+          phone: this.state.phone,
+          address: this.state.address,
+          imageUrl: this.state.image,
+          role: this.state.role,
+          password:this.state.password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+      )
+      .then((result) => {
+        this.setState({
+          loading: false, show: true,
+          id: result.data.employeeId,
+          firstName: result.data.firstName,
+          lastName: result.data.lastName,
+          email: result.data.username,
+          status: result.data.status,
+          phone: result.data.phone,
+          address: result.data.address,
+          role: result.data.role,
+          image: result.data.imageUrl,
+          password: result.data.password
+        })
+      }
+      )
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response })
+
+      }
+      );
+    }
       if(this.props.match.params.id==localStorage.getItem('userId'))
       {
         this.setState({redirect:true});
@@ -219,6 +267,7 @@ class Employee extends Component {
             id: result.data.id,
             image: result.data.imageUrl,
             email: result.data.username,
+            password: result.data.password,
             status: result.data.status,
             firstName: result.data.firstName,
             lastName: result.data.lastName,
@@ -321,13 +370,13 @@ class Employee extends Component {
                               defaultValue: this.state.email,
                               name: "email",
                               onChange: this.handleChange.bind(this),
-                              disabled: true
+                              disabled: this.state.isAddEmployee ?  false : true
                             },
                           ]
                           }
                         />
                         <FormInputs
-                          ncols={["col-md-5"]}
+                          ncols={["col-md-4","col-md-4"]}
                           onChange={this.handleChange}
                           properties={[
                             {
@@ -339,6 +388,16 @@ class Employee extends Component {
                               name: "phone",
                               onChange: this.handleChange.bind(this),
                               pattern: "^[0-9]{10}$",
+                            },
+                            {
+                              label: "Password",
+                              type: "password",
+                              bsClass: "form-control",
+                              placeholder: "Password",
+                              defaultValue: this.state.password,
+                              name: "password",
+                              onChange: this.handleChange.bind(this),
+                              // pattern: "^[0-9]{10}$",
                             }
                           ]}
                         />
