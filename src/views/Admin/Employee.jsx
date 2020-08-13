@@ -120,8 +120,9 @@ class Employee extends Component {
       })
     }
     //save value    //add employee API avah
-    let urlLocal = server.url + "/employees";
+    
     if(this.state.isAddEmployee){
+      let urlLocal = server.url + "/employees";
       await axios
       .post(urlLocal,
         {
@@ -165,6 +166,7 @@ class Employee extends Component {
       );
     }
     else{
+      let urlLocal = server.url + "/employees/"+this.props.match.params.id;
     await axios
       .put(urlLocal,
         {
