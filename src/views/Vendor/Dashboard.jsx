@@ -6,7 +6,27 @@ import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import server from "../../server.json";
 import axios from "axios";
+import {
+  responsiveSales
+} from "variables/Variables.jsx";
+import { dataPie } from "variables/Variables";
 
+var optionsSales = {
+  low: 0,
+  high: 800,
+  showArea: false,
+  height: "245px",
+  axisX: {
+    showGrid: false
+  },
+  lineSmooth: true,
+  showLine: true,
+  showPoint: true,
+  fullWidth: true,
+  chartPadding: {
+    right: 50
+  }
+};
 const groupBy = key => array =>
   array.reduce((objectsByKeyValue, obj) => {
     const value = obj[key];
@@ -19,6 +39,7 @@ class Dashboard extends Component {
   state = {
     products: [],
     promos: [],
+    revenue: [],
     requirements: [],
     dataPie : {
       labels: [],
@@ -27,8 +48,11 @@ class Dashboard extends Component {
     legendPie : {
       names: [],
       types: []
+    },
+    dataSales : {
+      labels: [],
+      series: [[]]
     }
-    
   }
   createLegend(json) {
     var legend = [];
@@ -59,7 +83,7 @@ class Dashboard extends Component {
         this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
       );
     await axios
-      .get(server.url + "/promotions", {
+      .get(server.url + "/promotions/vendor/"+localStorage.getItem("userId"), {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
@@ -71,7 +95,37 @@ class Dashboard extends Component {
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
-    await axios
+      await axios
+      .get(server.urlZaki + "/reports/revenue/" + localStorage.getItem("userId"))
+      .then((result) => {
+        console.log(result.data);
+        //////////
+        let labels = [];
+        let series = [[]];
+        console.log(result.data.length)
+        for(let i = 0; i< result.data.length ; i++){
+          labels.push(result.data[i].day+"");
+          series[0].push(result.data[i].amount);
+        }
+        // labels = ["a", "b", "c"];
+        // series = [100, 200, 140];
+
+        console.log("labels: ", labels);
+        console.log("series: ", series);
+        this.setState({dataSales : {labels, series}}, console.log("state: ",this.state.dataPie));
+        
+        this.setState({ loading: false })
+      }
+      )
+      .catch((err) =>{ 
+        console.log(err);
+      this.setState({ loading: false, error: err.response })
+      
+    }
+      );
+    
+    
+      await axios
       .get(server.url + "/requirements", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -87,7 +141,7 @@ class Dashboard extends Component {
         let names = dpl;
         
         for (let i = 0; i < dpl.length; i++) {
-          console.log("forrr");
+          // console.log("forrr");
           dps.push(res[dpl[i]].length)
         }
         this.setState({
@@ -108,7 +162,7 @@ class Dashboard extends Component {
       <div className="content">
         <Grid fluid>
           <Row>
-            <Col lg={3} sm={6}>
+            <Col lg={6} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-keypad text-warning" />}
                 statsText={"Products"}
@@ -116,8 +170,7 @@ class Dashboard extends Component {
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
-            </Col>
-            <Col lg={3} sm={6}>
+
               <StatsCard
                 bigIcon={<i className="pe-7s-gift text-success" />}
                 statsText="Promotion"
@@ -126,8 +179,6 @@ class Dashboard extends Component {
                 statsIconText="Last day"
               />
             </Col>
-          </Row>
-          <Row>
 
             <Col md={6}>
               <Card
@@ -150,7 +201,29 @@ class Dashboard extends Component {
             </Col>
           </Row>
 
-
+          <Row>
+            <Col md={12}>
+              <Card
+                statsIcon="fa fa-history"
+                id="chartHours"
+                title="Transaction history"
+                category=""
+                stats="Updated now"
+                content={
+                  <div className="ct-chart">
+                    <ChartistGraph
+                      data={this.state.dataSales}
+                      type="Line"
+                      options={optionsSales}
+                      responsiveOptions={responsiveSales}
+                    />
+                  </div>
+                }
+                
+              />
+            </Col>
+           
+          </Row>
         </Grid>
       </div>
     );
