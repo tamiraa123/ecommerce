@@ -60,20 +60,25 @@ componentDidMount = () =>{
                             <tr key={key}>
                               {prop.map((prop, key) => {
                                 return <td key={key}>
-                                      {(key == 0) && <Link to={`/admin/myOrders/${prop}`}>
+                                      {/* {
+                                      (key == 0) && 
+                                      <Link to={`/admin/myOrders/${prop}`}>
                                           {prop}
-                                      </Link>}
-                                      {(key == 1) && <Link to={`/admin/myProducts/${prop}`}>
+                                      </Link>
+                                      } */}
+                                      {/* {(key == 1) && <Link to={`/admin/myProducts/${prop}`}>
                                           {prop}
-                                      </Link>}
-                                      {(key == 4) && <Link to={`/admin/myPromotions/${prop}`}>
+                                      </Link>} */}
+                                      {/* {(key == 4) && <Link to={`/admin/myPromotions/${prop}`}>
                                           {prop}
-                                      </Link>}
-                                      {(key != 0 && key != 1 && key != 4) && <p>{prop}</p>}
+                                      </Link>} */}
+                                      {
+                                      // (key != 0 && key != 1 && key != 4) && 
+                                      <p>{prop}</p>
+                                      }
                                   </td>;
                               })}
                             </tr>
-                         
                         );
                       })}
                     </tbody>
