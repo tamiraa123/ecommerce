@@ -19,9 +19,6 @@ import axios from "axios";
 import server from "../../server.json";
 
 const specifications = [
-  { specName: "CPU", specValue: "1,5 Ghz" },
-  { specName: "RAM", specValue: "16 GB" },
-  { specName: "Hard SSD", specValue: "500GB" },
 ];
 
 class Newproduct extends Component {

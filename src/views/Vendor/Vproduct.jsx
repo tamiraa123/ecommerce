@@ -194,7 +194,7 @@ class Product extends Component {
           quantity: result.data.currentQuantity,
           categoryId: result.data.categoryId,
           categoryName: result.data.categoryName,
-          productDetails : result.data.productDetails,
+          productDetails : result.productDetails,
           vendorId: result.data.vendorId,
           status: result.data.status,
           // images: [],
@@ -355,7 +355,7 @@ class Product extends Component {
                       </thead>
                       <tbody>
                         <tr>
-                          {this.state.productDetails.map((prop, key) => {
+                          {(this.state.productDetails)?this.state.productDetails.map((prop, key) => {
                             return (
                               <td>
                                 <FormInputs
@@ -375,7 +375,7 @@ class Product extends Component {
                                 />
                               </td>
                             );
-                          })}
+                          }):""}
                         </tr>
                       </tbody>
                     </Table>
