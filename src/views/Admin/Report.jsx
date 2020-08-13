@@ -152,21 +152,24 @@ class Dashboard extends Component {
         },
       })
       .then((result) => {
-        console.log(result.data);
+      //   console.log(result.data);
         
-        dataSales.labels.push("JUNE","JULY")
-        for(let i = 0; i< Object.getOwnPropertyNames(result.data).length ; i++){
-          dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
-        }
-        dataSales.series[0].push(400);
-        dataSales.series[0].push(200);
-        let size = dataSales.series[0].length;
-       for(let i = 0; i< Object.getOwnPropertyNames(result.data).length  ; i++){  
-        console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
-         dataSales.series[0].push(result.data[dataSales.labels[size+i]]);
-       }
-       optionsSales.high = Math.max(dataSales.series[0]);
-        console.log(dataSales);
+      //   dataSales.labels.push("JUNE","JULY")
+      //   for(let i = 0; i< Object.getOwnPropertyNames(result.data).length ; i++){
+      //     dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
+      //   }
+      //   dataSales.series[0].push(400);
+      //   dataSales.series[0].push(200);
+      //   let size = dataSales.series[0].length;
+      //  for(let i = 0; i< Object.getOwnPropertyNames(result.data).length  ; i++){  
+      //   console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
+      //    dataSales.series[0].push(result.data[dataSales.labels[size+i]]);
+      //  }
+      //  optionsSales.high = Math.max(dataSales.series[0]);
+      //   console.log(dataSales);
+
+      dataPie.labels = ["1", "2", "3"];
+      dataPie.series = [1, 2, 3];
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));

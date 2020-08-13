@@ -3,7 +3,8 @@ import {
   Grid,
   Row,
   Col,
-  
+  Alert,
+  Modal
 } from "react-bootstrap";
 import server from "../../server.json";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -28,8 +29,13 @@ class Profile extends Component {
       index: 0,
       status : "",
       isActive: "",
+      show : false
     }
   }
+  handleHide() {
+    window.history.back();
+  }
+
   onChangeCard(currentNode, selectedNodes) {
     console.log('onChange::', currentNode, selectedNodes)
     this.setState({ index: selectedNodes[0].value, label: selectedNodes[0].label}, () => console.log(this.state))
@@ -54,7 +60,7 @@ class Profile extends Component {
           let size = result.data.cards.length;
           cardList = [];
           for (let i = 0; i < size; i++) {
-            cardList.push({ value: i, label: result.data.cards[i].cardNumber + " VISA", children: [] });
+            cardList.push({ value: i, label: result.data.cards[i].cardNumber + " "+ result.data.cards[i].bankName, children: [] });
           }
         }
         else{
@@ -86,13 +92,18 @@ class Profile extends Component {
         },
       )
       .then((result) => {
-        console.log(result)
-        alert("result")
+        if(result.data.bool){
+          this.setState({show : true});
+        }
+        else{
+          this.setState({status : "Transaction unsuccessful. Please check your card details and purchase power!"})
+        }
+        // alert("result")
         // this.props.history.goBack();
       }
       )
       .catch((err) => {
-        this.setState({ loading: false, error: err.response })
+        this.setState({ loading: false, status: err.response })
         console.log(err);
       }
       );  
@@ -101,6 +112,25 @@ class Profile extends Component {
     return (
       <div className="content">
         <Grid fluid>
+        <Modal
+                  show={this.state.show}
+                  onHide={this.handleHide}
+                  container={this}
+                  aria-labelledby="contained-modal-title"
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title">
+                      Contained Modal
+                      
+   </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Congratulations!!! You just have paid the One-Time Payment. Once it reviewed by our team, you will use our website with full functionality.
+ </Modal.Body>
+                  <Modal.Footer>
+                    <Button onClick={this.handleHide}>Close</Button>
+                  </Modal.Footer>
+                </Modal>
           <Row>
             <Col md={12}>
               <Card
@@ -115,21 +145,7 @@ class Profile extends Component {
                         "e-Shop team"
                        </small>
                     </blockquote>
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
-                        {
-                          label: "Service Provider",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Service Provider",
-                          defaultValue: this.state.bankName,
-                          name: "bankName",
-                          onChange: this.handleChange.bind(this)
-                        }
-                      ]
-                      }
-                    />
+                    
                     <Button
                     disabled={this.state.status?true:false}
                     bsStyle="info" 
@@ -138,7 +154,12 @@ class Profile extends Component {
                     >
                       Pay now
                     </Button>
-                    <div className="text-danger">{this.state.status}</div>
+                    {this.state.status && (
+                    <Alert bsStyle="danger">
+                      {this.state.status}
+                    </Alert>
+                  )}
+
                     <DropdownTreeSelect
                       disabled={this.state.status?true:false}//{this.state.isActive}
                       mode="simpleSelect"

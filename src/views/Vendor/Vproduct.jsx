@@ -47,11 +47,7 @@ const statuses = [{
 },
 ]
 
-const specifications = [
-  { specName: "CPU", specValue: "1,5 Ghz" },
-  { specName: "RAM", specValue: "16 GB" },
-  { specName: "Hard SSD", specValue: "500GB" },
-];
+
 const styleCarousel = {
   display: "block",
   marginLeft: "auto",
@@ -117,7 +113,15 @@ class Product extends Component {
   }
   handleChange(event) {
     const { target: { name, value } } = event
-    this.setState({ [name]: value }, console.log(this.state))
+    this.setState({ [name]: value }, console.log(name, value, this.state))
+  }
+  handleSpec(event) {
+    const { target: { name, value } } = event
+    let prodDet = this.state.productDetails;
+    let idx = name.split(".")[1];
+    prodDet[idx].specValue = value;
+    // console.log(name, value, this.state)
+    this.setState({ productDetails: prodDet}, console.log(name, value, this.state))
   }
   handleDoneBtn = async (event) => {
     //send Post request to update product info price, category, manifacturer, quantity
@@ -146,7 +150,7 @@ class Product extends Component {
           categoryId : this.state.categoryId,
           imageList : this.state.imageLocalURLs,
           currentQuantity: this.state.quantity,
-          productDetails: [],
+          productDetails: this.state.productDetails,
           status: this.state.status
         },
         {
@@ -190,7 +194,7 @@ class Product extends Component {
           quantity: result.data.currentQuantity,
           categoryId: result.data.categoryId,
           categoryName: result.data.categoryName,
-          // productDetails : result.productDetails,
+          productDetails : result.data.productDetails,
           vendorId: result.data.vendorId,
           status: result.data.status,
           // images: [],
@@ -363,8 +367,8 @@ class Product extends Component {
                                       bsClass: "form-control",
                                       placeholder: "Name",
                                       defaultValue: prop.specValue,
-                                      name: "specValue",
-                                      onChange: this.handleChange.bind(this)
+                                      name: "specValue."+key,
+                                      onChange: this.handleSpec.bind(this)
                                     }
                                   ]
                                   }
