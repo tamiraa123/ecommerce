@@ -111,7 +111,7 @@ class Admin extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin" && prop.type.includes(this.state.role) ) {
+      if (prop.layout === "/admin" && prop.type.includes(this.state.role) && prop.status.includes(localStorage.getItem("status")) ) {
         return (
           <Route
             path={prop.layout + prop.path}

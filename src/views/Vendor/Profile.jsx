@@ -16,7 +16,6 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import iconuser from '../../assets/img/iconuser.png'
 import firebase from '../../firebase';
-const statusD = ["NEW", "ACTIVE", "BLOCKED"];
 
 const styleFile = {
   display: "none"
@@ -31,7 +30,7 @@ class Profile extends Component {
       id: 0,
       image: "",
       email: "",
-      status: statusD[0], //active fired drop
+      status: "", //active fired drop
       vendorName: "",
       phone: "",
       since: "",
@@ -48,8 +47,7 @@ class Profile extends Component {
       files: []
     }
 
-    this.handleChangeStatus = this.handleChangeStatus.bind(this);
-    // this.handleChange = this.handleChange(this);
+   // this.handleChange = this.handleChange(this);
   }
   componentDidMount = async () => {
     this.setState({ id: localStorage.getItem("userId") });
@@ -165,9 +163,6 @@ class Profile extends Component {
 
   }
 
-  handleChangeStatus(event) {
-    this.setState({ status: statusD[event] });
-  }
   handleChange(event) {
     const { target: { name, value } } = event
     if ([name] == "street" || [name] == "city" || [name] == "state" || [name] == "zip") {

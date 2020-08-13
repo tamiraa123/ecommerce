@@ -12,7 +12,7 @@ import Card from "components/Card/Card.jsx";
 import { Link } from "react-router-dom";
 import server from "../../server.json";
 import axios from "axios";
-const thArray = ["#", "Card Number", "Card Holder", "status", "Expiration Date", "cvv", ""];
+const thArray = ["#", "Card Number", "Card Holder", "Service Provider", "Expiration Date", ""];
 
 class Vcards extends Component {
 
@@ -38,25 +38,33 @@ class Vcards extends Component {
       );
   }
   handleRemoveSpecificRow = async (idx) => {
-    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard");
+    console.log(server.url + "/vendors/cards/"+localStorage.getItem("userId"));
     await axios
-      .patch(
-        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/removedcard",
-        this.state.cards[idx],
+      .delete(
+        server.url + "/vendors/cards/"+localStorage.getItem("userId"),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+          },
+          data: {
+            bankName : null,
+            cardNumber : this.state.cards[idx].cardNumber,
+            cardStatus : this.state.cards[idx].cardStatus,
+            cvv : this.state.cards[idx].cvv,
+            expirationDate : this.state.cards[idx].expirationDate,
+            holderName : this.state.cards[idx].holderName
+        }
         },
       )
       .then((result) => {
         console.log(result)
         alert("Card has been deleted")
+        window.location.reload();
       }
       )
       .catch((err) => {
         this.setState({ loading: false, error: err.response })
-        console.log(err);
+        console.log(err, this.state.cards[idx]);
       }
       );  
       // const cards = [...this.state.cards]
@@ -99,13 +107,10 @@ foo(idx){
                         {this.state.cards[idx].holderName}
                       </td>
                       <td>
-                        {this.state.cards[idx].cardStatus}
+                        {this.state.cards[idx].bankName}
                       </td>
                       <td>
                         {this.state.cards[idx].expirationDate}
-                      </td>
-                      <td>
-                        {this.state.cards[idx].cvv}
                       </td>
                       <td>
                         <button

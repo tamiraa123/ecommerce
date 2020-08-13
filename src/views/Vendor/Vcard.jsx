@@ -22,21 +22,24 @@ class Vcard extends Component {
       cvv : "",
       fullname : "",
       expDate : null,
-      cnum : ""
+      cnum : "",
+      status : "",
+      bankName : ""
     }
   }
   
   handleSavebtn= async () => {
-    console.log(server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard");
+    console.log(server.url + "/vendors/cards/"+localStorage.getItem("userId"));
     await axios
-      .patch(
-        server.urlHenok + "/vendors/"+localStorage.getItem("userId")+"/addedcard",
+      .post(
+        server.url + "/vendors/cards/"+localStorage.getItem("userId"),
         {
           cardNumber : this.state.cnum,
           holderName : this.state.fullname,
           expirationDate : this.state.expDate,
           cvv : this.state.cvv,
-          cardStatus : true
+          cardStatus : true,
+          bankName : this.state.bankName
       },
         {
           headers: {
@@ -77,7 +80,31 @@ class Vcard extends Component {
                 content={
                   <form>
                     <FormInputs
-                      ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
+                      ncols={["col-md-6", "col-md-6"]}
+                      properties={[
+                        {
+                          label: "Service Provider",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Service Provider",
+                          defaultValue: this.state.bankName,
+                          name: "bankName",
+                          onChange: this.handleChange.bind(this)
+                        },
+                        {
+                          label: "Card Holder's Full Name",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Card Holder's Full Name",
+                          defaultValue: this.state.fullname,
+                          name: "fullname",
+                          onChange: this.handleChange.bind(this)
+                        }
+                      ]
+                      }
+                    />
+                    <FormInputs
+                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
                         {
                           label: "CNumber",
@@ -89,15 +116,7 @@ class Vcard extends Component {
                           onChange: this.handleChange.bind(this)
                         },
 
-                        {
-                          label: "Card Holder's Full Name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Card Holder's Full Name",
-                          defaultValue: this.state.fullname,
-                          name: "fullname",
-                          onChange: this.handleChange.bind(this)
-                        },
+                       
                         {
                           label: "Expiration date",
                           type: "date",
@@ -120,6 +139,7 @@ class Vcard extends Component {
                       ]
                       }
                     />
+                    
                     <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
                       Add card
                     </Button>

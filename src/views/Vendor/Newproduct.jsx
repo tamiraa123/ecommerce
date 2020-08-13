@@ -78,7 +78,7 @@ class Newproduct extends Component {
       )
     }
     ///////////POST
-    let path = server.urlHenok+"/products/create";
+    let path = server.url+"/products/create";
     console.log(path);
   axios
     .post(path,
@@ -132,7 +132,7 @@ class Newproduct extends Component {
       imageLocalURLs: "",
     });
     
-    let url = server.urlHenok + "/categories";
+    let url = server.url + "/categories";
     axios
     .get(url,        {
       headers: {
