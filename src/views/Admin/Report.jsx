@@ -21,11 +21,8 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 import axios from "axios";
 
-var dataSales = {
-  labels: [],
-  series: [[]]
-};
-var optionsSales = {
+
+const optionsSales = {
   low: 0,
   high: 800,
   showArea: false,
@@ -54,7 +51,10 @@ class Dashboard extends Component {
     totalsuccess: "",
     totalbalance:"",
 
-    
+    dataSales : {
+      labels: [],
+      series: [[]]
+    },
 
     error: null,
     loading: false,
@@ -152,6 +152,7 @@ class Dashboard extends Component {
         },
       })
       .then((result) => {
+<<<<<<< HEAD
       //   console.log(result.data);
         
       //   dataSales.labels.push("JUNE","JULY")
@@ -170,6 +171,23 @@ class Dashboard extends Component {
 
       dataPie.labels = ["1", "2", "3"];
       dataPie.series = [1, 2, 3];
+=======
+        // console.log(result.data);
+        
+        this.state.dataSales.labels.push("JUNE","JULY")
+        for(let i = 0; i< Object.getOwnPropertyNames(result.data).length ; i++){
+          this.state.dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
+        }
+        this.state.dataSales.series[0].push(400);
+        this.state.dataSales.series[0].push(200);
+        let size = this.state.dataSales.series[0].length;
+       for(let i = 0; i< Object.getOwnPropertyNames(result.data).length  ; i++){  
+        //console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
+         this.state.dataSales.series[0].push(result.data[this.state.dataSales.labels[size+i]]);
+       }
+       optionsSales.high = Math.max(this.state.dataSales.series[0]);
+        // console.log(dataSales);
+>>>>>>> 542d89fd87519f09c8ff6f66ad0695a38c95645b
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
@@ -273,7 +291,7 @@ class Dashboard extends Component {
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={dataSales}
+                      data={this.state.dataSales}
                       type="Line"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
