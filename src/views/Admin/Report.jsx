@@ -264,9 +264,9 @@ class Dashboard extends Component {
               <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
-                title="Users Behavior"
-                category="24 Hours performance"
-                stats="Updated 3 minutes ago"
+                title="Transaction history"
+                category=""
+                stats="Updated now"
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
@@ -277,9 +277,7 @@ class Dashboard extends Component {
                     />
                   </div>
                 }
-                legend={
-                  <div className="legend">{this.createLegend(legendSales)}</div>
-                }
+                
               />
             </Col>
            
