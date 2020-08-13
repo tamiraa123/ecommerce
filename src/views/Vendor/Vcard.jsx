@@ -107,7 +107,7 @@ class Vcard extends Component {
                       ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
                         {
-                          label: "CNumber",
+                          label: "Card Number",
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "CNumber",
@@ -143,7 +143,7 @@ class Vcard extends Component {
                     <Button bsStyle="info" pullRight fill onClick={this.handleSavebtn}>
                       Add card
                     </Button>
-                    <div className="clearfix" />
+                    {/* <div className="clearfix" /> */}
                   </form>
                 }
               />
