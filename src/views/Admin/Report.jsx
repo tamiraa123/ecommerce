@@ -21,11 +21,8 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 import axios from "axios";
 
-var dataSales = {
-  labels: [],
-  series: [[]]
-};
-var optionsSales = {
+
+const optionsSales = {
   low: 0,
   high: 800,
   showArea: false,
@@ -54,7 +51,10 @@ class Dashboard extends Component {
     totalsuccess: "",
     totalbalance:"",
 
-    
+    dataSales : {
+      labels: [],
+      series: [[]]
+    },
 
     error: null,
     loading: false,
@@ -152,21 +152,21 @@ class Dashboard extends Component {
         },
       })
       .then((result) => {
-        console.log(result.data);
+        // console.log(result.data);
         
-        dataSales.labels.push("JUNE","JULY")
+        this.state.dataSales.labels.push("JUNE","JULY")
         for(let i = 0; i< Object.getOwnPropertyNames(result.data).length ; i++){
-          dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
+          this.state.dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
         }
-        dataSales.series[0].push(400);
-        dataSales.series[0].push(200);
-        let size = dataSales.series[0].length;
+        this.state.dataSales.series[0].push(400);
+        this.state.dataSales.series[0].push(200);
+        let size = this.state.dataSales.series[0].length;
        for(let i = 0; i< Object.getOwnPropertyNames(result.data).length  ; i++){  
-        console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
-         dataSales.series[0].push(result.data[dataSales.labels[size+i]]);
+        //console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
+         this.state.dataSales.series[0].push(result.data[this.state.dataSales.labels[size+i]]);
        }
-       optionsSales.high = Math.max(dataSales.series[0]);
-        console.log(dataSales);
+       optionsSales.high = Math.max(this.state.dataSales.series[0]);
+        // console.log(dataSales);
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
@@ -270,7 +270,7 @@ class Dashboard extends Component {
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={dataSales}
+                      data={this.state.dataSales}
                       type="Line"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
