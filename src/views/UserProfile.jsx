@@ -26,12 +26,12 @@ const styles = {
 const styleFile = {
   display: "none"
 };
- const StyleAvatar = {
-   height:"100px"
- }
- const avatar = {
-  height:"210px",
-  width:"210px"
+const StyleAvatar = {
+  height: "100px"
+}
+const avatar = {
+  height: "210px",
+  width: "210px"
 }
 
 class UserProfile extends Component {
@@ -73,10 +73,13 @@ class UserProfile extends Component {
     } else {
       this.setState({ [name]: value, event: event })
     }
+    this.setState({ error: event.target.validationMessage });
+    console.log(event.target.validationMessage);
   }
 
   //save UserProfile
   saveBtn = async () => {
+
     // console.log("saveBtn()");
     // console.log(this.state.files);
     this.setState({ loading: true });
@@ -234,12 +237,6 @@ class UserProfile extends Component {
                     title="Edit Profile"
                     content={
                       <form>
-                        {this.state.error && (
-                          <Alert bsStyle="danger">
-                            {this.state.error}
-                          </Alert>
-                        )}
-
                         <input type="file" style={styleFile} id="selectedFile" onChange={(e) => { this.handleUploadChange(e.target.files) }} />
                         <div >
                           <div className="card card-user">
@@ -265,27 +262,33 @@ class UserProfile extends Component {
                           {/* <Image style={styles} width={250} height={200} src={this.state.imageGlobal} rounded /> */}
                         </div>
                         <br />
-
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
+                          </Alert>
+                        )}
                         <FormInputs
                           ncols={["col-md-4", "col-md-4", "col-md-4"]}
                           properties={[
                             {
-                              label: "First Name",
+                              label: "* First Name",
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "First Name",
                               defaultValue: this.state.firstname,
                               name: "firstname",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
-                              label: "Last Name",
+                              label: "* Last Name",
                               type: "text",
                               bsClass: "form-control",
                               placeholder: "Last Name",
                               defaultValue: this.state.lastname,
                               name: "lastname",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
                               label: "Email address",
@@ -306,10 +309,11 @@ class UserProfile extends Component {
                               label: "Phone number",
                               type: "text",
                               bsClass: "form-control",
-                              placeholder: "Phone Number",
+                              placeholder: "1234567890",
                               defaultValue: this.state.phone,
                               name: "phone",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[0-9]{10}$",
                             }
                           ]}
                         />
@@ -323,7 +327,8 @@ class UserProfile extends Component {
                               placeholder: "Street",
                               defaultValue: this.state.address == null ? "" : this.state.address.street,
                               name: "street",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              //pattern: "^\d+\s[A-z]+\s[A-z]+",
                             }
                           ]}
                         />
@@ -343,10 +348,11 @@ class UserProfile extends Component {
                               label: "State",
                               type: "text",
                               bsClass: "form-control",
-                              placeholder: "Country",
+                              placeholder: "TX",
                               defaultValue: this.state.address == null ? "" : this.state.address.state,
                               name: "state",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              // pattern: "[A-Z]{2}$",
                             },
                             {
                               label: "Postal Code",
@@ -354,7 +360,9 @@ class UserProfile extends Component {
                               bsClass: "form-control",
                               defaultValue: this.state.address == null ? "" : this.state.address.zip,
                               name: "zip",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              // pattern: "\d{5}",
+
                             }
                           ]}
                         />

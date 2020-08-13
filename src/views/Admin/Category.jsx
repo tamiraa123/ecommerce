@@ -22,6 +22,7 @@ import server from "../../server.json";
 
 
 //Send ->  add id = parentid, value  &   edit = id, value,  &  delete = id 
+
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -37,9 +38,6 @@ class Product extends Component {
       catName: '',
       error: null,
       loading: false,
-      show: false,
-      success: false,
-      yesno: false
     }
     // this.handleChange = this.handleChange.bind(this);
     this.handleChangeTree = this.handleChangeTree.bind(this);
@@ -47,98 +45,81 @@ class Product extends Component {
 
   addBtn = async () => {
     if (this.state.selected) {
-      this.setState({show:true});
-      if (this.state.yesno) {
-        var pieces = this.state.selected.split('/');
-        var send = pieces[pieces.length - 1];
-        // console.log(send);
-        await axios
-          .post(server.url + "/categories/add", {
-            parentId: send,
-            value: this.state.catName,
-          },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-              }
-            })
-          .then((result) => {
-            this.setState({ show: true, category: result.data });
-          })
-          .catch((err) =>
-            this.setState({ error: err })
-          );
-      }
-      else {
-        this.setState({ error: "Please select category" })
-      }
+      var pieces = this.state.selected.split('/');
+      var send = pieces[pieces.length - 1];
+      // console.log(send);
+      await axios
+        .post(server.url + "/categories/add", {
+          parentId: send,
+          value: this.state.catName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },)
+        .then((result) => {
+          this.setState({show:true, category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: err })
+        );
     }
-    this.setState({ yesno: false })
+    else {
+      this.setState({ error: "Please select category" })
+    }
   }
   editBtn = async () => {
-
     if (this.state.selected) {
-      this.setState({show:true});
-      if (this.state.yesno) {
-        var pieces = this.state.selected.split('/');
-        var send = pieces[pieces.length - 1];
-        console.log(this.state.catName);
-        await axios
-          .put(server.url + "/categories/edit", {
-            categoryId: send,
-            value: this.state.catName,
-          },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-              }
-            },
-          )
-          .then((result) => {
-            console.log(result)
-            this.setState({ show: true, category: result.data });
-          })
-          .catch((err) =>
-            this.setState({ error: err })
-          );
-      }
-      else {
-        this.setState({ error: "Please select category" })
-      }
+      var pieces = this.state.selected.split('/');
+      var send = pieces[pieces.length - 1];
+      console.log(this.state.catName);
+      await axios
+        .put(server.url + "/categories/edit", {
+          categoryId: send,
+          value: this.state.catName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+        )
+        .then((result) => {
+          console.log(result)
+          this.setState({show:true, category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: err })
+        );
     }
-    this.setState({ yesno: false })
+    else {
+      this.setState({ error: "Please select category" })
+    }
   }
   deleteBtn = async () => {
     if (this.state.selected) {
-      this.setState({show:true});
-      if (this.state.yesno) {
-        var pieces = this.state.selected.split('/');
-        var categoryId = pieces[pieces.length - 1];
-        await axios
-          .delete(server.url + "/categories/delete/" + categoryId, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-          })
-          .then((result) => {
-            this.setState({ show: true, category: result.data });
-          })
-          .catch((err) =>
-            this.setState({ error: err })
-          );
-      }
-      else {
-        this.setState({ error: "Please select category" })
-      }
+      var pieces = this.state.selected.split('/');
+      var categoryId = pieces[pieces.length - 1];
+      await axios
+        .delete(server.url + "/categories/delete/" +  categoryId,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        .then((result) => {
+           this.setState({show:true, category: result.data });
+        })
+        .catch((err) =>
+          this.setState({ error: err })
+        );
     }
-    this.setState({ yesno: false })
+    else {
+      this.setState({ error: "Please select category" })
+    }
   }
   handleCloseModal = () => {
-    this.setState({ show: false, yesno: false });
-    
-  }
-  handleYesModal = async () => {
-   await this.setState({ show: false, yesno: true });
+    this.setState({ show: false });
   }
 
   //Selected items
@@ -155,11 +136,9 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .get(server.url + "/categories"
-        , {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
+        , {headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+          },}
       )
       .then((result) => {
         this.setState({ category: result.data, loading: false })
@@ -187,6 +166,7 @@ class Product extends Component {
             <Grid fluid>
               <Row>
                 <Col md={8}>
+
                   <Card
                     title="Category"
                     content={
@@ -196,9 +176,9 @@ class Product extends Component {
                             {this.state.error}
                           </Alert>
                         )}
-                        {this.state.success && (
-                          <Alert bsStyle="success">
-                            Successfull
+                        {this.state.error && (
+                          <Alert bsStyle="danger">
+                            {this.state.error}
                           </Alert>
                         )}
                         <Alert bsStyle="warning">
@@ -221,7 +201,8 @@ class Product extends Component {
 
                               value: this.state.catName,
                               name: "catName",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,30}$",
                             },
 
                           ]
@@ -233,8 +214,6 @@ class Product extends Component {
                         <Button bsStyle="info" pullLeft fill onClick={this.addBtn}>Add</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.editBtn}>Edit</Button>&nbsp;
                         <Button bsStyle="info" pullLeft fill onClick={this.deleteBtn}>Delete</Button>
-
-
                         <Modal
                           show={this.state.show}
                           onHide={this.handleCloseModal}
@@ -243,15 +222,14 @@ class Product extends Component {
                         >
                           <Modal.Header closeButton>
                             <Modal.Title id="contained-modal-title">
-                              Warning
+                              Success
                                 </Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
-                            Are you sure?
-                          </Modal.Body>
+                            Successfully updated
+                              </Modal.Body>
                           <Modal.Footer>
-                            <Button onClick={this.handleYesModal}>Yes</Button>
-                            <Button onClick={this.handleCloseModal}>No</Button>
+                            <Button onClick={this.handleCloseModal}>Close</Button>
                           </Modal.Footer>
                         </Modal>
                       </form>

@@ -88,6 +88,7 @@ class Product extends Component {
     handleChange(event) {
       const { target: { name, value } } = event
       this.setState({ [name]: value, event: event })
+      this.setState({ error: event.target.validationMessage });
     }
   
 
@@ -151,7 +152,8 @@ class Product extends Component {
                               placeholder: "Name",
                               defaultValue: this.state.name,
                               name: "name",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "^[a-zA-Z]{2,40}$",
                             },
                             {
                               label: "URL",
@@ -179,7 +181,8 @@ class Product extends Component {
                               placeholder: "FROM",
                               defaultValue: this.state.rangeFrom,
                               name: "rangeFrom",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "\d{4}",
                             },
                             {
                               label: "TO",
@@ -188,7 +191,8 @@ class Product extends Component {
                               placeholder: "TO",
                               defaultValue: this.state.rangeTo,
                               name: "rangeTo",
-                              onChange: this.handleChange.bind(this)
+                              onChange: this.handleChange.bind(this),
+                              pattern: "\d{4}",
                             }
                           ]
                           }

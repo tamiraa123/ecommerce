@@ -199,17 +199,17 @@ class Admin extends Component {
       default:
         break;
     }
-    _notificationSystem.addNotification({
-      title: <span data-notify="icon" className="pe-7s-user" />,
-      message: (
-        <div>
-          Welcome {localStorage.getItem('username')}
-        </div>
-      ),
-      level: level,
-      position: "tr",
-      autoDismiss: 15
-    });
+    // _notificationSystem.addNotification({
+    //   title: <span data-notify="icon" className="pe-7s-user" />,
+    //   message: (
+    //     <div>
+    //       Welcome {localStorage.getItem('username')}
+    //     </div>
+    //   ),
+    //   level: level,
+    //   position: "tr",
+    //   autoDismiss: 15
+    // });
   }
 
 
