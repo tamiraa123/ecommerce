@@ -94,6 +94,85 @@ class Product extends Component {
     this.onDrop = this.onDrop.bind(this);
   }
 
+ 
+  componentDidMount = async () => {
+    console.log(this.props.match.params.id);
+    await axios
+      .get(server.url + "/products/" + this.props.match.params.id,
+      {
+        headers: {
+          'Authorization': "Bearer " + localStorage.getItem("token")
+        }
+      })
+      .then((result) => {
+        console.log("data", result.data);
+        this.setState({
+          id: result.data.productId,
+          name: result.data.productName,
+          description: result.data.description,
+          brand: result.data.manufacturer,
+          price: result.data.price,
+          quantity: result.data.currentQuantity,
+          categoryId: result.data.categoryId,
+          categoryName: result.data.categoryName,
+          productDetails : result.data.productDetails,
+          vendorId: result.data.vendorId,
+          status: result.data.status,
+          // images: [],
+          imageLocalURLs: result.data.imageList,
+          imageGlobalURLs: []
+        },
+          () => {
+            console.log("state: ",this.state)
+          }
+        )
+
+
+
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" })//err.response.data.error.message
+      );
+
+    //Load categories
+    let url = server.url + "/categories";
+    axios
+      .get(url,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+      .then((result) => {
+        // console.log("categories", result.data);
+        // categories = result.data[0].nodes;
+
+        let str = JSON.stringify(result.data[0].nodes);
+        // console.log("str1: ", str);
+        str = str.replace(/nodes/g, 'children')
+        str = str.replace(/key/g, 'value')
+        // str = str.replace("nodes", "children");
+        // str = str.replace("key", "value");
+        console.log("str2: ", str);
+        categories = JSON.parse(str);
+        console.log("categories", categories);
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+      );
+    //  show picture
+    if (this.state.images) {
+      let storageRef1 = firebase.storage().ref()
+      let tempTable = [this.state.imageLocalURLs.length];
+      for (let i = 0; i < this.state.imageLocalURLs.length; i++) {
+        tempTable[i] = (await storageRef1.child(this.state.imageLocalURLs[i]).getDownloadURL());
+      }
+      this.setState({
+        imageGlobalURLs: tempTable
+      }, console.log(tempTable));
+    }
+  }
+
   onChangeStatus(currentNode, selectedNodes) {
     console.log('onChange::', currentNode, selectedNodes)
     this.setState({ status: selectedNodes[0].label }, () => console.log(this.state))
@@ -173,83 +252,6 @@ class Product extends Component {
 
     //Go back
     // this.props.history.goBack();
-  }
-  componentDidMount = async () => {
-    console.log(this.props.match.params.id);
-    await axios
-      .get(server.url + "/products/" + this.props.match.params.id,
-      {
-        headers: {
-          'Authorization': "Bearer " + localStorage.getItem("token")
-        }
-      })
-      .then((result) => {
-        console.log("data", result.data);
-        this.setState({
-          id: result.data.productId,
-          name: result.data.productName,
-          description: result.data.description,
-          brand: result.data.manufacturer,
-          price: result.data.price,
-          quantity: result.data.currentQuantity,
-          categoryId: result.data.categoryId,
-          categoryName: result.data.categoryName,
-          productDetails : result.productDetails,
-          vendorId: result.data.vendorId,
-          status: result.data.status,
-          // images: [],
-          imageLocalURLs: result.data.imageList,
-          imageGlobalURLs: []
-        },
-          () => {
-            console.log(this.state)
-          }
-        )
-
-
-
-      })
-      .catch((err) =>
-        this.setState({ error: "Error" })//err.response.data.error.message
-      );
-
-    //Load categories
-    let url = server.url + "/categories";
-    axios
-      .get(url,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-      .then((result) => {
-        // console.log("categories", result.data);
-        // categories = result.data[0].nodes;
-
-        let str = JSON.stringify(result.data[0].nodes);
-        // console.log("str1: ", str);
-        str = str.replace(/nodes/g, 'children')
-        str = str.replace(/key/g, 'value')
-        // str = str.replace("nodes", "children");
-        // str = str.replace("key", "value");
-        console.log("str2: ", str);
-        categories = JSON.parse(str);
-        console.log("categories", categories);
-      })
-      .catch((err) =>
-        this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
-      );
-    //  show picture
-    if (this.state.images) {
-      let storageRef1 = firebase.storage().ref()
-      let tempTable = [this.state.imageLocalURLs.length];
-      for (let i = 0; i < this.state.imageLocalURLs.length; i++) {
-        tempTable[i] = (await storageRef1.child(this.state.imageLocalURLs[i]).getDownloadURL());
-      }
-      this.setState({
-        imageGlobalURLs: tempTable
-      }, console.log(tempTable));
-    }
   }
   render() {
     return (
@@ -355,7 +357,9 @@ class Product extends Component {
                       </thead>
                       <tbody>
                         <tr>
-                          {(this.state.productDetails)?this.state.productDetails.map((prop, key) => {
+                          { 
+                          (this.state.productDetails)?
+                          this.state.productDetails.map((prop, key) => {
                             return (
                               <td>
                                 <FormInputs
@@ -375,7 +379,9 @@ class Product extends Component {
                                 />
                               </td>
                             );
-                          }):""}
+                          }) : ""
+                          
+                          }
                         </tr>
                       </tbody>
                     </Table>
