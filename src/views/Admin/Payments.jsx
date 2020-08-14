@@ -27,7 +27,7 @@ class Payments extends Component {
 
     this.setState({ loading: true });
     await axios
-      .get(server.urlAde + "/card/allpaymentmethod"
+      .get(server.url + "/card/allpaymentmethod"
       , {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`

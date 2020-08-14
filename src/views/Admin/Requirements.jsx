@@ -13,29 +13,8 @@ import Spinner from "../../Spinner";
 import server from "../../server.json";
 
 //Example data
-const thArray = ["#", "Subject", "Start Date", "Due Date", "End Date", "Status"];
-const tdArray = [
-  {
-    "id": 1,
-    "subject": "Add Product",
-    "startDate": "2020-08-08",
-    "dueDate": "2020-08-18",
-    "endDate": "2020-08-18",
-    "status": "New",
-    "description": "",
-    "assignTo": 1
-  },
-  {
-    "id": 2,
-    "subject": "Add Product",
-    "startDate": "2020-08-08",
-    "dueDate": "2020-08-18",
-    "endDate": "2020-08-18",
-    "status": "Active",
-    "description": "",
-    "assignTo": 2
-  }
-];
+const thArray = ["#", "Subject", "Start Date", "Due Date", "End Date" ,"Status"];
+
 
 
 class Requirements extends Component {

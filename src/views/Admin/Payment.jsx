@@ -47,7 +47,7 @@ class Product extends Component {
     this.setState({ loading: true });
     await axios
       .post(
-        server.urlAde + "/card/addpaymentmethod",
+        server.url + "/card/addpaymentmethod",
         {
           id: this.state.id == 0 ? null:this.state.id,
           name: this.state.name,
@@ -56,11 +56,11 @@ class Product extends Component {
           rangeFrom: this.state.rangeFrom,
           rangeTo: this.state.rangeTo
         }
-        // ,{
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`
-        //   }
-        // },
+        ,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
       )
       .then((result) => {
          console.log(result)
@@ -99,10 +99,10 @@ class Product extends Component {
     }
     else {
       await axios
-        .get(server.urlAde + "/card/paymentmethod/" + this.props.match.params.id
-          // , {headers: {
-          //     Authorization: `Bearer ${localStorage.getItem('token')}`
-          //   },}
+        .get(server.url + "/card/paymentmethod/" + this.props.match.params.id
+          , {headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },}
         )
         .then((result) => {
           console.log(result)
