@@ -100,15 +100,9 @@ class Product extends Component {
     else {
       await axios
         .get(server.url + "/card/paymentmethod/" + this.props.match.params.id
-<<<<<<< HEAD
           , {headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`
             },}
-=======
-          // , {headers: {
-          //     Authorization: `Bearer ${localStorage.getItem('token')}`
-          //   },}
->>>>>>> edd8f83fde73484bf22c80b14d58bb46e4445096
         )
         .then((result) => {
           console.log(result)
