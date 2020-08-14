@@ -21,7 +21,7 @@ componentDidMount = async () => {
 
   this.setState({ loading: true });
   await axios
-    .get(server.url + "/requirements", {
+    .get(`${server.url}/requirements/vendor/${localStorage.getItem("userId")}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },

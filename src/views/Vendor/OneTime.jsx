@@ -7,16 +7,14 @@ import {
   Modal
 } from "react-bootstrap";
 import server from "../../server.json";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import axios from "axios";
 import { Card } from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import DropdownTreeSelect from 'react-dropdown-tree-select'
-import index from "Spinner";
 const onAction = (node, action) => {
   console.log('onAction::', action, node)
 }
-let cardList = [{ label: "Nothing", value: "0", children: [] }];
+
 const onNodeToggle = currentNode => {
   console.log('onNodeToggle::', currentNode)
 }
@@ -29,6 +27,7 @@ class Profile extends Component {
       index: 0,
       status : "",
       isActive: "",
+      cardList : [],
       show : false
     }
   }
@@ -58,10 +57,11 @@ class Profile extends Component {
         if (result.data.cards && result.data.cards.length > 0) {
           this.setState({ cards: result.data.cards, isActive : true });
           let size = result.data.cards.length;
-          cardList = [];
+          let cardList = [];
           for (let i = 0; i < size; i++) {
             cardList.push({ value: i, label: result.data.cards[i].cardNumber + " "+ result.data.cards[i].bankName, children: [] });
           }
+          this.setState({cardList : cardList});
         }
         else{
           this.setState({status: "Please add at least one payment card"});
@@ -164,7 +164,7 @@ class Profile extends Component {
                       disabled={this.state.status?true:false}//{this.state.isActive}
                       mode="simpleSelect"
                       texts={{ placeholder: this.state.label }}
-                      data={cardList}
+                      data={this.state.cardList}
                       onChange={this.onChangeCard.bind(this)}
                       onAction={onAction}
                       onNodeToggle={onNodeToggle}
