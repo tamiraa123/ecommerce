@@ -56,11 +56,11 @@ class Product extends Component {
           rangeFrom: this.state.rangeFrom,
           rangeTo: this.state.rangeTo
         }
-        // ,{
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`
-        //   }
-        // },
+        ,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
       )
       .then((result) => {
          console.log(result)
@@ -100,9 +100,9 @@ class Product extends Component {
     else {
       await axios
         .get(server.url + "/card/paymentmethod/" + this.props.match.params.id
-          // , {headers: {
-          //     Authorization: `Bearer ${localStorage.getItem('token')}`
-          //   },}
+          , {headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },}
         )
         .then((result) => {
           console.log(result)

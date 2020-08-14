@@ -129,7 +129,7 @@ class Dashboard extends Component {
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
       await axios
-      .get(server.urlAde + "/card/transactiondata", {
+      .get(server.url + "/card/transactiondata", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
@@ -146,7 +146,7 @@ class Dashboard extends Component {
 
 
       await axios
-      .get(server.urlAde + "/card/totalamtbymonth", {
+      .get(server.url + "/card/totalamtbymonth", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
@@ -183,6 +183,21 @@ class Dashboard extends Component {
           <Spinner />
         ) : (
         <Grid fluid>
+          <Row>
+          <Card
+                title="Tasks"
+                category="Backend development"
+                stats="Updated 3 minutes ago"
+                statsIcon="fa fa-history"
+                content={
+                  <div className="table-full-width">
+                    <table className="table">
+                      <Tasks />
+                    </table>
+                  </div>
+                }
+              />
+          </Row>
           <Row>
             <Col lg={3} sm={6}>
               <StatsCard
@@ -280,8 +295,9 @@ class Dashboard extends Component {
                 
               />
             </Col>
-           
+                
           </Row>
+          
 
         </Grid>)}
       </div>
