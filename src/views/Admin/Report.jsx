@@ -6,16 +6,7 @@ import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { Tasks } from "components/Tasks/Tasks.jsx";
 import {
-  dataPie,
-  legendPie,
-  // dataSales,
-  // optionsSales,
   responsiveSales,
-  legendSales,
-  dataBar,
-  optionsBar,
-  responsiveBar,
-  legendBar
 } from "variables/Variables.jsx";
 import Spinner from "../../Spinner";
 import server from "../../server.json";
@@ -52,9 +43,9 @@ class Dashboard extends Component {
     alltransaction: "",
     totalfailure: "",
     totalsuccess: "",
-    totalbalance:"",
+    totalbalance: "",
 
-    
+
 
     error: null,
     loading: false,
@@ -103,7 +94,7 @@ class Dashboard extends Component {
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
-      await axios
+    await axios
       .get(server.url + "/users", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -116,7 +107,7 @@ class Dashboard extends Component {
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
-      await axios
+    await axios
       .get(server.url + "/vendors", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -128,24 +119,25 @@ class Dashboard extends Component {
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
-      await axios
+    await axios
       .get(server.url + "/card/transactiondata", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
       })
       .then((result) => {
-        this.setState({ totaltransaction: result.data.total,
-                        totalsuccess: result.data.success,
-                        totalfailure: result.data.fail,
-                        totalbalance: result.data.balance
+        this.setState({
+          totaltransaction: result.data.total,
+          totalsuccess: result.data.success,
+          totalfailure: result.data.fail,
+          totalbalance: result.data.balance
         })
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
 
-      await axios
+    await axios
       .get(server.url + "/card/totalamtbymonth", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -153,27 +145,27 @@ class Dashboard extends Component {
       })
       .then((result) => {
         console.log(result.data);
-        
-        dataSales.labels.push("JUNE","JULY")
-        for(let i = 0; i< Object.getOwnPropertyNames(result.data).length ; i++){
+
+        dataSales.labels.push("JUNE", "JULY")
+        for (let i = 0; i < Object.getOwnPropertyNames(result.data).length; i++) {
           dataSales.labels.push(Object.getOwnPropertyNames(result.data)[i]);
         }
         dataSales.series[0].push(400);
         dataSales.series[0].push(200);
         let size = dataSales.series[0].length;
-       for(let i = 0; i< Object.getOwnPropertyNames(result.data).length  ; i++){  
-        console.log("asdfghj",result.data[dataSales.labels[size+i]]); 
-         dataSales.series[0].push(result.data[dataSales.labels[size+i]]);
-       }
-       optionsSales.high = Math.max(dataSales.series[0]);
+        for (let i = 0; i < Object.getOwnPropertyNames(result.data).length; i++) {
+          console.log("asdfghj", result.data[dataSales.labels[size + i]]);
+          dataSales.series[0].push(result.data[dataSales.labels[size + i]]);
+        }
+        optionsSales.high = Math.max(dataSales.series[0]);
         console.log(dataSales);
       }
       )
       .catch((err) => this.setState({ loading: false, error: err.response }));
 
-      
 
-      this.setState({ loading: false });
+
+    this.setState({ loading: false });
   }
 
   render() {
@@ -182,124 +174,125 @@ class Dashboard extends Component {
         {this.state.loading ? (
           <Spinner />
         ) : (
-        <Grid fluid>
-          <Row>
-          <Card
-                title="Tasks"
-                category="Backend development"
-                stats="Updated 3 minutes ago"
-                statsIcon="fa fa-history"
-                content={
-                  <div className="table-full-width">
-                    <table className="table">
-                      <Tasks />
-                    </table>
-                  </div>
-                }
-              />
-          </Row>
-          <Row>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-users text-warning" />}
-                statsText="Employees"
-                statsValue={this.state.employees.length}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-shopbag text-success" />}
-                statsText="Products"
-                statsValue={this.state.products.length}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-user-female text-danger" />}
-                statsText="Customers"
-                statsValue={this.state.customers.length}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-share text-info" />}
-                statsText="Vendors"
-                statsValue={this.state.vendors.length}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph3 text-warning" />}
-                statsText="Total transaction"
-                statsValue={this.state.totaltransaction}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph3 text-success" />}
-                statsText="Success Transaction"
-                statsValue={this.state.totalsuccess}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph3 text-danger" />}
-                statsText="Failure Transaction"
-                statsValue={this.state.totalfailure}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph text-info" />}
-                statsText="Total Balance"
-                statsValue={this.state.totalbalance}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <Card
-                statsIcon="fa fa-history"
-                id="chartHours"
-                title="Transaction history"
-                category=""
-                stats="Updated now"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataSales}
-                      type="Line"
-                      options={optionsSales}
-                      responsiveOptions={responsiveSales}
-                    />
-                  </div>
-                }
-                
-              />
-            </Col>
-                
-          </Row>
-          
+            <Grid fluid>
+              <Row >
+                <Col lg={6} sm={12}>
+                  <Card
+                    title="Standart Reports"
+                    stats="Updated now"
+                    statsIcon="fa fa-history"
+                    content={
+                      <div className="table-full-width">
+                        <table className="table">
+                          <Tasks />
+                        </table>
+                      </div>
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-users text-warning" />}
+                    statsText="Employees"
+                    statsValue={this.state.employees.length}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-shopbag text-success" />}
+                    statsText="Products"
+                    statsValue={this.state.products.length}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-user-female text-danger" />}
+                    statsText="Customers"
+                    statsValue={this.state.customers.length}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-share text-info" />}
+                    statsText="Vendors"
+                    statsValue={this.state.vendors.length}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-graph3 text-warning" />}
+                    statsText="Total transaction"
+                    statsValue={this.state.totaltransaction}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-graph3 text-success" />}
+                    statsText="Success Transaction"
+                    statsValue={this.state.totalsuccess}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-graph3 text-danger" />}
+                    statsText="Failure Transaction"
+                    statsValue={this.state.totalfailure}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+                <Col lg={3} sm={6}>
+                  <StatsCard
+                    bigIcon={<i className="pe-7s-graph text-info" />}
+                    statsText="Total Balance"
+                    statsValue={this.state.totalbalance}
+                    statsIcon={<i className="fa fa-refresh" />}
+                    statsIconText="Updated now"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Card
+                    statsIcon="fa fa-history"
+                    id="chartHours"
+                    title="Transaction history"
+                    category=""
+                    stats="Updated now"
+                    content={
+                      <div className="ct-chart">
+                        <ChartistGraph
+                          data={dataSales}
+                          type="Line"
+                          options={optionsSales}
+                          responsiveOptions={responsiveSales}
+                        />
+                      </div>
+                    }
 
-        </Grid>)}
+                  />
+                </Col>
+
+              </Row>
+
+
+            </Grid>)}
       </div>
     );
   }
