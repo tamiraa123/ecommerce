@@ -13,7 +13,6 @@ const onAction = (node, action) => {
 const onNodeToggle = currentNode => {
   console.log('onNodeToggle::', currentNode)
 }
-let products = []
 class Promo extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +22,9 @@ class Promo extends Component {
       from: "",
       to: "",
       productId: "",
-      productName: "",
+      productName : "",
+      productNames: [],
+      products : [],
       discount: "",
       promotionDescription: ""
     }
@@ -41,10 +42,6 @@ class Promo extends Component {
 
   componentDidMount = async () => {
     if (this.props.match.params.id != "new") {
-
-      //Product List
-
-      
       await axios
         .get(server.url + "/promotions/" + this.props.match.params.id, {
           headers: {
@@ -78,16 +75,17 @@ class Promo extends Component {
             })
           .then((result) => {
             console.log("prod res:", result)
+            this.setState({products : result.data})
             let size = result.data.length;
+            
             console.log("size", size)
-            products = [];
+            let productNames = [];
             for (let i = 0; i < size; i++) {
-              products.push({ label: result.data[i].productName, value: result.data[i].productId, children: [] });
+              productNames.push({ label: result.data[i].productName, value: result.data[i].productId, children: [] });
               if(result.data[i].productId == this.state.productId)
                 this.setState({productName : result.data[i].productName});
             }
-  
-            console.log("products", products);
+            this.setState({productNames : productNames}, ()=>console.log("last : ", this.state))
           })
           .catch((err) =>
             this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
@@ -98,6 +96,33 @@ class Promo extends Component {
     }
     else {
       this.setState({ promoNo: "Will be provided soon" })
+      let url = server.url + "/products/vendor/" + localStorage.getItem("userId");
+        console.log(url);
+        await axios
+          .get(url,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+          .then((result) => {
+            console.log("prod res:", result)
+            this.setState({products : result.data})
+            let size = result.data.length;
+            
+            console.log("size", size)
+            let productNames = [];
+            for (let i = 0; i < size; i++) {
+              productNames.push({ label: result.data[i].productName, value: result.data[i].productId, children: [] });
+            }
+            this.setState({productNames : productNames}, ()=>console.log("last : ", this.state))
+          })
+          .catch((err) =>
+            this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
+          );
+  
+        this.setState({ loading: true });
+
     }
   }
 
@@ -254,7 +279,7 @@ class Promo extends Component {
                     <DropdownTreeSelect
                       mode="simpleSelect"
                       texts={{ placeholder: this.state.productName }}
-                      data={products}
+                      data={this.state.productNames}
                       onChange={this.onChangeCategory.bind(this)}
                       onAction={onAction}
                       onNodeToggle={onNodeToggle} />
