@@ -36,7 +36,7 @@ class Profile extends Component {
       since: "",
       custServContactNo: "",
       description: "",
-      cards : "",
+      cards : [],
       address: {
         street: "",
         city: "",

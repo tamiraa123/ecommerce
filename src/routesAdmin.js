@@ -8,7 +8,7 @@ import myProduct from "./views/Vendor/Vproduct";
 import myRequirement from "./views/Vendor/Vrequirement";
 import myCard from "./views/Vendor/Vcard";
 import myPromo from "./views/Vendor/Vpromotion";
-import myOrder from "./views/Vendor/Vorder";
+// import myOrder from "./views/Vendor/Vorder";
 import Newproduct from "./views/Vendor/Newproduct";
 import editProduct from "./views/Engineer/EditProduct";
 
@@ -80,12 +80,12 @@ const routesAdmin = [
     component: myPromo,
     layout: "/admin"
   },
-  {
-    path: "/myOrders/:id",
-    name: "myOrder",
-    component: myOrder,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/myOrders/:id",
+  //   name: "myOrder",
+  //   component: myOrder,
+  //   layout: "/admin"
+  // },
   {
     path: "/editProducts/:id",
     name: "editProduct",

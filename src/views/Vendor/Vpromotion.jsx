@@ -117,11 +117,15 @@ class Promo extends Component {
             }
             this.setState({productNames : productNames}, ()=>console.log("last : ", this.state))
           })
+
           .catch((err) =>
             this.setState({ error: "Error" }, console.log(err))//err.response.data.error.message
           );
   
-        this.setState({ loading: true });
+        this.setState({ loading: true});
+
+
+
 
     }
   }
@@ -130,7 +134,7 @@ class Promo extends Component {
   handleDoneBtn = async (event) => {
     //send Post request to update product info price, category, manifacturer, quantity
     if (this.props.match.params.id != "new") {
-      console.log("url: ",server.url + "/promotions/" + this.props.match.params.id)
+      console.log("ursl: ",server.url + "/promotions/" + this.props.match.params.id)
       console.log(this.state)
       await axios
         .put(

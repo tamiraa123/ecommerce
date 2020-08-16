@@ -89,7 +89,7 @@ const dashboardRoutes = [
   },
 
   {
-    type: [""],
+    type: ["ROLE_VENDOR"],
     status : ["ACTIVE"],
     path: "/myOrders",
     name: "Orders",

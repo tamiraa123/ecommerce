@@ -1,39 +1,44 @@
 import React, { Component } from "react";
-import { Grid, 
-  Row, 
-  Col, 
-  Table, 
-  Button } from "react-bootstrap";
+import {
+  Grid,
+  Row,
+  Col,
+  Table,
+  Button
+} from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import server from "../../server.json";
 
-
-const thArray = ["#", "Product", "Price(was)", "Quantity", "Promotion", "Ordered By", "Total"];
-const tdArray = [
-  ["1", "Laptop1", "$1000", 1, "PROMO1","Munkhzorig", "$1000"],
-  ["2", "Laptop2", "$200", 1, "No", "192.168.72.23", "$200"],
-  ["3", "Laptop3", "$300", 1, "PROMO2", "Munkhzorig", "$300"],
-];
+const thArray = ["#", "Date", "Product", "Sold Price", "Quantity", "Ordered By"];
 
 
 class Vorders extends Component {
 
-state={
-  products:[],
-}
+  state = {
+    products: [],
+  }
 
-componentDidMount = () =>{
-
-  // axios
-  //   .get("")
-  //   .then((result) => 
-    this.setState({products:tdArray});
-  //)
-  //   .catch((err) => console.log(err.response));
-
-}
+  componentDidMount = () => {
+    axios
+      .get(server.url + "/vendors/orderitems/VE1597012145741" //+ localStorage.getItem("userId")
+        , {
+          headers: {
+            'Authorization': "Bearer " + localStorage.getItem("token")
+          }
+        }
+      )
+      .then((result) => {
+        console.log(result.data.cards);
+        if (result.data)
+          this.setState({ products: result.data });
+      })
+      .catch((err) =>
+        this.setState({ error: "Error" })//err.response.data.error.message
+      );
+  }
 
   render() {
     return (
@@ -55,32 +60,25 @@ componentDidMount = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.products.map((prop, key) => {
-                        return (
-                            <tr key={key}>
-                              {prop.map((prop, key) => {
-                                return <td key={key}>
-                                      {/* {
-                                      (key == 0) && 
-                                      <Link to={`/admin/myOrders/${prop}`}>
-                                          {prop}
-                                      </Link>
-                                      } */}
-                                      {/* {(key == 1) && <Link to={`/admin/myProducts/${prop}`}>
-                                          {prop}
-                                      </Link>} */}
-                                      {/* {(key == 4) && <Link to={`/admin/myPromotions/${prop}`}>
-                                          {prop}
-                                      </Link>} */}
-                                      {
-                                      // (key != 0 && key != 1 && key != 4) && 
-                                      <p>{prop}</p>
-                                      }
-                                  </td>;
-                              })}
-                            </tr>
-                        );
-                      })}
+                      {this.state.products.map((item, idx) => (
+                        <tr id="addr0" key={idx}>
+                          <td>{idx + 1}</td>
+                          <td style={{ width: "20%" }}>
+                            {this.state.products[idx].orderDate}
+                          </td>
+                          <td><Link to={`/admin/myProducts/${this.state.products[idx].productId}`}>
+                            {this.state.products[idx].productId}</Link></td>
+                          <td>
+                            {this.state.products[idx].price}
+                          </td>
+                          <td>
+                            {this.state.products[idx].quantity}
+                          </td>
+                          <td>
+                            {this.state.products[idx].userName}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 }
