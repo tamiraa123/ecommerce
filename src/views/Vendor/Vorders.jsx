@@ -23,7 +23,7 @@ class Vorders extends Component {
 
   componentDidMount = () => {
     axios
-      .get(server.url + "/vendors/orderitems/VE1597012145741" //+ localStorage.getItem("userId")
+      .get(server.url + "/vendors/orderitems/"+localStorage.getItem("userId")
         , {
           headers: {
             'Authorization': "Bearer " + localStorage.getItem("token")
