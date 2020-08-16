@@ -1,53 +1,43 @@
 import React, { Component } from "react";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Tooltip, OverlayTrigger, Image } from "react-bootstrap";
 import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import pdfIcon from "../../assets/img/pdficon.png"
+import server from "../../server.json";
 
+
+const style = {
+  width: 20,
+  height: 20
+}
 export class Tasks extends Component {
-  handleCheckbox = event => {
-    const target = event.target;
-    console.log(event.target);
-    this.setState({
-      [target.name]: target.checked
-    });
-  };
+
+  handleReport = (event) => {
+    console.log(event.target.name)
+    window.open(event.target.name)
+  }
+
   render() {
-    const edit = <Tooltip id="edit_tooltip">Edit Task</Tooltip>;
-    const remove = <Tooltip id="remove_tooltip">Remove</Tooltip>;
+    const edit = <Tooltip id="edit_tooltip">download</Tooltip>;
     const tasks_title = [
-      'Sign contract for "What are conference organizers afraid of?"',
-      "Lines From Great Russian Literature? Or E-mails From My Boss?",
-      "Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroi",
-      "Create 4 Invisible User Experiences you Never Knew About",
-      'Read "Following makes Medium better"',
-      "Unfollow 5 enemies from twitter"
+      'Search history',
+    ];
+    const tasks_value = [
+      server.urlZaki+'/reports/export/pdf',
     ];
     var tasks = [];
-    var number;
+
     for (var i = 0; i < tasks_title.length; i++) {
-      number = "checkbox" + i;
       tasks.push(
         <tr key={i}>
-          <td>
-            <Checkbox
-              number={number}
-              isChecked={i === 1 || i === 2 ? true : false}
-            />
-          </td>
+          
           <td>{tasks_title[i]}</td>
           <td className="td-actions text-right">
-            <OverlayTrigger placement="top" overlay={edit}>
-              <Button bsStyle="info" simple type="button" bsSize="xs">
-                <i className="fa fa-edit" />
-              </Button>
-            </OverlayTrigger>
-
-            <OverlayTrigger placement="top" overlay={remove}>
-              <Button bsStyle="danger" simple type="button" bsSize="xs">
-                <i className="fa fa-times" />
-              </Button>
+            <OverlayTrigger placement="top" overlay={edit}>              
+              <Image style={style} src={pdfIcon} name={tasks_value[i]} onClick={this.handleReport}></Image>
             </OverlayTrigger>
           </td>
+       
         </tr>
       );
     }
